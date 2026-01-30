@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi">
         <activity
+            android:name=".VerificationVerified"
+            android:exported="false" />
+        <activity
+            android:name=".VerificationStatus"
+            android:exported="false" />
+        <activity
+            android:name=".VerificationFailed"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerification"
+            android:exported="false" />
+        <activity
+            android:name=".ChooseOwnerType"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
