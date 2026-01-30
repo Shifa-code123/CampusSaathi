@@ -1,3 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">campusSaathi</string>
+
+    <string name="owner_verification">Owner Verification</string>
+    <string name="owner_verification_subtitle">
+        Please verify your identity and property to manage rooms, PGs, or hotels.
+    </string>
+
+    <string name="full_name">Full Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="same_number">Same number as registered</string>
+
+    <string name="your_role">Your Role</string>
+    <string name="role_owner">Owner</string>
+    <string name="role_caretaker">Caretaker</string>
+    <string name="role_manager">Manager</string>
+
+    <string name="id_proof">ID Proof</string>
+    <string name="id_proof_hint">Upload Aadhaar card, PAN card, or college ID</string>
+    <string name="upload_id">Upload ID Proof</string>
+    <string name="id_safe">Your ID is safe and will not be shared with students.</string>
+
+    <string name="property_proof">Property Proof</string>
+    <string name="electricity_bill">Electricity bill</string>
+    <string name="rent_agreement">Rent agreement</string>
+    <string name="hotel_letter">Hotel approval letter</string>
+    <string name="upload_property">Upload Property Proof</string>
+    <string name="upload_any">Upload any one document</string>
+
+    <string name="confirm_info">I confirm the information provided is correct</string>
+    <string name="submit_verification">SUBMIT FOR VERIFICATION</string>
+
 </resources>
