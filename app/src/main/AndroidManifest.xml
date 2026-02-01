@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi">
         <activity
+            android:name=".ActivityOwnerVerificationVerified"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerificationStatus"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerVerificationFailed"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerDashboard"
+            android:exported="false" />
+        <activity
             android:name=".VerificationVerified"
             android:exported="false" />
         <activity
