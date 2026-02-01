@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F6FA">
+
+    <!-- TOOLBAR -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        app:title="Add New Listing"
+        app:titleTextColor="#FFFFFF"
+        app:navigationIcon="@drawable/ic_menu"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <!-- MAIN CARD -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- STEP -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="29dp"
+                        android:text="Step 4 of 5: Location"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="12dp">
+
+                        <!-- STEP 1 DONE -->
+                        <TextView
+                            android:text="1"
+                            android:background="@drawable/step_done"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:gravity="center"/>
+
+                        <View android:layout_width="20dp"
+                            android:layout_height="2dp"
+                            android:background="#2979FF"/>
+
+                        <!-- STEP 2 DONE -->
+                        <TextView
+                            android:text="2"
+                            android:background="@drawable/step_done"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:gravity="center"/>
+
+                        <View android:layout_width="20dp"
+                            android:layout_height="2dp"
+                            android:background="#2979FF"/>
+
+                        <!-- STEP 3 DONE -->
+                        <TextView
+                            android:text="3"
+                            android:background="@drawable/step_done"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:gravity="center"/>
+
+                        <View android:layout_width="20dp"
+                            android:layout_height="2dp"
+                            android:background="#2979FF"/>
+
+                        <!-- STEP 4 ACTIVE -->
+                        <TextView
+                            android:text="4"
+                            android:background="@drawable/step_active"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:gravity="center"/>
+
+                        <View android:layout_width="20dp"
+                            android:layout_height="2dp"
+                            android:background="#CCCCCC"/>
+
+                        <!-- STEP 5 -->
+                        <TextView
+                            android:text="5"
+                            android:background="@drawable/step_inactive"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+
+                    <!-- ADDRESS TITLE -->
+
+                    <!-- MAP -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:drawableStart="@drawable/ic_location"
+                        android:drawablePadding="8dp"
+                        android:text="Address Details"
+                        android:textStyle="bold" />
+
+                    <FrameLayout
+                        android:id="@+id/mapContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_map">
+
+                        <!-- Fake map preview -->
+
+                        <!-- GPS ICON -->
+                        <ImageView
+                            android:id="@+id/imgMap"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/sample_map" />
+
+                        <ImageView
+                            android:id="@+id/btnGps"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="top|end"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/bg_circle_white"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_gps"/>
+
+
+
+
+                    </FrameLayout>
+
+                    <!-- FORM -->
+                    <TextView
+                        android:id="@+id/txtDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="6dp"
+                        android:text="Distance: 0.5 km"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="31dp"
+                        android:text="Area / Locality"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="39dp"
+                        android:background="@drawable/edit_bg"
+                        android:hint="Shivaji Nagar" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Landmark (Optional)"
+                        android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/etLandmark"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_bg"
+                        android:hint="Axis Bank / MIDC Road" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:text="City"
+                    android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/etCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/edit_bg"
+                        android:hint="Khamgaon" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#2979FF"
+                android:text="Next"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
