@@ -32,4 +32,31 @@
     <string name="confirm_info">I confirm the information provided is correct</string>
     <string name="submit_verification">SUBMIT FOR VERIFICATION</string>
 
+    <string name="owner_dashboard">Owner Dashboard</string>
+
+    <string name="total_listings_count">5</string>
+    <string name="total_listings">Total Listings</string>
+
+    <string name="active_requests_count">8</string>
+    <string name="active_requests">Active Requests</string>
+
+    <string name="listing_views_count">375</string>
+    <string name="listing_views">Listing Views</string>
+
+    <string name="action_required_count">2</string>
+    <string name="action_required">Action Required</string>
+
+    <string name="add_new_listing">Add New Listing</string>
+    <string name="manage_listing">Manage Listing</string>
+    <string name="view_requests">View Requests</string>
+
+    <string name="my_listings">My Listings</string>
+    <string name="view_all_listings">View All Listings</string>
+
+    <string name="listing_1">Shivaji Girls PG  ₹8,000 / month  (Pending)</string>
+    <string name="listing_2">Shivaji Girls PG  2-Shared Room  (Accepted)</string>
+    <string name="listing_3">Shivaji Girls PG  3-Sharing Room  (Rejected)</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>

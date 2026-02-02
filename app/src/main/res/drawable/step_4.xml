@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#E0E0E0"/>
+            <corners android:radius="20dp"/>
+        </shape>
+    </item>
+
+    <!-- Steps -->
+    <item android:left="12dp" android:right="12dp" android:top="8dp" android:bottom="8dp">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 1 DONE -->
+            <TextView
+                android:text="1"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:background="@drawable/step_done"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+
+            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#2979FF"/>
+
+            <!-- 2 DONE -->
+            <TextView
+                android:text="2"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:background="@drawable/step_done"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+
+            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#2979FF"/>
+
+            <!-- 3 DONE -->
+            <TextView
+                android:text="3"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:background="@drawable/step_done"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+
+            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#2979FF"/>
+
+            <!-- 4 ACTIVE -->
+            <TextView
+                android:text="4"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:background="@drawable/step_active"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+
+            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+
+            <!-- 5 INACTIVE -->
+            <TextView
+                android:text="5"
+                android:gravity="center"
+                android:background="@drawable/step_inactive"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+        </LinearLayout>
+    </item>
+
+</layer-list>

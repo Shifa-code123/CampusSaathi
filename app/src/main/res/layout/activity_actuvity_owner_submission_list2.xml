@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F6FA">
+
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#2196F3"
+            android:padding="12dp">
+
+            <ImageView
+                android:id="@+id/ivMenu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_menu"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_centerInParent="true"
+                android:text="Listing Submission"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <!-- MAIN CARD -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:radius="14dp"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- APPROVED IMAGE -->
+
+                <!-- APPROVED TITLE -->
+                <ImageView
+                    android:id="@+id/ivStatus"
+                    android:layout_width="160dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/illustration_approved" />
+
+                <!-- DESCRIPTION -->
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:drawableStart="@drawable/ic_check_circle"
+                    android:drawablePadding="6dp"
+                    android:text="Approved"
+                    android:textColor="#2E7D32"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/tvStatusDesc"
+                    android:layout_marginTop="6dp"
+                    android:text="Your listing is now live and visible to students."
+                    android:textAlignment="center"
+                    android:textSize="13sp"/>
+
+                <!-- BUTTONS -->
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnViewListing"
+                        android:text="View Listing"
+                        android:backgroundTint="#2979FF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:id="@+id/btnDashboard"
+                        android:text="Go to Dashboard"
+                        android:backgroundTint="#E3F2FD"
+                        android:textColor="#2979FF"
+                        android:layout_marginStart="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_marginVertical="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD"/>
+
+                <!-- Location Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:text="Location"
+                        android:textStyle="bold"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/btnEditLocation"
+                        android:text="Edit"
+                        android:textColor="#2979FF"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <!-- Location Details -->
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/tvAddress"
+                    android:layout_marginTop="4dp"
+                    android:text="Shivaji Nagar"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Landmark: Axis / MIDC Road"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="City: Khamgaon"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Distance from Polytechnic: 0.5 km"
+                    android:textSize="12sp"
+                    android:textColor="#666666"/>
+
+                <!-- Divider -->
+                <ImageView
+                    android:id="@+id/ivMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sample_map" />
+
+                <View
+                    android:layout_marginVertical="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD"/>
+
+                <!-- Photos Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="319dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Photos"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/btnEditPhotos"
+                        android:text="Edit"
+                        android:textColor="#2979FF"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <!-- Photos -->
+                <LinearLayout
+                    android:id="@+id/layoutPhotos"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ivPhoto1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sample_room1"/>
+
+                    <ImageView
+                        android:id="@+id/ivPhoto2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sample_room2"/>
+
+                    <ImageView
+                        android:id="@+id/ivPhoto3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/sample_room3"
+                        android:scaleType="center" />
+
+                    <ImageView
+                        android:id="@+id/ivPhoto4"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/sample_room4"
+                        android:scaleType="center" />
+
+                    <ImageView
+                        android:id="@+id/btnAddPhoto"
+                        android:layout_width="73dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="8dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/tvStatusDesc"
+                    android:layout_marginTop="6dp"
+                    android:text="Note: Your listing is not yet visible to students.you will begin receiving request once it approved."
+                    android:textAlignment="center"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>
