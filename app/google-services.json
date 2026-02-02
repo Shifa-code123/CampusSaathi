@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "554123832675",
+    "project_id": "campussaathi-2fbd6",
+    "storage_bucket": "campussaathi-2fbd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554123832675:android:6c9e2c30cbbdde19e33756",
+        "android_client_info": {
+          "package_name": "com.example.campussaathi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMFzFpX9joC1PWY8sF-9bHHBBcZdzTWuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554123832675:android:5162424b56554580e33756",
+        "android_client_info": {
+          "package_name": "com.example.demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMFzFpX9joC1PWY8sF-9bHHBBcZdzTWuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

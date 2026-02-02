@@ -26,8 +26,20 @@
         <activity
             android:name=".ChooseOwnerType"
             android:exported="false" />
+
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!-- Splash screen (Launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +47,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Login screen -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <!-- Signup screen -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <!-- Role selection -->
+        <activity
+            android:name=".RoleSelectionActivity"
+            android:exported="false" />
+        <!-- Student dashboard -->
+        <activity
+            android:name=".StudentDashboardActivity"
+            android:exported="false" />
+        <!-- Main / Home (optional) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".OwnerDashboardActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>
