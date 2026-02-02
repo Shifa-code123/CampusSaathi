@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(
                                     Intent(
                                         this,
-                                        OwnerDashboardActivity::class.java
+                                        ActivityOwnerDashboard::class.java
                                     )
                                 )
                             } else {
