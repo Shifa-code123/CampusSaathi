@@ -15,6 +15,15 @@
             android:name=".ActivityOwnerMyList"
             android:exported="false" />
         <activity
+            android:name=".ActivityOwnerAddList6"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList5"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerProfile"
+            android:exported="false" />
+        <activity
             android:name=".ActuvityOwnerSubmissionList2"
             android:exported="false" />
         <activity
@@ -64,18 +73,14 @@
             android:exported="false" />
         <activity
             android:name=".ChooseOwnerType"
-            android:exported="false" />
-
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <!-- Splash screen (Launcher) -->
         <activity
             android:name=".SplashActivity"
@@ -85,32 +90,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Login screen -->
+        </activity> <!-- Login screen -->
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <!-- Signup screen -->
+            android:exported="false" /> <!-- Signup screen -->
         <activity
             android:name=".SignupActivity"
-            android:exported="false" />
-        <!-- Role selection -->
+            android:exported="false" /> <!-- Role selection -->
         <activity
             android:name=".RoleSelectionActivity"
-            android:exported="false" />
-        <!-- Student dashboard -->
+            android:exported="false" /> <!-- Student dashboard -->
         <activity
             android:name=".StudentDashboardActivity"
-            android:exported="false" />
-        <!-- Main / Home (optional) -->
+            android:exported="false" /> <!-- Main / Home (optional) -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
-
-
-
     </application>
 
 </manifest>

@@ -23,8 +23,7 @@
                 android:id="@+id/ivMenu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_menu"
-                android:tint="@android:color/white" />
+                android:src="@drawable/ic_menu" />
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -80,7 +79,6 @@
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:id="@+id/tvStatusDesc"
                     android:layout_marginTop="6dp"
                     android:text="Your listing is now live and visible to students."
                     android:textAlignment="center"

@@ -51,5 +51,14 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    // Firebase Storage (profile image)
+    implementation("com.google.firebase:firebase-storage")
+
+// Glide (image loading)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+
 }
 apply(plugin = "com.google.gms.google-services")
