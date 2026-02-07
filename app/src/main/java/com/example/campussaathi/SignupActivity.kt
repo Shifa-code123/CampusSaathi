@@ -1,17 +1,12 @@
 package com.example.campussaathi
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
-import kotlin.jvm.java
-import kotlin.text.isEmpty
-import kotlin.text.trim
-import kotlin.to
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignupActivity : AppCompatActivity() {
 
@@ -22,51 +17,119 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+        // Firebase instances
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        val etName = findViewById<EditText>(R.id.etFullName)
+        // UI references
+        val etFullName = findViewById<EditText>(R.id.etFullName)
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPhone = findViewById<EditText>(R.id.etPhone)
         val etPassword = findViewById<EditText>(R.id.etPassword)
+        val etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
         val btnSignup = findViewById<Button>(R.id.btnSignup)
+        val txtLogin = findViewById<TextView>(R.id.txtLogin)
+
+        txtLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         btnSignup.setOnClickListener {
 
-            val name = etName.text.toString().trim()
+            // Read inputs
+            val fullName = etFullName.text.toString().trim()
             val email = etEmail.text.toString().trim()
             val phone = etPhone.text.toString().trim()
             val password = etPassword.text.toString().trim()
+            val confirmPassword = etConfirmPassword.text.toString().trim()
 
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "All fields required", Toast.LENGTH_SHORT).show()
+            // Validation
+            if (fullName.isEmpty() || email.isEmpty() || phone.isEmpty()
+                || password.isEmpty() || confirmPassword.isEmpty()
+            ) {
+                toast("All fields are required")
                 return@setOnClickListener
             }
 
+            if (password.length < 6) {
+                toast("Password must be at least 6 characters")
+                return@setOnClickListener
+            }
+
+            if (password != confirmPassword) {
+                toast("Passwords do not match")
+                return@setOnClickListener
+            }
+
+            // Create Firebase Auth user
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener { result ->
+                .addOnSuccessListener { authResult ->
 
-                    val uid = result.user!!.uid
+                    val uid = authResult.user!!.uid
 
-                    val userMap = hashMapOf(
-                        "fullName" to name,
+                    // Firestore user document (CREATED ONLY ONCE)
+                    val userData = hashMapOf(
+                        "fullName" to fullName,
                         "email" to email,
                         "phone" to phone,
-                        "role" to "", // role will be set next
+
+                        // onboarding state
+                        "role" to "",                 // student / owner (next screen)
+                        "ownerType" to "",            // room_pg / mess / tuition
+                        "ownerSetupStep" to 0,
+                        "ownerSetupDone" to false,
+                        "isVerified" to false,
+
                         "createdAt" to FieldValue.serverTimestamp()
                     )
 
-                    db.collection("users").document(uid)
-                        .set(userMap)
+                    db.collection("users")
+                        .document(uid)
+                        .set(userData)
                         .addOnSuccessListener {
-                            // Move to role selection
-                            startActivity(Intent(this, RoleSelectionActivity::class.java))
+
+                            // Send verification email from CampusSaathi
+                            auth.currentUser?.sendEmailVerification()
+                                ?.addOnSuccessListener {
+                                    toast(
+                                        "Signup successful! Verification email sent to $email"
+                                    )
+                                }
+
+                            // Move to Role Selection (ONLY ONCE)
+                            startActivity(
+                                Intent(this, RoleSelectionActivity::class.java)
+                            )
                             finish()
                         }
+                        .addOnFailureListener {
+                            toast("Failed to save user data. Try again.")
+                        }
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                .addOnFailureListener { exception ->
+
+                    // Handle existing user & other auth errors
+                    val errorMessage = when {
+                        exception.message?.contains(
+                            "email address is already in use",
+                            true
+                        ) == true ->
+                            "This email is already registered. Please login."
+
+                        exception.message?.contains("badly formatted", true) == true ->
+                            "Invalid email format."
+
+                        else ->
+                            exception.message ?: "Signup failed"
+                    }
+
+                    toast(errorMessage)
                 }
         }
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

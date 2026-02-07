@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi">
         <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerVerificationInProgress"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerMyList"
             android:exported="false" />
         <activity

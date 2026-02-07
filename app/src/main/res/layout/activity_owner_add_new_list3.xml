@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F6FA">
+    android:background="#FFFFFF">
 
-    <!-- ===== TOOLBAR ===== -->
+    <!-- TOOLBAR -->
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -25,7 +25,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ===== MAIN CARD ===== -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,301 +37,167 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Step Title -->
+                    <!-- STEP TITLE -->
                     <TextView
-                        android:layout_height="match_parent"
                         android:layout_width="wrap_content"
-                        android:text="Step 3 of 5: Amenities"
+                        android:layout_height="wrap_content"
+                        android:text="Step 3 of 6: Amenities and Services"
                         android:textStyle="bold"
                         android:textSize="14sp"/>
 
-                    <!-- ===== STEPS ===== -->
+                    <!-- STEPS -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:layout_marginTop="12dp">
 
-                        <TextView
-                            android:text="1"
-                            android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
-                            android:gravity="center"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="1" android:gravity="center"
+                            android:textColor="#FFFFFF" android:background="@drawable/step_done"/>
 
-                        <View android:layout_width="20dp" android:layout_height="2dp" android:background="#2979FF"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp"
+                            android:background="#2979FF"/>
 
-                        <TextView
-                            android:text="2"
-                            android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
-                            android:gravity="center"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="2" android:gravity="center"
+                            android:textColor="#FFFFFF" android:background="@drawable/step_done"/>
 
-                        <View android:layout_width="20dp" android:layout_height="2dp" android:background="#2979FF"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp"
+                            android:background="#2979FF"/>
 
-                        <TextView
-                            android:text="3"
-                            android:background="@drawable/step_active"
-                            android:textColor="#FFFFFF"
-                            android:gravity="center"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="3" android:gravity="center"
+                            android:textColor="#FFFFFF" android:background="@drawable/step_active"/>
 
-                        <View android:layout_width="20dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp"
+                            android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="4"
-                            android:background="@drawable/step_inactive"
-                            android:gravity="center"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="4" android:gravity="center"
+                            android:background="@drawable/step_inactive"/>
 
-                        <View android:layout_width="20dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp"
+                            android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="5"
-                            android:background="@drawable/step_inactive"
-                            android:gravity="center"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="5" android:gravity="center"
+                            android:background="@drawable/step_inactive"/>
+
+                        <View android:layout_width="16dp" android:layout_height="2dp"
+                            android:background="#CCCCCC"/>
+
+                        <TextView android:layout_width="28dp" android:layout_height="28dp"
+                            android:text="6" android:gravity="center"
+                            android:background="@drawable/step_inactive"/>
                     </LinearLayout>
 
-                    <!-- ===== BASIC AMENITIES ===== -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                    <!-- ================================================= -->
+                    <!-- ROOM / PG / HOSTEL -->
+                    <!-- ================================================= -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        app:cardCornerRadius="12dp"
-                        android:background="#EAF2FF"
-                        android:padding="12dp">
+                        android:text="Room / PG / Hostel"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wi-Fi"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Water Supply"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Electricity Included"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fan and Light"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bed and Mattress"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Study Table"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cupboard / Wardrobe"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Basic Amenities"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:drawableStart="@drawable/ic_basic_amenities"
-                                android:drawablePadding="8dp"
-                                android:gravity="center_vertical"/>
-
-                            <CheckBox
-                                android:id="@+id/cbWifi"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Wi-Fi"
-                                android:checked="true"/>
-
-                            <CheckBox
-                                android:id="@+id/cbWater"
-                                android:layout_width="wrap_content"
-                                android:layout_height="29dp"
-                                android:checked="true"
-                                android:text="Water Supply" />
-
-                            <CheckBox
-                                android:id="@+id/cbElectricity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="31dp"
-                                android:checked="true"
-                                android:text="Electricity Included" />
-
-                            <CheckBox
-                                android:id="@+id/cbStudyTable"
-                                android:layout_width="wrap_content"
-                                android:layout_height="29dp"
-                                android:text="Study Table" />
-
-                            <CheckBox
-                                android:id="@+id/cbBed"
-                                android:layout_width="94dp"
-                                android:layout_height="22dp"
-                                android:text="Bed" />
-
-                            <CheckBox
-                                android:id="@+id/cbCupboard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="21dp"
-                                android:text="Cupboard" />
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- ===== FACILITY AMENITIES ===== -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp"
-                        android:background="#EAF2FF"
-                        android:padding="12dp">
+                        android:text="Bathroom and Hygiene"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hot Water"/>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attached"/>
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Common"/>
+                    </RadioGroup>
 
-                            <!-- Title -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Facility Amenities"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:drawableStart="@drawable/ic_facility"
-                                android:drawablePadding="8dp"
-                                android:gravity="center_vertical"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Daily Cleaning"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Western / Indian Toilet"/>
 
-                            <!-- Hot Water -->
-                            <CheckBox
-                                android:id="@+id/cbHotWater"
-                                android:layout_width="192dp"
-                                android:layout_height="36dp"
-                                android:checked="true"
-                                android:text="Hot Water" />
-
-                            <!-- Attached / Common -->
-                            <RadioGroup
-                                android:id="@+id/rgBathroomType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginStart="24dp">
-
-                                <RadioButton
-                                    android:id="@+id/rbAttached"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="27dp"
-                                    android:text="Attached" />
-
-                                <RadioButton
-                                    android:id="@+id/rbCommon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Common" />
-                            </RadioGroup>
-
-                            <!-- Parking -->
-                            <CheckBox
-                                android:id="@+id/cbParking"
-                                android:layout_width="wrap_content"
-                                android:layout_height="18dp"
-                                android:checked="true"
-                                android:text="Parking" />
-
-                            <!-- Laundry -->
-                            <CheckBox
-                                android:id="@+id/cbLaundry"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Laundry"
-                                android:checked="true"/>
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- ===== FOOD ===== -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp"
-                        android:background="#EAF2FF"
-                        android:padding="12dp">
+                        android:text="House Rules"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Visitors Allowed"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Outside Food Allowed"/>
 
-                            <!-- Title + Switch -->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
+                    <!-- ================================================= -->
+                    <!-- MESS -->
+                    <!-- ================================================= -->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Food (Optional)"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:drawableStart="@drawable/ic_food"
-                                    android:drawablePadding="8dp"
-                                    android:gravity="center_vertical"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mess Services"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"/>
 
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Breakfast"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lunch"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dinner"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Festival Special Meals"/>
 
-                                <Switch
-                                    android:id="@+id/switchFood"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:checked="true"/>
-                            </LinearLayout>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Veg"/>
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Non-Veg"/>
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Both"/>
+                    </RadioGroup>
 
-                            <!-- Mess Available -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Mess Available"
-                                android:layout_marginTop="8dp"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tiffin Service"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home Delivery"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Trial Available"/>
 
-                            <!-- Veg / Non-Veg / Both -->
-                            <RadioGroup
-                                android:id="@+id/rgFoodType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                    <!-- ================================================= -->
+                    <!-- TUITION -->
+                    <!-- ================================================= -->
 
-                                <RadioButton
-                                    android:id="@+id/rbVeg"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="29dp"
-                                    android:text="Veg" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuition / Coaching"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"/>
 
-                                <RadioButton
-                                    android:id="@+id/rbNonVeg"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Non-Veg" />
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Whiteboard / Digital Board"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Printed Notes"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Recorded Lectures"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Doubt Solving Sessions"/>
+                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Test Series"/>
 
-                                <RadioButton
-                                    android:id="@+id/rbBoth"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="26dp"
-                                    android:text="Both" />
-                            </RadioGroup>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Offline"/>
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Online"/>
+                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hybrid"/>
+                    </RadioGroup>
 
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- NEXT BUTTON -->
+                    <!-- NEXT -->
                     <Button
-                        android:id="@+id/btnNextAmenities"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Next"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:backgroundTint="#2979FF"
                         android:textColor="#FFFFFF"/>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
-

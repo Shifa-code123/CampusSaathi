@@ -41,6 +41,7 @@
 
         <!-- ===== CARD 1 ===== -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardRoomPg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
@@ -90,6 +91,7 @@
 
         <!-- ===== CARD 2 ===== -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardMess"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
@@ -138,6 +140,58 @@
 
         <!-- ===== CARD 3 ===== -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardTution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <!-- IMAGE -->
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_tution"
+                    android:contentDescription="Tution icon" />
+
+                <!-- TEXT CONTAINER (FIXED) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tution's"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tution’s near campus"
+                        android:textSize="13sp"
+                        android:textColor="#555555"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- ===== CARD 4 ===== -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardShop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
@@ -184,8 +238,9 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ===== CARD 4 ===== -->
+        <!-- ===== CARD 5 ===== -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -234,6 +289,7 @@
 
         <!-- BUTTON -->
         <Button
+            android:id="@+id/btnContinue"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Continue"

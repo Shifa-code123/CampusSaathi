@@ -1,14 +1,11 @@
 package com.example.campussaathi
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.jvm.java
-import kotlin.text.trim
 
 class LoginActivity : AppCompatActivity() {
 
@@ -32,49 +29,98 @@ class LoginActivity : AppCompatActivity() {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
+            if (email.isEmpty() || password.isEmpty()) {
+                showToast("Fill all fields")
+                return@setOnClickListener
+            }
+
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
 
-                    val uid = auth.currentUser!!.uid
+                    val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
 
                     db.collection("users").document(uid).get()
                         .addOnSuccessListener { doc ->
 
                             val role = doc.getString("role")
+                            val ownerType = doc.getString("ownerType")
+                            val verificationSubmitted =
+                                doc.getBoolean("verificationSubmitted") ?: false
+                            val isVerified =
+                                doc.getBoolean("isVerified") ?: false
 
-                            if (role == "student") {
-                                startActivity(
-                                    Intent(
-                                        this,
-                                        StudentDashboardActivity::class.java
+                            when (role) {
+
+                                null -> {
+                                    startActivity(
+                                        Intent(this, RoleSelectionActivity::class.java)
                                     )
-                                )
-                            } else if (role == "owner") {
-                                startActivity(
-                                    Intent(
-                                        this,
-                                        ActivityOwnerDashboard::class.java
+                                }
+
+                                "student" -> {
+                                    startActivity(
+                                        Intent(this, StudentDashboardActivity::class.java)
                                     )
-                                )
-                            } else {
-                                // role not selected yet
-                                startActivity(
-                                    Intent(
-                                        this,
-                                        RoleSelectionActivity::class.java
+                                }
+
+                                "owner" -> {
+
+                                    when {
+                                        ownerType == null -> {
+                                            startActivity(
+                                                Intent(this, ChooseOwnerType::class.java)
+                                            )
+                                        }
+
+                                        !verificationSubmitted -> {
+                                            startActivity(
+                                                Intent(this, OwnerVerification::class.java)
+                                            )
+                                        }
+
+                                        verificationSubmitted && !isVerified -> {
+                                            startActivity(
+                                                Intent(
+                                                    this,
+                                                    OwnerVerificationStatus::class.java
+                                                )
+                                            )
+                                        }
+
+                                        verificationSubmitted && isVerified -> {
+                                            startActivity(
+                                                Intent(
+                                                    this,
+                                                    ActivityOwnerDashboard::class.java
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+
+                                else -> {
+                                    // fallback safety
+                                    startActivity(
+                                        Intent(this, RoleSelectionActivity::class.java)
                                     )
-                                )
+                                }
                             }
+
                             finish()
                         }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+                    showToast("Login failed: ${it.message}")
                 }
         }
 
         txtSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
+            finish()
         }
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F6FA">
+    android:background="#FFFFFF">
 
     <!-- ===== TOOLBAR ===== -->
     <androidx.appcompat.widget.Toolbar
@@ -14,7 +13,7 @@
         android:background="#2196F3"
         app:title="Add New Listing"
         app:titleTextColor="#FFFFFF"
-        app:navigationIcon="@drawable/ic_menu"/>
+        app:navigationIcon="@drawable/ic_menu" />
 
     <!-- ===== BODY ===== -->
     <ScrollView
@@ -27,7 +26,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ===== CARD ===== -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,17 +44,17 @@
                         android:layout_height="wrap_content"
                         android:text="Add New Listing"
                         android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Step 1 of 5: Basic Property Details"
+                        android:text="Step 1 of 6: Basic Details"
                         android:textSize="12sp"
                         android:textColor="#666666"
-                        android:layout_marginBottom="12dp"/>
+                        android:layout_marginBottom="12dp" />
 
-                    <!-- ===== STEPS ===== -->
+                    <!-- ===== STEPS (6) ===== -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -64,221 +62,167 @@
                         android:gravity="center">
 
                         <TextView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:text="1"
                             android:textColor="#FFFFFF"
                             android:gravity="center"
-                            android:background="@drawable/step_active"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"/>
+                            android:background="@drawable/step_active" />
 
-                        <View
-                            android:layout_width="20dp"
-                            android:layout_height="2dp"
-                            android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="2"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:gravity="center"
-                            android:background="@drawable/step_inactive"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="2"
+                            android:gravity="center" android:background="@drawable/step_inactive"/>
 
-                        <View
-                            android:layout_width="20dp"
-                            android:layout_height="2dp"
-                            android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="3"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:gravity="center"
-                            android:background="@drawable/step_inactive"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="3"
+                            android:gravity="center" android:background="@drawable/step_inactive"/>
 
-                        <View
-                            android:layout_width="20dp"
-                            android:layout_height="2dp"
-                            android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="4"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:gravity="center"
-                            android:background="@drawable/step_inactive"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="4"
+                            android:gravity="center" android:background="@drawable/step_inactive"/>
 
-                        <View
-                            android:layout_width="20dp"
-                            android:layout_height="2dp"
-                            android:background="#CCCCCC"/>
+                        <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
 
-                        <TextView
-                            android:text="5"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:gravity="center"
-                            android:background="@drawable/step_inactive"/>
+                        <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="5"
+                            android:gravity="center" android:background="@drawable/step_inactive"/>
+
+                        <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+
+                        <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="6"
+                            android:gravity="center" android:background="@drawable/step_inactive"/>
                     </LinearLayout>
 
-                    <!-- ===== FORM ===== -->
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="Enter Property Details"
-                        android:textStyle="bold"
-                        android:layout_marginTop="16dp"/>
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="Property Name *"
-                        android:layout_marginTop="8dp"/>
-
-                    <!-- Property Name -->
-                    <EditText
-                        android:id="@+id/etPropertyName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter property name"
-                        android:background="@drawable/edit_bg"
-                        android:padding="10dp"/>
-
-                    <!-- Property Type -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Property Type *"
-                        android:layout_marginTop="10dp"/>
-
-                    <RadioGroup
-                        android:id="@+id/rgPropertyType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/rbRoom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Room"/>
-
-                        <RadioButton
-                            android:id="@+id/rbPG"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PG"/>
-
-                        <RadioButton
-                            android:id="@+id/rbHostel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hostel"/>
-                    </RadioGroup>
-
-                    <!-- Gender Allowed -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gender Allowed *"
-                        android:layout_marginTop="10dp"/>
-
-                    <RadioGroup
-                        android:id="@+id/rgGender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/rbBoys"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Boys"/>
-
-                        <RadioButton
-                            android:id="@+id/rbGirls"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Girls"/>
-
-                        <RadioButton
-                            android:id="@+id/rbBoth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Both"/>
-                    </RadioGroup>
-
-                    <!-- Total Rooms / Beds -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Rooms / Beds *"
-                        android:layout_marginTop="10dp"/>
-
+                    <!-- ================================================= -->
+                    <!-- =============== ROOM STEP 1 ===================== -->
+                    <!-- ================================================= -->
                     <LinearLayout
+                        android:id="@+id/layoutRoomStep1"
                         android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/bg_counter"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp">
 
-                        <!-- Minus -->
                         <TextView
-                            android:id="@+id/btnMinus"
-                            android:layout_width="48dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="-"
-                            android:textSize="20sp"
-                            android:textColor="#666666"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Property Name *" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="#DDDDDD"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter property name"
+                            android:background="@drawable/edit_bg"
+                            android:padding="10dp" />
 
-                        <!-- Count -->
                         <TextView
-                            android:id="@+id/txtCount"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Property Type *"
+                            android:layout_marginTop="10dp" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="#DDDDDD"/>
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                        <!-- Plus -->
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Room"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PG"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hostel"/>
+                        </RadioGroup>
+
                         <TextView
-                            android:id="@+id/btnPlus"
-                            android:layout_width="48dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="+"
-                            android:textSize="20sp"
-                            android:textColor="#666666"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender Allowed *"
+                            android:layout_marginTop="10dp" />
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Boys"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Girls"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Both"/>
+                        </RadioGroup>
                     </LinearLayout>
 
-                    <!-- Next Button -->
+                    <!-- ================================================= -->
+                    <!-- =============== MESS STEP 1 ===================== -->
+                    <!-- ================================================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutMessStep1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp">
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Mess Name *"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter mess name"
+                            android:background="@drawable/edit_bg"
+                            android:padding="10dp"/>
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Mess Type *" android:layout_marginTop="10dp"/>
+
+                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Veg"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Non-Veg"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Both"/>
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <!-- ================================================= -->
+                    <!-- =============== TUITION STEP 1 ================== -->
+                    <!-- ================================================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutTuitionStep1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginTop="16dp">
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Tuition Name *"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter tuition name"
+                            android:background="@drawable/edit_bg"
+                            android:padding="10dp"/>
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Tuition Type *" android:layout_marginTop="10dp"/>
+
+                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home Tuition"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Coaching Class"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Online"/>
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <!-- NEXT -->
                     <Button
-                        android:id="@+id/btnNextStep1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Next"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="20dp"
                         android:backgroundTint="#2979FF"
-                        android:textColor="#FFFFFF"/>
-
+                        android:textColor="#FFFFFF" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

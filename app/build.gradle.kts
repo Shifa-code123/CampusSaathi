@@ -60,5 +60,24 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
 
+    // 🔥 Firebase BOM
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+// 🔐 Firebase Auth
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+// 🗄️ Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
+// 📦 Firebase Storage (VERY IMPORTANT FOR YOUR ISSUE)
+    implementation("com.google.firebase:firebase-storage-ktx")
+
+// 🖼️ Glide (OK as is)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+
+
+
 }
 apply(plugin = "com.google.gms.google-services")

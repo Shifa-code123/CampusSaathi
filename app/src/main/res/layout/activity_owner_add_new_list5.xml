@@ -117,6 +117,19 @@
                     android:gravity="center"
                     android:layout_width="28dp"
                     android:layout_height="28dp"/>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="2dp"
+                    android:background="#2979FF"/>
+
+                <TextView android:text="6"
+                    android:background="@drawable/step_active"
+                    android:textColor="#fff"
+                    android:gravity="center"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
             </LinearLayout>
 
 
