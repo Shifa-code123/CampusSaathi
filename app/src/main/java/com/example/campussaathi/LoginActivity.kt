@@ -23,111 +23,113 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val txtSignup = findViewById<TextView>(R.id.txtSignup)
+        val txtForgot = findViewById<TextView>(R.id.txtForgotPassword)
 
+        // 🔹 LOGIN BUTTON
         btnLogin.setOnClickListener {
 
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                showToast("Fill all fields")
+                toast("Please fill all fields")
                 return@setOnClickListener
             }
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
 
-                    val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
+                    val uid = auth.currentUser?.uid
+                    if (uid == null) {
+                        toast("User not found")
+                        return@addOnSuccessListener
+                    }
 
-                    db.collection("users").document(uid).get()
-                        .addOnSuccessListener { doc ->
-
-                            val role = doc.getString("role")
-                            val ownerType = doc.getString("ownerType")
-                            val verificationSubmitted =
-                                doc.getBoolean("verificationSubmitted") ?: false
-                            val isVerified =
-                                doc.getBoolean("isVerified") ?: false
-
-                            when (role) {
-
-                                "admin" -> {
-                                    startActivity(
-                                        Intent(this, AdminDashboardActivity::class.java)
-                                    )
-                                    finish()
-                                }
-
-                                null -> {
-                                    startActivity(
-                                        Intent(this, RoleSelectionActivity::class.java)
-                                    )
-                                }
-
-                                "student" -> {
-                                    startActivity(
-                                        Intent(this, StudentDashboardActivity::class.java)
-                                    )
-                                }
-
-                                "owner" -> {
-
-                                    when {
-                                        ownerType == null -> {
-                                            startActivity(
-                                                Intent(this, ChooseOwnerType::class.java)
-                                            )
-                                        }
-
-                                        !verificationSubmitted -> {
-                                            startActivity(
-                                                Intent(this, OwnerVerification::class.java)
-                                            )
-                                        }
-
-                                        verificationSubmitted && !isVerified -> {
-                                            startActivity(
-                                                Intent(
-                                                    this,
-                                                    ActivityOwnerVerificationInProgress::class.java
-                                                )
-                                            )
-                                        }
-
-                                        verificationSubmitted && isVerified -> {
-                                            startActivity(
-                                                Intent(
-                                                    this,
-                                                    ActivityOwnerDashboard::class.java
-                                                )
-                                            )
-                                        }
-                                    }
-                                }
-
-                                else -> {
-                                    // fallback safety
-                                    startActivity(
-                                        Intent(this, RoleSelectionActivity::class.java)
-                                    )
-                                }
-                            }
-
-                            finish()
-                        }
+                    checkUserRole(uid)
                 }
                 .addOnFailureListener {
-                    showToast("Login failed: ${it.message}")
+                    toast("Login failed: ${it.message}")
                 }
         }
 
+        // 🔹 SIGNUP
         txtSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
-            finish()
+        }
+
+        // 🔹 FORGOT PASSWORD
+        txtForgot.setOnClickListener {
+            val email = etEmail.text.toString().trim()
+            if (email.isEmpty()) {
+                toast("Enter email first")
+                return@setOnClickListener
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .addOnSuccessListener {
+                    toast("Password reset email sent")
+                }
+                .addOnFailureListener {
+                    toast(it.message ?: "Error")
+                }
         }
     }
 
-    private fun showToast(msg: String) {
+    // 🔥 ROLE CHECK LOGIC
+    private fun checkUserRole(uid: String) {
+
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { doc ->
+
+                if (!doc.exists()) {
+                    // New user
+                    open(RoleSelectionActivity::class.java)
+                    return@addOnSuccessListener
+                }
+
+                val role = doc.getString("role")
+                val ownerType = doc.getString("ownerType")
+                val verificationSubmitted =
+                    doc.getBoolean("verificationSubmitted") ?: false
+                val isVerified =
+                    doc.getBoolean("isVerified") ?: false
+
+                when (role) {
+
+                    "admin" -> open(AdminDashboardActivity::class.java)
+
+                    "student" -> open(StudentDashboardActivity::class.java)
+
+                    "owner" -> {
+                        when {
+                            ownerType == null ->
+                                open(ChooseOwnerType::class.java)
+
+                            !verificationSubmitted ->
+                                open(OwnerVerification::class.java)
+
+                            verificationSubmitted && !isVerified ->
+                                open(ActivityOwnerVerificationInProgress::class.java)
+
+                            else ->
+                                open(ActivityOwnerDashboard::class.java)
+                        }
+                    }
+
+                    else -> open(RoleSelectionActivity::class.java)
+                }
+            }
+            .addOnFailureListener {
+                toast("Database error")
+            }
+    }
+
+    private fun open(cls: Class<*>) {
+        startActivity(Intent(this, cls))
+        finish()
+    }
+
+    private fun toast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

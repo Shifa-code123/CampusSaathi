@@ -31,7 +31,7 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_owner_add_list6)
+        setContentView(R.layout.activity_owner_add_new_list6)
 
         listingId = intent.getStringExtra("listingId") ?: ""
 

@@ -11,34 +11,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi">
-<<<<<<< Updated upstream
-
+        <activity
+            android:name=".ActivityOwnerAddNewList6"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerification"
+            android:exported="false" />
+        <!-- GOOGLE MAP API -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY_HERE"/>
-
-=======
-        <activity
-            android:name=".AdminVerificationAdapter"
-            android:exported="false" />
-        <activity
-            android:name=".AdminReviewActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".AdminVerificationModel"
-            android:exported="false" />
+            android:value="YOUR_API_KEY_HERE" /> <!-- ADMIN -->
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false" />
->>>>>>> Stashed changes
         <activity
-            android:name=".ActivityOwnerVerificationInProgress"
+            android:name=".AdminReviewActivity"
+            android:exported="false" /> <!-- OWNER -->
+        <activity
+            android:name=".ActivityOwnerDashboard"
             android:exported="false" />
         <activity
-            android:name=".ActivityOwnerMyList"
+            android:name=".ActivityOwnerMenuDrawer"
             android:exported="false" />
         <activity
-            android:name=".ActivityOwnerAddList6"
+            android:name=".ActivityOwnerAddNewList1"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList2"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList3"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList4"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerAddNewList5"
@@ -47,52 +52,32 @@
             android:name=".ActivityOwnerProfile"
             android:exported="false" />
         <activity
-            android:name=".ActuvityOwnerSubmissionList2"
+            android:name=".ActivityOwnerMyList"
             android:exported="false" />
         <activity
-            android:name=".ActivityOwnerSubmissionList1"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerAddNewList4"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerAddNewList3"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerAddNewList2"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerAddNewList1"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerMenuDrawer"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerDashboard"
-            android:exported="false" />
-
-        <activity
-            android:name=".OwnerVerificationStatus"
+            android:name=".ActivityOwnerVerificationInProgress"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerVerificationFailed"
             android:exported="false" />
-
-
         <activity
-            android:name=".OwnerVerification"
+            android:name=".OwnerVerificationStatus"
+            android:exported="false" /> <!-- AUTH -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RoleSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".ChooseOwnerType"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <!-- Splash screen (Launcher) -->
+            android:exported="false" /> <!-- STUDENT -->
+        <activity
+            android:name=".StudentDashboardActivity"
+            android:exported="false" /> <!-- SPLASH (LAUNCHER) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -101,19 +86,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Login screen -->
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" /> <!-- Signup screen -->
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false" /> <!-- Role selection -->
-        <activity
-            android:name=".RoleSelectionActivity"
-            android:exported="false" /> <!-- Student dashboard -->
-        <activity
-            android:name=".StudentDashboardActivity"
-            android:exported="false" /> <!-- Main / Home (optional) -->
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="false" />

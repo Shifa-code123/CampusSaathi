@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -39,29 +40,38 @@
             android:layout_marginTop="32dp"
             android:orientation="vertical"
             android:padding="20dp"
-
+            android:background="@android:color/white"
             android:elevation="6dp">
 
-            <!-- Email / Phone -->
-            <EditText
-                android:id="@+id/etEmail"
+            <!-- Email -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:hint="Enter your email"
-                android:inputType="textEmailAddress"
-                android:padding="12dp" />
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <!-- Password -->
-            <EditText
-                android:id="@+id/etPassword"
+            <!-- Password (FIXED) -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Enter your password"
-                android:inputType="textPassword"
-                android:padding="12dp"/>
+                app:passwordToggleEnabled="true">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter password"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Forgot Password -->
             <TextView
@@ -84,7 +94,7 @@
                 android:backgroundTint="#2196F3"
                 android:layout_marginTop="20dp" />
 
-            <!-- OR Divider -->
+            <!-- OR -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,7 +103,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp" />
 
-            <!-- Google Login (UI only for now) -->
+            <!-- Google Login -->
             <Button
                 android:id="@+id/btnGoogleLogin"
                 android:layout_width="match_parent"
@@ -104,7 +114,7 @@
                 android:backgroundTint="#FFFFFF"
                 android:textColor="#000000" />
 
-            <!-- Signup Link -->
+            <!-- Signup -->
             <TextView
                 android:id="@+id/txtSignup"
                 android:layout_width="wrap_content"
@@ -113,9 +123,7 @@
                 android:textStyle="bold"
                 android:textColor="#1E88E5"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
 
