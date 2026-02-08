@@ -1,5 +1,6 @@
-package com.example.campussaathi;
+package com.example.campussaathi
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -9,13 +10,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-
-
 class ActivityOwnerDashboard : AppCompatActivity() {
 
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navigationView: NavigationView
-    lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +24,8 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         navigationView = findViewById(R.id.navigationView)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        // Toolbar set
         setSupportActionBar(toolbar)
 
-        // Drawer Toggle (hamburger icon)
         toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -36,31 +33,48 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             R.string.open,
             R.string.close
         )
-
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Menu item clicks
         navigationView.setNavigationItemSelectedListener { item ->
+
             when (item.itemId) {
 
-                R.id.nav_add_listing ->
-                    Toast.makeText(this, "Add Listing", Toast.LENGTH_SHORT).show()
+                R.id.nav_add_listing -> {
+                    startActivity(
+                        Intent(this, ActivityOwnerAddNewList1::class.java)
+                    )
+                }
 
-                R.id.nav_submission ->
-                    Toast.makeText(this, "Listing Submission", Toast.LENGTH_SHORT).show()
+                R.id.nav_submission -> {
+                    startActivity(
+                        Intent(this, ActivityOwnerSubmissionList1::class.java)
+                    )
+                }
 
-                R.id.nav_my_listing ->
-                    Toast.makeText(this, "My Listings", Toast.LENGTH_SHORT).show()
+                R.id.nav_my_listing -> {
+                    startActivity(
+                        Intent(this, ActivityOwnerMyList::class.java)
+                    )
+                }
 
-                R.id.nav_requests ->
-                    Toast.makeText(this, "Requests", Toast.LENGTH_SHORT).show()
+                R.id.nav_requests -> {
+                    Toast.makeText(this, "Requests – Coming Soon", Toast.LENGTH_SHORT).show()
+                }
 
-                R.id.nav_notifications ->
-                    Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
+                R.id.nav_notifications -> {
+                    Toast.makeText(this, "Notifications – Coming Soon", Toast.LENGTH_SHORT).show()
+                }
 
-                R.id.nav_profile ->
-                    Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
+                R.id.nav_profile -> {
+                    startActivity(
+                        Intent(this, ActivityOwnerProfile::class.java)
+                    )
+                }
+
+                R.id.nav_logout -> {
+                    finish() // ya logout logic
+                }
             }
 
             drawerLayout.closeDrawer(GravityCompat.START)
