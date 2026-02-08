@@ -97,7 +97,6 @@
 
                     <!-- ================================================= -->
                     <!-- =============== ROOM STEP 1 ===================== -->
-                    <!-- ================================================= -->
                     <LinearLayout
                         android:id="@+id/layoutRoomStep1"
                         android:layout_width="match_parent"
@@ -111,6 +110,7 @@
                             android:text="Property Name *" />
 
                         <EditText
+                            android:id="@+id/etPropertyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter property name"
@@ -124,13 +124,25 @@
                             android:layout_marginTop="10dp" />
 
                         <RadioGroup
+                            android:id="@+id/rgPropertyType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Room"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PG"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hostel"/>
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Room"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PG"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hostel"/>
                         </RadioGroup>
 
                         <TextView
@@ -140,19 +152,32 @@
                             android:layout_marginTop="10dp" />
 
                         <RadioGroup
+                            android:id="@+id/rgGenderAllowed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Boys"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Girls"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Both"/>
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Boys"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Girls"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Both"/>
                         </RadioGroup>
+
                     </LinearLayout>
+
 
                     <!-- ================================================= -->
                     <!-- =============== MESS STEP 1 ===================== -->
-                    <!-- ================================================= -->
                     <LinearLayout
                         android:id="@+id/layoutMessStep1"
                         android:layout_width="match_parent"
@@ -160,25 +185,48 @@
                         android:orientation="vertical"
                         android:layout_marginTop="16dp">
 
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Mess Name *"/>
 
                         <EditText
+                            android:id="@+id/etMessName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter mess name"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"/>
 
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Mess Type *" android:layout_marginTop="10dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mess Type *"
+                            android:layout_marginTop="10dp"/>
 
-                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Veg"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Non-Veg"/>
-                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Both"/>
+                        <RadioGroup
+                            android:id="@+id/rgMessType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Veg"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Non-Veg"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Both"/>
                         </RadioGroup>
+
                     </LinearLayout>
+
 
                     <!-- ================================================= -->
                     <!-- =============== TUITION STEP 1 ================== -->
@@ -188,13 +236,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         android:layout_marginTop="16dp">
 
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="Tuition Name *"/>
 
                         <EditText
+                            android:id="@+id/etTuitionName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter tuition name"
@@ -204,7 +252,9 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="Tuition Type *" android:layout_marginTop="10dp"/>
 
-                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <RadioGroup
+                            android:id="@+id/rgTuitionType"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content">
                             <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home Tuition"/>
                             <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Coaching Class"/>
                             <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Online"/>
@@ -213,12 +263,14 @@
 
                     <!-- NEXT -->
                     <Button
+                        android:id="@+id/btnNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Next"
                         android:layout_marginTop="20dp"
                         android:backgroundTint="#2979FF"
                         android:textColor="#FFFFFF" />
+
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

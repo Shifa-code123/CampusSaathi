@@ -130,12 +130,11 @@
                         android:background="@drawable/bg_map">
 
                         <!-- Placeholder map -->
-                        <ImageView
-                            android:id="@+id/imgMap"
+                        <fragment
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/sample_map" />
+                            android:layout_height="200dp"/>
 
                         <ImageView
                             android:id="@+id/btnGps"

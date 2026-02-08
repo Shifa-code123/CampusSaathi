@@ -1,4 +1,4 @@
-package com.example.campussaathi.owner
+package com.example.campussaathi;
 
 import android.app.Activity
 import android.content.Intent

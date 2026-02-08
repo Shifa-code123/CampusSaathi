@@ -96,7 +96,8 @@
                     </LinearLayout>
 
                     <!-- ================================================= -->
-                    <!-- ROOM STEP 2 : RENT & AVAILABILITY -->
+                    <!-- ================================================= -->
+                    <!-- ROOM STEP 2 : RENT, AVAILABILITY & ROOMS COUNT -->
                     <!-- ================================================= -->
                     <LinearLayout
                         android:id="@+id/layoutRoomStep2"
@@ -106,6 +107,7 @@
                         android:layout_marginTop="16dp"
                         android:visibility="visible">
 
+                        <!-- RENT DETAILS -->
                         <TextView
                             android:text="Rent Details"
                             android:textStyle="bold"
@@ -113,72 +115,118 @@
                             android:layout_height="wrap_content"/>
 
                         <EditText
+                            android:id="@+id/etRoomRent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Monthly Rent (₹)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"/>
 
                         <EditText
+                            android:id="@+id/etRoomDeposit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Security Deposit (Optional)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"
                             android:layout_marginTop="8dp"/>
 
+                        <!-- RENT TYPE -->
                         <TextView
                             android:text="Rent Type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"/>
-
-                        <RadioGroup
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <RadioButton android:text="Per Room"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-
-                            <RadioButton android:text="Per Bed"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                        </RadioGroup>
-
-                        <TextView
-                            android:text="Availability"
-                            android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"/>
 
                         <RadioGroup
+                            android:id="@+id/rgRentType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <RadioButton android:text="Vacant"
+                            <RadioButton
+                                android:text="Per Room"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
-                            <RadioButton android:text="Full"
+                            <RadioButton
+                                android:text="Per Bed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </RadioGroup>
 
+                        <!-- AVAILABILITY -->
+                        <TextView
+                            android:text="Availability"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"/>
+
+                        <RadioGroup
+                            android:id="@+id/rgAvailability"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:text="Vacant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:text="Full"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </RadioGroup>
+
+                        <!-- ROOM COUNT DETAILS -->
+                        <TextView
+                            android:id="@+id/tvRoomCountTitle"
+                            android:text="Room Details"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"/>
+
                         <EditText
+                            android:id="@+id/etTotalUnits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Total Rooms"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="10dp"/>
+
+                        <EditText
+                            android:id="@+id/etAvailableUnits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Available Rooms"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="10dp"
+                            android:layout_marginTop="6dp"/>
+
+                        <!-- AVAILABLE FROM -->
+                        <EditText
+                            android:id="@+id/etAvailableFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Available From"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"
-                            android:layout_marginTop="6dp"/>
+                            android:layout_marginTop="10dp"/>
+
                     </LinearLayout>
 
                     <!-- ================================================= -->
                     <!-- MESS STEP 2 -->
+                    <!-- ================================================= -->
+                    <!-- ================================================= -->
+                    <!-- MESS STEP 2 : PRICING -->
                     <!-- ================================================= -->
                     <LinearLayout
                         android:id="@+id/layoutMessStep2"
@@ -194,24 +242,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <!-- Monthly Charges -->
                         <EditText
+                            android:id="@+id/etMessMonthlyCharge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Monthly Charges (₹)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"/>
 
+                        <!-- Daily Charges (Optional) -->
                         <EditText
+                            android:id="@+id/etMessDailyCharge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Daily Charges (Optional)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"
                             android:layout_marginTop="8dp"/>
                     </LinearLayout>
 
+
                     <!-- ================================================= -->
-                    <!-- TUITION STEP 2 -->
+                    <!-- ================================================= -->
+                    <!-- TUITION STEP 2 : FEES & DURATION -->
                     <!-- ================================================= -->
                     <LinearLayout
                         android:id="@+id/layoutTuitionStep2"
@@ -227,24 +283,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <!-- Fees Amount -->
                         <EditText
+                            android:id="@+id/etTuitionFees"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Fees Amount (₹)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"/>
 
+                        <!-- Course Duration -->
                         <EditText
+                            android:id="@+id/etCourseDuration"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Course Duration (Months)"
+                            android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:padding="10dp"
                             android:layout_marginTop="8dp"/>
+
                     </LinearLayout>
 
                     <!-- NEXT BUTTON -->
                     <Button
+                        android:id="@+id/btnNextStep2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Next"
