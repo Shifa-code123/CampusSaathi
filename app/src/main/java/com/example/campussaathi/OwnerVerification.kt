@@ -1,8 +1,6 @@
 package com.example.campussaathi
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -10,26 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 
 class OwnerVerification : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var storage: FirebaseStorage
 
     private lateinit var layoutRoom: LinearLayout
     private lateinit var layoutMess: LinearLayout
     private lateinit var layoutTuition: LinearLayout
 
-    private var idProofUri: Uri? = null
-    private var ownerProofUri: Uri? = null
-    private var ownerType: String? = null
+    // 🔹 TEXT INPUTS (THIS WAS MISSING BEFORE)
+    private lateinit var etIdProof: EditText
+    private lateinit var etServiceProof: EditText
 
-    companion object {
-        const val PICK_ID_PROOF = 101
-        const val PICK_OWNER_PROOF = 102
-    }
+    private var ownerType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,24 +30,30 @@ class OwnerVerification : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
 
-        val uid = auth.currentUser?.uid ?: return
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            toast("User not logged in")
+            finish()
+            return
+        }
 
+        // 🔹 Layouts (YOUR LOGIC KEPT)
         layoutRoom = findViewById(R.id.layoutRoomVerification)
         layoutMess = findViewById(R.id.layoutMessVerification)
         layoutTuition = findViewById(R.id.layoutTuitionVerification)
 
-        val btnUploadId = findViewById<Button>(R.id.btnUploadId)
-        val btnUploadRoom = findViewById<Button>(R.id.btnUploadRoomProof)
-        val btnUploadMess = findViewById<Button>(R.id.btnUploadMessProof)
-        val btnUploadTuition = findViewById<Button>(R.id.btnUploadTuitionProof)
+        // 🔹 EditTexts (CRITICAL FIX)
+        etIdProof = findViewById(R.id.etFullName)       // ID proof text
+        etServiceProof = findViewById(R.id.etPhone)    // Service proof text
+
         val btnSubmit = findViewById<Button>(R.id.btnSubmitVerification)
 
         hideAllLayouts()
 
-        // 🔹 Get owner type
-        db.collection("users").document(uid).get()
+        // 🔹 Fetch owner type (UNCHANGED LOGIC)
+        db.collection("users").document(uid)
+            .get()
             .addOnSuccessListener { doc ->
                 ownerType = doc.getString("ownerType")
 
@@ -62,91 +61,49 @@ class OwnerVerification : AppCompatActivity() {
                     "room_pg" -> layoutRoom.visibility = View.VISIBLE
                     "mess" -> layoutMess.visibility = View.VISIBLE
                     "tuition" -> layoutTuition.visibility = View.VISIBLE
+                    else -> toast("Owner type not found")
                 }
             }
+            .addOnFailureListener {
+                toast("Failed to load owner type")
+            }
 
-
-        // 🔹 Upload buttons
-        btnUploadId.setOnClickListener { pickFile(PICK_ID_PROOF) }
-        btnUploadRoom.setOnClickListener { pickFile(PICK_OWNER_PROOF) }
-        btnUploadMess.setOnClickListener { pickFile(PICK_OWNER_PROOF) }
-        btnUploadTuition.setOnClickListener { pickFile(PICK_OWNER_PROOF) }
-
-        // 🔹 Submit
+        // 🔹 Submit verification (TEXT ONLY)
         btnSubmit.setOnClickListener {
-            if (idProofUri == null || ownerProofUri == null) {
-                toast("Please upload ID proof and service proof")
+
+            val idProofText = etIdProof.text.toString().trim()
+            val serviceProofText = etServiceProof.text.toString().trim()
+
+            if (idProofText.isEmpty() || serviceProofText.isEmpty()) {
+                toast("Please fill all verification details")
                 return@setOnClickListener
             }
-            uploadDocuments(uid)
+
+            submitVerification(uid, idProofText, serviceProofText)
         }
     }
 
-    private fun pickFile(code: Int) {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "*/*"
-        startActivityForResult(intent, code)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            when (requestCode) {
-                PICK_ID_PROOF -> {
-                    idProofUri = data.data
-                    toast("ID proof selected")
-                }
-                PICK_OWNER_PROOF -> {
-                    ownerProofUri = data.data
-                    toast("Service proof selected")
-                }
-            }
-        }
-    }
-
-    private fun uploadDocuments(uid: String) {
-
-        val idRef = storage.reference.child("owner_verification/$uid/id_proof")
-
-        idRef.putFile(idProofUri!!)
-            .addOnFailureListener {
-                toast("Failed to upload ID proof")
-            }
-            .addOnSuccessListener {
-                idRef.downloadUrl.addOnSuccessListener { idUrl ->
-
-                    val ownerRef =
-                        storage.reference.child("owner_verification/$uid/$ownerType/proof")
-
-                    ownerRef.putFile(ownerProofUri!!)
-                        .addOnFailureListener {
-                            toast("Failed to upload service proof")
-                        }
-                        .addOnSuccessListener {
-                            ownerRef.downloadUrl.addOnSuccessListener { ownerUrl ->
-                                saveVerification(uid, idUrl.toString(), ownerUrl.toString())
-                            }
-                        }
-                }
-            }
-    }
-
-    private fun saveVerification(uid: String, idUrl: String, ownerUrl: String) {
+    private fun submitVerification(
+        uid: String,
+        idProof: String,
+        serviceProof: String
+    ) {
 
         val verificationData = hashMapOf(
             "uid" to uid,
             "ownerType" to ownerType,
-            "idProofUrl" to idUrl,
-            "ownerProofUrl" to ownerUrl,
+            "idProofText" to idProof,
+            "serviceProofText" to serviceProof,
             "status" to "pending",
             "submittedAt" to FieldValue.serverTimestamp()
         )
 
-        db.collection("owner_verifications").document(uid)
+        db.collection("owner_verifications")
+            .document(uid)
             .set(verificationData)
             .addOnSuccessListener {
 
+                // 🔹 THIS IS WHAT MAKES "Verification in Progress" SHOW
                 db.collection("users").document(uid)
                     .update(
                         mapOf(
@@ -156,7 +113,7 @@ class OwnerVerification : AppCompatActivity() {
                         )
                     )
 
-                toast("Verification submitted successfully")
+                toast("Verification submitted")
 
                 startActivity(
                     Intent(this, ActivityOwnerVerificationInProgress::class.java)
@@ -164,7 +121,7 @@ class OwnerVerification : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener {
-                toast("Failed to submit verification")
+                toast("Verification failed. Try again.")
             }
     }
 

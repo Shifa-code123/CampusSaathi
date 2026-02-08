@@ -11,11 +11,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi">
+<<<<<<< Updated upstream
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_API_KEY_HERE"/>
 
+=======
+        <activity
+            android:name=".AdminVerificationAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".AdminReviewActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AdminVerificationModel"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".ActivityOwnerVerificationInProgress"
             android:exported="false" />

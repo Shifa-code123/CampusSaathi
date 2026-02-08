@@ -51,6 +51,13 @@ class LoginActivity : AppCompatActivity() {
 
                             when (role) {
 
+                                "admin" -> {
+                                    startActivity(
+                                        Intent(this, AdminDashboardActivity::class.java)
+                                    )
+                                    finish()
+                                }
+
                                 null -> {
                                     startActivity(
                                         Intent(this, RoleSelectionActivity::class.java)
@@ -82,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                                             startActivity(
                                                 Intent(
                                                     this,
-                                                    OwnerVerificationStatus::class.java
+                                                    ActivityOwnerVerificationInProgress::class.java
                                                 )
                                             )
                                         }

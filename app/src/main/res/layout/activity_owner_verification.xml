@@ -118,47 +118,6 @@
                     android:layout_marginStart="12dp" />
             </RadioGroup>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/id_proof"
-                android:textStyle="bold"
-                android:textColor="#000000" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F2F2F2"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginTop="6dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/id_proof_hint"
-                    android:textSize="13sp"
-                    android:textColor="#666666"
-                    android:layout_marginBottom="8dp" />
-
-                <Button
-                    android:id="@+id/btnUploadId"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:text="@string/upload_id"
-                    android:textAllCaps="false"
-                    android:drawableLeft="@android:drawable/ic_menu_upload"
-                    android:backgroundTint="#E0E0E0"
-                    android:textColor="#1976D2" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/id_safe"
-                android:textSize="12sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="20dp" />
         </LinearLayout>
 
         <!-- ================= ROOM / PG ================= -->
@@ -197,23 +156,7 @@
                     android:text="@string/hotel_letter" />
             </RadioGroup>
 
-            <Button
-                android:id="@+id/btnUploadRoomProof"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/upload_property"
-                android:textAllCaps="false"
-                android:drawableLeft="@android:drawable/ic_menu_upload"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#1976D2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/upload_any"
-                android:textSize="12sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="16dp" />
         </LinearLayout>
 
         <!-- ================= MESS ================= -->
@@ -251,23 +194,7 @@
                     android:text="Kitchen Rent Agreement" />
             </RadioGroup>
 
-            <Button
-                android:id="@+id/btnUploadMessProof"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Upload Mess Proof"
-                android:textAllCaps="false"
-                android:drawableLeft="@android:drawable/ic_menu_upload"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#1976D2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upload any one document"
-                android:textSize="12sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="16dp" />
         </LinearLayout>
 
         <!-- ================= TUITION ================= -->
@@ -305,23 +232,7 @@
                     android:text="Institute Registration" />
             </RadioGroup>
 
-            <Button
-                android:id="@+id/btnUploadTuitionProof"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Upload Qualification Proof"
-                android:textAllCaps="false"
-                android:drawableLeft="@android:drawable/ic_menu_upload"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#1976D2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upload any one document"
-                android:textSize="12sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="16dp" />
         </LinearLayout>
 
         <!-- CHECKBOX & SUBMIT -->
