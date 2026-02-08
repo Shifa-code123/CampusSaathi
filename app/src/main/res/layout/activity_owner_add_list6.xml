@@ -286,7 +286,8 @@
                 android:layout_weight="1"
                 android:text="Save as Draft"
                 android:layout_width="0dp"
-                android:layout_height="48dp"/>
+                android:layout_height="48dp"
+                android:backgroundTint="#2196F3"/>
 
             <Button
                 android:id="@+id/btnSubmit"
