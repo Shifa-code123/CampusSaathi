@@ -92,11 +92,19 @@ class OwnerVerification : AppCompatActivity() {
         val verificationData = hashMapOf(
             "uid" to uid,
             "ownerType" to ownerType,
+
+            // 🔥 IMPORTANT FOR ADMIN
+            "fullName" to idProof,
+            "phone" to serviceProof,
+
+            // (optional – future)
             "idProofText" to idProof,
             "serviceProofText" to serviceProof,
+
             "status" to "pending",
             "submittedAt" to FieldValue.serverTimestamp()
         )
+
 
         db.collection("owner_verifications")
             .document(uid)

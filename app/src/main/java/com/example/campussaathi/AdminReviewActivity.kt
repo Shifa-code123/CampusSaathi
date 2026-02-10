@@ -17,37 +17,54 @@ class AdminReviewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_admin_review)
 
         db = FirebaseFirestore.getInstance()
-        uid = intent.getStringExtra("uid") ?: return
 
         val txtDetails = findViewById<TextView>(R.id.txtDetails)
         val btnApprove = findViewById<Button>(R.id.btnApprove)
         val btnReject = findViewById<Button>(R.id.btnReject)
 
-        // LOAD DATA
-        db.collection("owner_verifications").document(uid)
+        // 🔴 OWNER UID RECEIVE KARNA
+        uid = intent.getStringExtra("uid") ?: run {
+            Toast.makeText(this, "Owner UID not received", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        // 🔥 OWNER BASIC INFO LOAD (users collection se)
+        db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { doc ->
+
                 if (doc.exists()) {
+
+                    val name = doc.getString("fullName")
+                    val phone = doc.getString("phone")
+                    val ownerType = doc.getString("ownerType")
+
                     txtDetails.text =
-                        "Owner Type: ${doc.getString("ownerType")}\n" +
-                                "ID Proof: ${doc.getString("idProofText")}\n" +
-                                "Service Proof: ${doc.getString("serviceProofText")}"
+                        "Name: $name\n" +
+                                "Phone: $phone\n\n" +
+                                "Owner Type: $ownerType"
+
+                } else {
+                    txtDetails.text = "Owner data not found"
                 }
             }
+            .addOnFailureListener {
+                txtDetails.text = "Error loading owner data"
+            }
 
-        btnApprove.setOnClickListener {
-            approveOwner()
-        }
-
-        btnReject.setOnClickListener {
-            rejectOwner()
-        }
+        btnApprove.setOnClickListener { approveOwner() }
+        btnReject.setOnClickListener { rejectOwner() }
     }
 
+    // ✅ APPROVE OWNER
     private fun approveOwner() {
+
+        // 1️⃣ verification table update
         db.collection("owner_verifications").document(uid)
             .update("status", "approved")
 
+        // 2️⃣ user profile update
         db.collection("users").document(uid)
             .update(
                 mapOf(
@@ -60,7 +77,9 @@ class AdminReviewActivity : AppCompatActivity() {
         finish()
     }
 
+    // ❌ REJECT OWNER
     private fun rejectOwner() {
+
         db.collection("owner_verifications").document(uid)
             .update("status", "rejected")
 

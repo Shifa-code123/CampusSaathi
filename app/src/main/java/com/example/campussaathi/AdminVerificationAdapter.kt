@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 
 class AdminVerificationAdapter(
-    private val list: List<AdminVerificationModel>
+    private val list: List<AdminVerificationModel>,
+    private val onApprove: (AdminVerificationModel) -> Unit,
+    private val onReject: (AdminVerificationModel) -> Unit
 ) : RecyclerView.Adapter<AdminVerificationAdapter.ViewHolder>() {
-
-    private val db = FirebaseFirestore.getInstance()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtName: TextView = itemView.findViewById(R.id.txtOwnerName)
@@ -34,18 +33,13 @@ class AdminVerificationAdapter(
         holder.txtType.text = model.ownerType
 
         holder.btnApprove.setOnClickListener {
-            updateStatus(model.uid, true)
+            onApprove(model)
         }
 
         holder.btnReject.setOnClickListener {
-            updateStatus(model.uid, false)
+            onReject(model)
         }
     }
 
     override fun getItemCount(): Int = list.size
-
-    private fun updateStatus(uid: String, approved: Boolean) {
-        db.collection("users").document(uid)
-            .update("isVerified", approved)
-    }
 }

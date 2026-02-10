@@ -82,10 +82,19 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { doc ->
 
                 if (!doc.exists()) {
-                    // New user
-                    open(RoleSelectionActivity::class.java)
+                    // Firestore missing but auth exists → recreate user doc
+                    db.collection("users").document(uid).set(
+                        mapOf(
+                            "role" to "owner",
+                            "isVerified" to false,
+                            "verificationSubmitted" to false
+                        )
+                    ).addOnSuccessListener {
+                        open(RoleSelectionActivity::class.java)
+                    }
                     return@addOnSuccessListener
                 }
+
 
                 val role = doc.getString("role")
                 val ownerType = doc.getString("ownerType")

@@ -3,20 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Admin Dashboard"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"/>
 
-    <Button
-        android:id="@+id/btnOpenVerification"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOwners"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="View Pending Owner Verification"
-        android:layout_marginTop="20dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
 
 </LinearLayout>
