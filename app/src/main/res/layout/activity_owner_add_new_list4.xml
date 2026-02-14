@@ -196,60 +196,85 @@
                         android:layout_marginTop="8dp" />
 
                     <!-- ===== ROOM / PG / HOSTEL LOCATION DETAILS ===== -->
-                    <TextView
+                    <!-- ================= ROOM / PG / HOSTEL ================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutRoomStep4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Room / PG / Hostel Details"
-                        android:textStyle="bold"
-                        android:layout_marginTop="16dp" />
+                        android:orientation="vertical">
 
-                    <CheckBox
-                        android:id="@+id/cbNearCampus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Near Campus" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Room / PG / Hostel Details"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp" />
 
-                    <CheckBox
-                        android:id="@+id/cbMarketNearby"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Market Nearby" />
+                        <CheckBox
+                            android:id="@+id/cbNearCampus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Near Campus" />
 
-                    <CheckBox
-                        android:id="@+id/cbHospitalNearby"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hospital / Medical Nearby" />
+                        <CheckBox
+                            android:id="@+id/cbMarketNearby"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Market Nearby" />
+
+                        <CheckBox
+                            android:id="@+id/cbHospitalNearby"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hospital / Medical Nearby" />
+
+                    </LinearLayout>
 
                     <!-- ===== MESS LOCATION DETAILS ===== -->
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/layoutMessStep4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Mess Service Area"
-                        android:textStyle="bold"
-                        android:layout_marginTop="16dp" />
+                        android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etServiceRadius"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Service Radius (km)"
-                        android:inputType="number"
-                        android:background="@drawable/edit_bg" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Mess Service Area"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp" />
 
-                    <CheckBox
-                        android:id="@+id/cbHomeDelivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home Delivery Available" />
+                        <EditText
+                            android:id="@+id/etServiceRadius"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Service Radius (km)"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg" />
 
-                    <CheckBox
-                        android:id="@+id/cbPickupAvailable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pickup Available" />
+                        <CheckBox
+                            android:id="@+id/cbHomeDelivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Home Delivery Available" />
+
+                        <CheckBox
+                            android:id="@+id/cbPickupAvailable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pickup Available" />
+
+                    </LinearLayout>
+
 
                     <!-- ===== TUITION LOCATION DETAILS ===== -->
+                <!-- ===== TUITION LOCATION DETAILS ===== -->
+                <LinearLayout
+                    android:id="@+id/layoutTuitionStep4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -276,6 +301,8 @@
                         android:text="Student Parking Available" />
 
                 </LinearLayout>
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- ===== NEXT BUTTON ===== -->

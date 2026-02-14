@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ActivityOwnerDashboard : AppCompatActivity() {
 
@@ -41,10 +43,34 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             when (item.itemId) {
 
                 R.id.nav_add_listing -> {
-                    startActivity(
-                        Intent(this, ActivityOwnerAddNewList1::class.java)
-                    )
+
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+                    if (uid == null) {
+                        Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+                        return@setNavigationItemSelectedListener true
+                    }
+
+                    FirebaseFirestore.getInstance()
+                        .collection("owner_verifications")   // 🔥 IMPORTANT CHANGE
+                        .document(uid)
+                        .get()
+                        .addOnSuccessListener { doc ->
+
+                            val ownerType = doc.getString("ownerType")
+
+                            if (ownerType == null) {
+                                Toast.makeText(this, "Owner type missing", Toast.LENGTH_SHORT).show()
+                                return@addOnSuccessListener
+                            }
+
+                            val intent = Intent(this, ActivityOwnerAddNewList1::class.java)
+                            intent.putExtra("OWNER_TYPE", ownerType.lowercase())
+                            startActivity(intent)
+                        }
                 }
+
+
 
                 R.id.nav_submission -> {
                     startActivity(

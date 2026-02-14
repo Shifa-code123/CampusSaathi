@@ -46,6 +46,12 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
         ownerType = intent.getStringExtra("OWNER_TYPE")
         listingId = intent.getStringExtra("LISTING_ID")
 
+        if (ownerType == null || listingId == null) {
+            toast("Invalid owner or listing")
+            finish()
+            return
+        }
+
         initViews()
         showCorrectLayout()
         availabilityLogic()
@@ -78,24 +84,31 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
     }
 
     private fun showCorrectLayout() {
+
         layoutRoom.visibility = View.GONE
         layoutMess.visibility = View.GONE
         layoutTuition.visibility = View.GONE
 
-        when (ownerType) {
-            "ROOM" -> layoutRoom.visibility = View.VISIBLE
-            "MESS" -> layoutMess.visibility = View.VISIBLE
-            "TUITION" -> layoutTuition.visibility = View.VISIBLE
+        when (ownerType?.lowercase()) {
+
+            "room", "room_pg" -> layoutRoom.visibility = View.VISIBLE
+
+            "mess" -> layoutMess.visibility = View.VISIBLE
+
+            "tuition" -> layoutTuition.visibility = View.VISIBLE
+
+            else -> toast("Invalid owner type: $ownerType")
         }
     }
 
-    // Availability ke hisaab se rooms fields show/hide
     private fun availabilityLogic() {
+
         rgAvailability.setOnCheckedChangeListener { _, checkedId ->
-            val status =
+
+            val selected =
                 findViewById<RadioButton>(checkedId).text.toString()
 
-            if (status == "Vacant") {
+            if (selected == "Vacant") {
                 etTotalUnits.visibility = View.VISIBLE
                 etAvailableUnits.visibility = View.VISIBLE
             } else {
@@ -108,16 +121,13 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
 
     private fun saveStep2() {
 
-        if (listingId == null) {
-            toast("Listing ID missing")
-            return
-        }
-
         val data = hashMapOf<String, Any>()
 
-        when (ownerType) {
+        when (ownerType?.lowercase()) {
 
-            "ROOM" -> {
+            // 🔵 ROOM
+            "room", "room_pg" -> {
+
                 if (etRoomRent.text.isEmpty()
                     || rgRentType.checkedRadioButtonId == -1
                     || rgAvailability.checkedRadioButtonId == -1
@@ -130,24 +140,20 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
                     findViewById<RadioButton>(rgAvailability.checkedRadioButtonId)
                         .text.toString()
 
-                if (availability == "Vacant") {
-                    if (etTotalUnits.text.isEmpty() || etAvailableUnits.text.isEmpty()) {
-                        toast("Enter total & available rooms")
-                        return
-                    }
-                }
-
                 data["rent"] = etRoomRent.text.toString()
                 data["deposit"] = etRoomDeposit.text.toString()
                 data["rentType"] =
-                    findViewById<RadioButton>(rgRentType.checkedRadioButtonId).text.toString()
+                    findViewById<RadioButton>(rgRentType.checkedRadioButtonId)
+                        .text.toString()
                 data["availability"] = availability
                 data["totalUnits"] = etTotalUnits.text.toString().ifEmpty { "0" }
                 data["availableUnits"] = etAvailableUnits.text.toString().ifEmpty { "0" }
                 data["availableFrom"] = etAvailableFrom.text.toString()
             }
 
-            "MESS" -> {
+            // 🟢 MESS
+            "mess" -> {
+
                 if (etMessMonthly.text.isEmpty()) {
                     toast("Enter monthly charges")
                     return
@@ -157,7 +163,9 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
                 data["dailyCharge"] = etMessDaily.text.toString()
             }
 
-            "TUITION" -> {
+            // 🟣 TUITION
+            "tuition" -> {
+
                 if (etTuitionFees.text.isEmpty()) {
                     toast("Enter tuition fees")
                     return
@@ -173,7 +181,8 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
             .document(listingId!!)
             .update(data)
             .addOnSuccessListener {
-                toast("Step-2 saved")
+
+                toast("Step 2 saved")
 
                 val i = Intent(this, ActivityOwnerAddNewList3::class.java)
                 i.putExtra("LISTING_ID", listingId)

@@ -3,14 +3,11 @@ package com.example.campussaathi
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ActivityOwnerAddNewList4 : AppCompatActivity(),
@@ -23,18 +20,23 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     private var listingId: String? = null
     private var ownerType: String? = null
 
-    // 📍 MAP DATA
     private var selectedLatLng: LatLng? = null
+    private var distanceKm: Double = 0.0
 
-    // 👉 CHANGE this to your REAL campus location
-    private val campusLatLng = LatLng(18.5204, 73.8567) // Pune example
+    // 📍 Khamgaon Campus Location
+    private val campusLatLng = LatLng(20.7074, 76.5680)
 
-    // Address
+    // Views
     private lateinit var etArea: EditText
     private lateinit var etLandmark: EditText
     private lateinit var etCity: EditText
     private lateinit var etPincode: EditText
     private lateinit var txtDistance: TextView
+
+    // Layouts
+    private lateinit var layoutRoom: LinearLayout
+    private lateinit var layoutMess: LinearLayout
+    private lateinit var layoutTuition: LinearLayout
 
     // Room
     private lateinit var cbNearCampus: CheckBox
@@ -60,11 +62,11 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         db = FirebaseFirestore.getInstance()
 
         listingId = intent.getStringExtra("LISTING_ID")
-        ownerType = intent.getStringExtra("OWNER_TYPE")
+        ownerType = intent.getStringExtra("OWNER_TYPE")?.lowercase()
 
         initViews()
+        showCorrectLayout()
 
-        // 🔥 MAP INIT
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -75,11 +77,16 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     }
 
     private fun initViews() {
+
         etArea = findViewById(R.id.etArea)
         etLandmark = findViewById(R.id.etLandmark)
         etCity = findViewById(R.id.etCity)
         etPincode = findViewById(R.id.etPincode)
         txtDistance = findViewById(R.id.txtDistance)
+
+        layoutRoom = findViewById(R.id.layoutRoomStep4)
+        layoutMess = findViewById(R.id.layoutMessStep4)
+        layoutTuition = findViewById(R.id.layoutTuitionStep4)
 
         cbNearCampus = findViewById(R.id.cbNearCampus)
         cbMarketNearby = findViewById(R.id.cbMarketNearby)
@@ -96,24 +103,37 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         btnNext = findViewById(R.id.btnNextStep4)
     }
 
+    private fun showCorrectLayout() {
+
+        layoutRoom.visibility = View.GONE
+        layoutMess.visibility = View.GONE
+        layoutTuition.visibility = View.GONE
+
+        when (ownerType) {
+            "room", "room_pg" -> layoutRoom.visibility = View.VISIBLE
+            "mess" -> layoutMess.visibility = View.VISIBLE
+            "tuition" -> layoutTuition.visibility = View.VISIBLE
+        }
+    }
+
     /* ================= MAP ================= */
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         mMap.moveCamera(
-            CameraUpdateFactory.newLatLngZoom(campusLatLng, 14f)
+            CameraUpdateFactory.newLatLngZoom(campusLatLng, 16f)
         )
 
-        // Campus marker
         mMap.addMarker(
-            MarkerOptions().position(campusLatLng).title("Campus")
+            MarkerOptions().position(campusLatLng).title("Campus - Khamgaon")
         )
 
         mMap.setOnMapClickListener(this)
     }
 
     override fun onMapClick(latLng: LatLng) {
+
         mMap.clear()
 
         mMap.addMarker(
@@ -129,6 +149,7 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     }
 
     private fun calculateDistance(dest: LatLng) {
+
         val result = FloatArray(1)
 
         Location.distanceBetween(
@@ -139,8 +160,8 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             result
         )
 
-        val km = result[0] / 1000
-        txtDistance.text = "Distance from campus: %.2f km".format(km)
+        distanceKm = result[0].toDouble() / 1000
+        txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
     }
 
     /* ================= SAVE ================= */
@@ -158,13 +179,13 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         }
 
         if (etArea.text.isEmpty() || etCity.text.isEmpty() || etPincode.text.isEmpty()) {
-            toast("Please fill area, city and pincode")
+            toast("Fill required address fields")
             return
         }
 
         val data = hashMapOf<String, Any>()
 
-        /* ---------- COMMON ADDRESS ---------- */
+        // Common
         data["area"] = etArea.text.toString()
         data["landmark"] = etLandmark.text.toString()
         data["city"] = etCity.text.toString()
@@ -172,24 +193,24 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
 
         data["latitude"] = selectedLatLng!!.latitude
         data["longitude"] = selectedLatLng!!.longitude
-        data["distanceFromCampus"] = txtDistance.text.toString()
+        data["distanceFromCampus"] = distanceKm
 
-        /* ---------- OWNER TYPE BASED ---------- */
+        // Owner type specific
         when (ownerType) {
 
-            "ROOM" -> {
+            "room", "room_pg" -> {
                 data["nearCampus"] = cbNearCampus.isChecked
                 data["marketNearby"] = cbMarketNearby.isChecked
                 data["hospitalNearby"] = cbHospitalNearby.isChecked
             }
 
-            "MESS" -> {
+            "mess" -> {
                 data["serviceRadius"] = etServiceRadius.text.toString()
                 data["homeDelivery"] = cbHomeDelivery.isChecked
                 data["pickupAvailable"] = cbPickupAvailable.isChecked
             }
 
-            "TUITION" -> {
+            "tuition" -> {
                 data["nearMainRoad"] = cbMainRoad.isChecked
                 data["safeArea"] = cbSafeArea.isChecked
                 data["parkingAvailable"] = cbParkingAvailable.isChecked
@@ -200,7 +221,8 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             .document(listingId!!)
             .update(data)
             .addOnSuccessListener {
-                toast("Step-4 saved")
+
+                toast("Step-4 saved successfully")
 
                 val i = Intent(this, ActivityOwnerAddNewList5::class.java)
                 i.putExtra("LISTING_ID", listingId)

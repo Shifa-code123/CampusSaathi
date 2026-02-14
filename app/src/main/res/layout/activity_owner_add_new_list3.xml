@@ -98,261 +98,289 @@
                     <!-- ROOM / PG / HOSTEL -->
                     <!-- ================================================= -->
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- ================= ROOM / PG / HOSTEL ================= -->
+
+                    <LinearLayout
+                        android:id="@+id/layoutRoomStep3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Room / PG / Hostel"
-                        android:textStyle="bold"
-                        android:layout_marginTop="20dp"/>
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <CheckBox
-                        android:id="@+id/cbWifi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wi-Fi"/>
-
-                    <CheckBox
-                        android:id="@+id/cbWater"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Water Supply"/>
-
-                    <CheckBox
-                        android:id="@+id/cbElectricity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Electricity Included"/>
-
-                    <CheckBox
-                        android:id="@+id/cbFanLight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fan and Light"/>
-
-                    <CheckBox
-                        android:id="@+id/cbBed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bed and Mattress"/>
-
-                    <CheckBox
-                        android:id="@+id/cbStudyTable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Study Table"/>
-
-                    <CheckBox
-                        android:id="@+id/cbCupboard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cupboard / Wardrobe"/>
-
-                    <!-- ================= Bathroom & Hygiene ================= -->
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bathroom and Hygiene"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <CheckBox
-                        android:id="@+id/cbHotWater"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hot Water"/>
-
-                    <RadioGroup
-                        android:id="@+id/rgBathroomType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Attached"/>
+                            android:text="Room / PG / Hostel"
+                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"/>
 
-                        <RadioButton
+                        <CheckBox
+                            android:id="@+id/cbWifi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Common"/>
-                    </RadioGroup>
+                            android:text="Wi-Fi"/>
 
-                    <CheckBox
-                        android:id="@+id/cbCleaning"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Daily Cleaning"/>
+                        <CheckBox
+                            android:id="@+id/cbWater"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Water Supply"/>
 
-                    <CheckBox
-                        android:id="@+id/cbToiletType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Western / Indian Toilet"/>
+                        <CheckBox
+                            android:id="@+id/cbElectricity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Electricity Included"/>
 
-                    <!-- ================= House Rules ================= -->
+                        <CheckBox
+                            android:id="@+id/cbFanLight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fan and Light"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="House Rules"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
+                        <CheckBox
+                            android:id="@+id/cbBed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bed and Mattress"/>
 
-                    <CheckBox
-                        android:id="@+id/cbVisitors"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Visitors Allowed"/>
+                        <CheckBox
+                            android:id="@+id/cbStudyTable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Study Table"/>
 
-                    <CheckBox
-                        android:id="@+id/cbOutsideFood"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Outside Food Allowed"/>
+                        <CheckBox
+                            android:id="@+id/cbCupboard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cupboard / Wardrobe"/>
 
-                    <!-- ================================================= -->
+                        <!-- Bathroom -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bathroom and Hygiene"
+                            android:textStyle="bold"
+                            android:layout_marginTop="12dp"/>
+
+                        <CheckBox
+                            android:id="@+id/cbHotWater"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hot Water"/>
+
+                        <RadioGroup
+                            android:id="@+id/rgBathroomType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Attached"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Common"/>
+                        </RadioGroup>
+
+                        <CheckBox
+                            android:id="@+id/cbCleaning"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Daily Cleaning"/>
+
+                        <CheckBox
+                            android:id="@+id/cbToiletType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Western / Indian Toilet"/>
+
+                        <!-- House Rules -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="House Rules"
+                            android:textStyle="bold"
+                            android:layout_marginTop="12dp"/>
+
+                        <CheckBox
+                            android:id="@+id/cbVisitors"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Visitors Allowed"/>
+
+                        <CheckBox
+                            android:id="@+id/cbOutsideFood"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Outside Food Allowed"/>
+
+                    </LinearLayout>
                     <!-- ================================================= -->
                     <!-- MESS SERVICES -->
                     <!-- ================================================= -->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mess Services"
-                        android:textStyle="bold"
-                        android:layout_marginTop="20dp"/>
+                    <!-- ================= MESS SERVICES ================= -->
 
-                    <CheckBox
-                        android:id="@+id/cbBreakfast"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layoutMessStep3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Breakfast"/>
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <CheckBox
-                        android:id="@+id/cbLunch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lunch"/>
-
-                    <CheckBox
-                        android:id="@+id/cbDinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dinner"/>
-
-                    <CheckBox
-                        android:id="@+id/cbFestivalMeal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Festival Special Meals"/>
-
-                    <!-- MESS TYPE -->
-                    <RadioGroup
-                        android:id="@+id/rgMessType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Veg"/>
+                            android:text="Mess Services"
+                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"/>
 
-                        <RadioButton
+                        <CheckBox
+                            android:id="@+id/cbBreakfast"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Non-Veg"/>
+                            android:text="Breakfast"/>
 
-                        <RadioButton
+                        <CheckBox
+                            android:id="@+id/cbLunch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Both"/>
-                    </RadioGroup>
+                            android:text="Lunch"/>
 
-                    <CheckBox
-                        android:id="@+id/cbTiffin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tiffin Service"/>
+                        <CheckBox
+                            android:id="@+id/cbDinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dinner"/>
 
-                    <CheckBox
-                        android:id="@+id/cbDelivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home Delivery"/>
+                        <CheckBox
+                            android:id="@+id/cbFestivalMeal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Festival Special Meals"/>
 
-                    <CheckBox
-                        android:id="@+id/cbTrial"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Trial Available"/>
+                        <!-- MESS TYPE -->
+                        <RadioGroup
+                            android:id="@+id/rgMessType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <!-- ================================================= -->
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Veg"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Non-Veg"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Both"/>
+                        </RadioGroup>
+
+                        <CheckBox
+                            android:id="@+id/cbTiffin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiffin Service"/>
+
+                        <CheckBox
+                            android:id="@+id/cbDelivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Home Delivery"/>
+
+                        <CheckBox
+                            android:id="@+id/cbTrial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Trial Available"/>
+
+                    </LinearLayout>
+                    ========================================== -->
                     <!-- ================================================= -->
                     <!-- TUITION / COACHING -->
                     <!-- ================================================= -->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tuition / Coaching"
-                        android:textStyle="bold"
-                        android:layout_marginTop="20dp"/>
+                    <!-- ================= TUITION / COACHING ================= -->
 
-                    <CheckBox
-                        android:id="@+id/cbBoard"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layoutTuitionStep3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Whiteboard / Digital Board"/>
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <CheckBox
-                        android:id="@+id/cbNotes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Printed Notes"/>
-
-                    <CheckBox
-                        android:id="@+id/cbRecorded"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Recorded Lectures"/>
-
-                    <CheckBox
-                        android:id="@+id/cbDoubt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Doubt Solving Sessions"/>
-
-                    <CheckBox
-                        android:id="@+id/cbTestSeries"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Test Series"/>
-
-                    <!-- TUITION MODE -->
-                    <RadioGroup
-                        android:id="@+id/rgTuitionMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Offline"/>
+                            android:text="Tuition / Coaching"
+                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"/>
 
-                        <RadioButton
+                        <CheckBox
+                            android:id="@+id/cbBoard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online"/>
+                            android:text="Whiteboard / Digital Board"/>
 
-                        <RadioButton
+                        <CheckBox
+                            android:id="@+id/cbNotes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hybrid"/>
-                    </RadioGroup>
+                            android:text="Printed Notes"/>
+
+                        <CheckBox
+                            android:id="@+id/cbRecorded"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Recorded Lectures"/>
+
+                        <CheckBox
+                            android:id="@+id/cbDoubt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Doubt Solving Sessions"/>
+
+                        <CheckBox
+                            android:id="@+id/cbTestSeries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Test Series"/>
+
+                        <!-- TUITION MODE -->
+                        <RadioGroup
+                            android:id="@+id/rgTuitionMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Offline"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Online"/>
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hybrid"/>
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                     <!-- NEXT -->
                     <Button
