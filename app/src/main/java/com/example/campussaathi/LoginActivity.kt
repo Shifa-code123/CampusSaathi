@@ -110,20 +110,46 @@ class LoginActivity : AppCompatActivity() {
                     "student" -> open(StudentDashboardActivity::class.java)
 
                     "owner" -> {
-                        when {
-                            ownerType == null ->
-                                open(ChooseOwnerType::class.java)
 
-                            !verificationSubmitted ->
-                                open(OwnerVerification::class.java)
-
-                            verificationSubmitted && !isVerified ->
-                                open(ActivityOwnerVerificationInProgress::class.java)
-
-                            else ->
-                                open(ActivityOwnerDashboard::class.java)
+                        if (ownerType == null) {
+                            open(ChooseOwnerType::class.java)
+                            return@addOnSuccessListener
                         }
+
+                        // 🔥 Now check owner_verifications collection
+                        db.collection("owner_verifications").document(uid)
+                            .get()
+                            .addOnSuccessListener { verificationDoc ->
+
+                                if (!verificationDoc.exists()) {
+                                    open(OwnerVerification::class.java)
+                                    return@addOnSuccessListener
+                                }
+
+                                val status = verificationDoc.getString("status") ?: "pending"
+
+                                when (status) {
+
+                                    "pending" -> {
+                                        open(ActivityOwnerVerificationInProgress::class.java)
+                                    }
+
+                                    "approved" -> {
+                                        open(ActivityOwnerDashboard::class.java)
+                                    }
+
+                                    "rejected" -> {
+                                        open(OwnerVerification::class.java)
+                                    }
+
+                                    else -> {
+                                        open(OwnerVerification::class.java)
+                                    }
+                                }
+                            }
                     }
+
+
 
                     else -> open(RoleSelectionActivity::class.java)
                 }

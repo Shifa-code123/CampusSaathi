@@ -106,6 +106,7 @@ class OwnerVerification : AppCompatActivity() {
         )
 
 
+
         db.collection("owner_verifications")
             .document(uid)
             .set(verificationData)

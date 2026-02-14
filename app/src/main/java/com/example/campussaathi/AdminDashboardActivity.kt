@@ -39,10 +39,12 @@ class AdminDashboardActivity : AppCompatActivity() {
                         AdminVerificationModel(
                             uid = doc.id,
                             fullName = doc.getString("fullName") ?: "",
-                            ownerType = doc.getString("ownerType") ?: ""
+                            ownerType = doc.getString("ownerType") ?: "",
+                            phone = doc.getString("serviceProofText") ?: ""   // 🔥 ADD THIS
                         )
                     )
                 }
+
 
                 recyclerView.adapter = AdminVerificationAdapter(
                     ownerList,
