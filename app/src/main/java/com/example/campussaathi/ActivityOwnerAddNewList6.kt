@@ -2,12 +2,10 @@ package com.example.campussaathi
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class ActivityOwnerAddNewList6 : AppCompatActivity() {
 
@@ -17,7 +15,6 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
     private lateinit var txtLocation: TextView
     private lateinit var cbConfirm: CheckBox
 
-    // Edit buttons
     private lateinit var btnEditProperty: TextView
     private lateinit var btnEditRent: TextView
     private lateinit var btnEditAmenities: TextView
@@ -27,15 +24,26 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
     private lateinit var btnDraft: Button
 
     private val db = FirebaseFirestore.getInstance()
-    private lateinit var listingId: String
+    private var listingId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list6)
 
-        listingId = intent.getStringExtra("listingId") ?: ""
+        listingId = intent.getStringExtra("LISTING_ID")
 
-        // Bind views
+        if (listingId == null) {
+            Toast.makeText(this, "Listing ID missing", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        bindViews()
+        loadPreviewData()
+        setupClickListeners()
+    }
+
+    private fun bindViews() {
         txtPropertyInfo = findViewById(R.id.txtPropertyInfo)
         txtRentInfo = findViewById(R.id.txtRentInfo)
         txtAmenities = findViewById(R.id.txtAmenities)
@@ -49,10 +57,10 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
 
         btnSubmit = findViewById(R.id.btnSubmit)
         btnDraft = findViewById(R.id.btnDraft)
+    }
 
-        loadPreviewData()
+    private fun setupClickListeners() {
 
-        // ✅ Submit
         btnSubmit.setOnClickListener {
             if (!cbConfirm.isChecked) {
                 Toast.makeText(this, "Please confirm details", Toast.LENGTH_SHORT).show()
@@ -61,12 +69,10 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
             submitListing()
         }
 
-        // ✅ Save as Draft
         btnDraft.setOnClickListener {
             saveAsDraft()
         }
 
-        // ✅ Edit navigation
         btnEditProperty.setOnClickListener {
             openStep(ActivityOwnerAddNewList1::class.java)
         }
@@ -84,65 +90,77 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
         }
     }
 
-    // 🔵 Load preview data from Firestore
     private fun loadPreviewData() {
-        if (listingId.isEmpty()) return
 
         db.collection("listings")
-            .document(listingId)
+            .document(listingId!!)
             .get()
             .addOnSuccessListener { doc ->
 
-                txtPropertyInfo.text =
-                    "${doc.getString("title")}\n" +
-                            "Type: ${doc.getString("type")}\n" +
-                            "Preferred Gender: ${doc.getString("gender")}"
+                val title = doc.getString("title") ?: "-"
+                val type = doc.getString("type") ?: "-"
+                val gender = doc.getString("gender") ?: "-"
 
-                txtRentInfo.text =
-                    "Monthly Rent: ₹${doc.getString("rent")}\n" +
-                            "Security Deposit: ₹${doc.getString("deposit")}\n" +
-                            "Availability: ${doc.getString("availability")}"
+                val rent = doc.getString("rent") ?: "-"
+                val deposit = doc.getString("deposit") ?: "-"
+                val availability = doc.getString("availability") ?: "-"
 
-                txtAmenities.text =
+                val area = doc.getString("area") ?: "-"
+                val landmark = doc.getString("landmark") ?: "-"
+                val city = doc.getString("city") ?: "-"
+
+                val amenitiesList =
                     (doc.get("amenities") as? List<*>)?.joinToString(", ") ?: "-"
 
+                txtPropertyInfo.text =
+                    "$title\nType: $type\nPreferred Gender: $gender"
+
+                txtRentInfo.text =
+                    "Monthly Rent: ₹$rent\n" +
+                            "Security Deposit: ₹$deposit\n" +
+                            "Availability: $availability"
+
+                txtAmenities.text = amenitiesList
+
                 txtLocation.text =
-                    "${doc.getString("area")}\n" +
-                            "Landmark: ${doc.getString("landmark")}\n" +
-                            "City: ${doc.getString("city")}"
+                    "$area\nLandmark: $landmark\nCity: $city"
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load preview", Toast.LENGTH_SHORT).show()
             }
     }
 
-    // 🟢 Submit for approval
     private fun submitListing() {
-        if (listingId.isEmpty()) return
 
         db.collection("listings")
-            .document(listingId)
-            .update("status", "pending")
+            .document(listingId!!)
+            .set(mapOf("status" to "pending"), SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Submitted for approval", Toast.LENGTH_SHORT).show()
                 finish()
             }
+            .addOnFailureListener {
+                Toast.makeText(this, "Submission failed", Toast.LENGTH_SHORT).show()
+            }
     }
 
-    // 🟡 Save draft
     private fun saveAsDraft() {
-        if (listingId.isEmpty()) return
 
         db.collection("listings")
-            .document(listingId)
-            .update("status", "draft")
+            .document(listingId!!)
+            .set(mapOf("status" to "draft"), SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Saved as draft", Toast.LENGTH_SHORT).show()
                 finish()
             }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to save draft", Toast.LENGTH_SHORT).show()
+            }
     }
 
-    // 🔁 Open step with listingId
     private fun openStep(clazz: Class<*>) {
         val intent = Intent(this, clazz)
-        intent.putExtra("listingId", listingId)
+        intent.putExtra("LISTING_ID", listingId)
         startActivity(intent)
     }
 }

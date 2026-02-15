@@ -1,22 +1,19 @@
-package com.example.campussaathi;
+package com.example.campussaathi
 
-import android.app.Activity
-import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.example.campussaathi.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 class ActivityOwnerProfile : AppCompatActivity() {
 
-    // Views
     private lateinit var imgProfile: ImageView
     private lateinit var txtName: TextView
     private lateinit var txtRole: TextView
@@ -26,21 +23,18 @@ class ActivityOwnerProfile : AppCompatActivity() {
 
     private lateinit var edtPhone: EditText
     private lateinit var edtAddress: EditText
-
     private lateinit var layoutVerified: LinearLayout
     private lateinit var itemEdit: LinearLayout
 
-    // Firebase
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
 
     private var isEditMode = false
 
-    // 🔵 Image picker (modern way)
+    // 🔵 Image Picker
     private val imagePicker =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { uploadProfileImage(it) }
+            uri?.let { convertAndSaveProfileImage(it) }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,13 +85,24 @@ class ActivityOwnerProfile : AppCompatActivity() {
                 layoutVerified.visibility =
                     if (doc.getBoolean("verified") == true) View.VISIBLE else View.GONE
 
-                doc.getString("profileImage")?.let {
-                    Glide.with(this).load(it).into(imgProfile)
+                try {
+                    val base64 = doc.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        imgProfile.setImageBitmap(bitmap)
+                    } else {
+                        imgProfile.setImageResource(R.drawable.default_avatar)
+                    }
+
+                } catch (e: Exception) {
+                    imgProfile.setImageResource(R.drawable.default_avatar)
                 }
+
             }
     }
 
-    // 🟡 EDIT MODE
     private fun enableEditMode() {
         isEditMode = true
 
@@ -113,7 +118,6 @@ class ActivityOwnerProfile : AppCompatActivity() {
         Toast.makeText(this, "Edit mode enabled", Toast.LENGTH_SHORT).show()
     }
 
-    // 🟢 SAVE PROFILE
     private fun saveProfileChanges() {
         val uid = auth.currentUser?.uid ?: return
 
@@ -140,24 +144,40 @@ class ActivityOwnerProfile : AppCompatActivity() {
             }
     }
 
-    // 🟣 UPLOAD IMAGE
-    private fun uploadProfileImage(uri: Uri) {
+    // 🔥 Convert profile image to Base64 and save
+    private fun convertAndSaveProfileImage(uri: Uri) {
         val uid = auth.currentUser?.uid ?: return
-        val ref = storage.reference.child("profile_images/$uid.jpg")
 
-        ref.putFile(uri)
-            .addOnSuccessListener {
-                ref.downloadUrl.addOnSuccessListener { downloadUri ->
+        try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                    db.collection("users").document(uid)
-                        .update("profileImage", downloadUri.toString())
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(
+                android.graphics.Bitmap.CompressFormat.JPEG,
+                35,
+                outputStream
+            )
 
-                    Glide.with(this)
-                        .load(downloadUri)
-                        .into(imgProfile)
+            val byteArray = outputStream.toByteArray()
+            val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+            db.collection("users").document(uid)
+                .update("profileImageBase64", base64Image)
+                .addOnSuccessListener {
+
+                    val bytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmapDecoded =
+                        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                    imgProfile.setImageBitmap(bitmapDecoded)
 
                     Toast.makeText(this, "Profile image updated", Toast.LENGTH_SHORT).show()
                 }
-            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Image error", Toast.LENGTH_SHORT).show()
+        }
     }
 }

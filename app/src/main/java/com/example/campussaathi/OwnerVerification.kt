@@ -1,13 +1,18 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.ByteArrayOutputStream
 
 class OwnerVerification : AppCompatActivity() {
 
@@ -18,11 +23,27 @@ class OwnerVerification : AppCompatActivity() {
     private lateinit var layoutMess: LinearLayout
     private lateinit var layoutTuition: LinearLayout
 
-    // 🔹 TEXT INPUTS (THIS WAS MISSING BEFORE)
     private lateinit var etIdProof: EditText
     private lateinit var etServiceProof: EditText
 
+    // 🔥 NEW IMAGE VARIABLES
+    private lateinit var btnBrowseProof: Button
+    private lateinit var imgProofPreview: ImageView
+    private lateinit var txtSelectedFile: TextView
+    private var imageUri: Uri? = null
+
     private var ownerType: String? = null
+
+    // 🔥 IMAGE PICKER
+    private val imagePicker =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                imageUri = it
+                txtSelectedFile.text = "File Selected"
+                imgProofPreview.visibility = View.VISIBLE
+                imgProofPreview.setImageURI(it)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +59,22 @@ class OwnerVerification : AppCompatActivity() {
             return
         }
 
-        // 🔹 Layouts (YOUR LOGIC KEPT)
         layoutRoom = findViewById(R.id.layoutRoomVerification)
         layoutMess = findViewById(R.id.layoutMessVerification)
         layoutTuition = findViewById(R.id.layoutTuitionVerification)
 
-        // 🔹 EditTexts (CRITICAL FIX)
-        etIdProof = findViewById(R.id.etFullName)       // ID proof text
-        etServiceProof = findViewById(R.id.etPhone)    // Service proof text
+        etIdProof = findViewById(R.id.etFullName)
+        etServiceProof = findViewById(R.id.etPhone)
+
+        // 🔥 Bind Image Views
+        btnBrowseProof = findViewById(R.id.btnBrowseProof)
+        imgProofPreview = findViewById(R.id.imgProofPreview)
+        txtSelectedFile = findViewById(R.id.txtSelectedFile)
 
         val btnSubmit = findViewById<Button>(R.id.btnSubmitVerification)
 
         hideAllLayouts()
 
-        // 🔹 Fetch owner type (UNCHANGED LOGIC)
         db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { doc ->
@@ -64,11 +87,11 @@ class OwnerVerification : AppCompatActivity() {
                     else -> toast("Owner type not found")
                 }
             }
-            .addOnFailureListener {
-                toast("Failed to load owner type")
-            }
 
-        // 🔹 Submit verification (TEXT ONLY)
+        btnBrowseProof.setOnClickListener {
+            imagePicker.launch("image/*")
+        }
+
         btnSubmit.setOnClickListener {
 
             val idProofText = etIdProof.text.toString().trim()
@@ -79,7 +102,36 @@ class OwnerVerification : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (imageUri == null) {
+                toast("Please upload proof image")
+                return@setOnClickListener
+            }
+
             submitVerification(uid, idProofText, serviceProofText)
+        }
+    }
+
+    // 🔥 Convert Image To Base64 (Compressed)
+    private fun convertImageToBase64(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+
+            val outputStream = ByteArrayOutputStream()
+
+            // compress to reduce Firestore size
+            bitmap.compress(
+                android.graphics.Bitmap.CompressFormat.JPEG,
+                35,
+                outputStream
+            )
+
+            val byteArray = outputStream.toByteArray()
+            Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 
@@ -89,30 +141,28 @@ class OwnerVerification : AppCompatActivity() {
         serviceProof: String
     ) {
 
+        val base64Image = convertImageToBase64(imageUri!!)
+
+        if (base64Image == null) {
+            toast("Image conversion failed")
+            return
+        }
+
         val verificationData = hashMapOf(
             "uid" to uid,
             "ownerType" to ownerType,
-
-            // 🔥 IMPORTANT FOR ADMIN
             "fullName" to idProof,
             "phone" to serviceProof,
-
-            // (optional – future)
-            "idProofText" to idProof,
-            "serviceProofText" to serviceProof,
-
+            "proofImageBase64" to base64Image,   // 🔥 STORED IN FIRESTORE
             "status" to "pending",
             "submittedAt" to FieldValue.serverTimestamp()
         )
-
-
 
         db.collection("owner_verifications")
             .document(uid)
             .set(verificationData)
             .addOnSuccessListener {
 
-                // 🔹 THIS IS WHAT MAKES "Verification in Progress" SHOW
                 db.collection("users").document(uid)
                     .update(
                         mapOf(
