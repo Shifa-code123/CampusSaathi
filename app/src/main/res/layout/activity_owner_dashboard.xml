@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#2196F3"
+        android:background="#FFFFFF"
         app:title="Owner Dashboard"
         app:titleTextColor="#FFFFFF"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -78,25 +78,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#5C8EF2"
-                        android:padding="12dp"
-                        android:orientation="vertical">
+                        android:padding="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_home"
+                            app:tint="@android:color/white"/>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/total_listings_count"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/total_listings"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
+                            <TextView
+                                android:text="@string/total_listings_count"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:text="@string/total_listings"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
 
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <!-- Active Requests -->
@@ -109,27 +124,43 @@
                     app:cardElevation="6dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#FFA726"
-                        android:padding="12dp"
-                        android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFA726"
+                    android:padding="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@android:color/white"/>
+
+                    <LinearLayout
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="@string/active_requests_count"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@android:color/white"
                             android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="22sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="@string/active_requests"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
+
+                </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -154,26 +185,41 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#66BB6A"
-                        android:padding="12dp"
-                        android:orientation="vertical">
+                        android:padding="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_eye"
+                            app:tint="@android:color/white"/>
 
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/listing_views_count"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/listing_views"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
+                            <TextView
+                                android:text="@string/listing_views_count"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:text="@string/listing_views"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
                     </LinearLayout>
+
+
                 </androidx.cardview.widget.CardView>
 
                 <!-- Action Required -->
@@ -189,24 +235,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#EF5350"
-                        android:padding="12dp"
-                        android:orientation="vertical">
+                        android:padding="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_warning"
+                            app:tint="@android:color/white"/>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/action_required_count"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/action_required"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
+                            <TextView
+                                android:text="@string/action_required_count"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:text="@string/action_required"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -214,6 +276,7 @@
 
             <!-- ===== BUTTONS ===== -->
             <Button
+                android:id="@+id/btnAddListing"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:text="@string/add_new_listing"
@@ -518,13 +581,12 @@
 
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="280dp"
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFFFFF"
-        app:menu="@menu/owner_menu_drawer"
-        app:itemIconTint="#444444"
-        app:itemTextColor="#000000"/>
+        app:itemBackground="@drawable/nav_item_background"
+        app:menu="@menu/owner_menu_drawer"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

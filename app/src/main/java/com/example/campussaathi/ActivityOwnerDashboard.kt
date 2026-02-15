@@ -23,7 +23,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_owner_dashboard)
 
         drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
+        navigationView = findViewById(R.id.navigation_view)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         setSupportActionBar(toolbar)
@@ -35,8 +35,41 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             R.string.open,
             R.string.close
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        // 🔥 DASHBOARD ADD LISTING BUTTON LOGIC
+        val btnAddListing = findViewById<android.widget.Button>(R.id.btnAddListing)
+
+        btnAddListing?.setOnClickListener {
+
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (uid == null) {
+                Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            FirebaseFirestore.getInstance()
+                .collection("owner_verifications")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { doc ->
+
+                    val ownerType = doc.getString("ownerType")
+
+                    if (ownerType == null) {
+                        Toast.makeText(this, "Owner type missing", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+
+                    val intent = Intent(this, ActivityOwnerAddNewList1::class.java)
+                    intent.putExtra("OWNER_TYPE", ownerType.lowercase())
+                    startActivity(intent)
+                }
+        }
+
 
         navigationView.setNavigationItemSelectedListener { item ->
 
@@ -52,7 +85,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     }
 
                     FirebaseFirestore.getInstance()
-                        .collection("owner_verifications")   // 🔥 IMPORTANT CHANGE
+                        .collection("owner_verifications")
                         .document(uid)
                         .get()
                         .addOnSuccessListener { doc ->
@@ -70,8 +103,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                         }
                 }
 
-
-
                 R.id.nav_submission -> {
                     startActivity(
                         Intent(this, ActivityOwnerSubmissionList1::class.java)
@@ -84,14 +115,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     )
                 }
 
-                R.id.nav_requests -> {
-                    Toast.makeText(this, "Requests – Coming Soon", Toast.LENGTH_SHORT).show()
-                }
-
-                R.id.nav_notifications -> {
-                    Toast.makeText(this, "Notifications – Coming Soon", Toast.LENGTH_SHORT).show()
-                }
-
                 R.id.nav_profile -> {
                     startActivity(
                         Intent(this, ActivityOwnerProfile::class.java)
@@ -99,12 +122,26 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                 }
 
                 R.id.nav_logout -> {
-                    finish() // ya logout logic
+                    logoutUser()
                 }
             }
 
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+    }
+
+    private fun logoutUser() {
+
+        // 🔥 Proper logout
+        FirebaseAuth.getInstance().signOut()
+
+        // Clear backstack completely
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        startActivity(intent)
+        finish()
     }
 }

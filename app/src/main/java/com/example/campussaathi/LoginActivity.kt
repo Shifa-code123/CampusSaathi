@@ -19,6 +19,13 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // 🔥 AUTO LOGIN CHECK (Permanent Session)
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            checkUserRole(currentUser.uid)
+            return
+        }
+
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
@@ -38,13 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-
-                    val uid = auth.currentUser?.uid
-                    if (uid == null) {
-                        toast("User not found")
-                        return@addOnSuccessListener
-                    }
-
+                    val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
                     checkUserRole(uid)
                 }
                 .addOnFailureListener {
@@ -66,42 +67,24 @@ class LoginActivity : AppCompatActivity() {
             }
 
             auth.sendPasswordResetEmail(email)
-                .addOnSuccessListener {
-                    toast("Password reset email sent")
-                }
-                .addOnFailureListener {
-                    toast(it.message ?: "Error")
-                }
+                .addOnSuccessListener { toast("Password reset email sent") }
+                .addOnFailureListener { toast(it.message ?: "Error") }
         }
     }
 
-    // 🔥 ROLE CHECK LOGIC
+    // 🔥 ROLE + VERIFICATION LOGIC
     private fun checkUserRole(uid: String) {
 
         db.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
 
                 if (!doc.exists()) {
-                    // Firestore missing but auth exists → recreate user doc
-                    db.collection("users").document(uid).set(
-                        mapOf(
-                            "role" to "owner",
-                            "isVerified" to false,
-                            "verificationSubmitted" to false
-                        )
-                    ).addOnSuccessListener {
-                        open(RoleSelectionActivity::class.java)
-                    }
+                    open(RoleSelectionActivity::class.java)
                     return@addOnSuccessListener
                 }
 
-
                 val role = doc.getString("role")
                 val ownerType = doc.getString("ownerType")
-                val verificationSubmitted =
-                    doc.getBoolean("verificationSubmitted") ?: false
-                val isVerified =
-                    doc.getBoolean("isVerified") ?: false
 
                 when (role) {
 
@@ -116,8 +99,8 @@ class LoginActivity : AppCompatActivity() {
                             return@addOnSuccessListener
                         }
 
-                        // 🔥 Now check owner_verifications collection
-                        db.collection("owner_verifications").document(uid)
+                        db.collection("owner_verifications")
+                            .document(uid)
                             .get()
                             .addOnSuccessListener { verificationDoc ->
 
@@ -126,30 +109,25 @@ class LoginActivity : AppCompatActivity() {
                                     return@addOnSuccessListener
                                 }
 
-                                val status = verificationDoc.getString("status") ?: "pending"
+                                val status =
+                                    verificationDoc.getString("status") ?: "pending"
 
                                 when (status) {
 
-                                    "pending" -> {
+                                    "pending" ->
                                         open(ActivityOwnerVerificationInProgress::class.java)
-                                    }
 
-                                    "approved" -> {
+                                    "approved" ->
                                         open(ActivityOwnerDashboard::class.java)
-                                    }
 
-                                    "rejected" -> {
+                                    "rejected" ->
                                         open(OwnerVerification::class.java)
-                                    }
 
-                                    else -> {
+                                    else ->
                                         open(OwnerVerification::class.java)
-                                    }
                                 }
                             }
                     }
-
-
 
                     else -> open(RoleSelectionActivity::class.java)
                 }
