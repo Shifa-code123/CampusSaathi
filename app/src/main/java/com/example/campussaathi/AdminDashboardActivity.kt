@@ -2,10 +2,14 @@ package com.example.campussaathi
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AdminDashboardActivity : AppCompatActivity() {
@@ -18,11 +22,37 @@ class AdminDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
 
+        val toolbar = findViewById<Toolbar>(R.id.adminToolbar)
+        setSupportActionBar(toolbar)
+
         db = FirebaseFirestore.getInstance()
+
         recyclerView = findViewById(R.id.rvOwners)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchAllOwners()
+    }
+
+    // 🔹 Inflate admin menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.admin_menu, menu)
+        return true
+    }
+
+    // 🔹 Handle logout click
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.admin_logout) {
+            FirebaseAuth.getInstance().signOut()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun fetchAllOwners() {
@@ -40,11 +70,10 @@ class AdminDashboardActivity : AppCompatActivity() {
                             uid = doc.id,
                             fullName = doc.getString("fullName") ?: "",
                             ownerType = doc.getString("ownerType") ?: "",
-                            phone = doc.getString("serviceProofText") ?: ""   // 🔥 ADD THIS
+                            phone = doc.getString("serviceProofText") ?: ""
                         )
                     )
                 }
-
 
                 recyclerView.adapter = AdminVerificationAdapter(
                     ownerList,
@@ -68,7 +97,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             )
 
         Toast.makeText(this, "Owner Approved", Toast.LENGTH_SHORT).show()
-        fetchAllOwners() // 🔥 refresh list
+        fetchAllOwners()
     }
 
     private fun rejectOwner(uid: String) {

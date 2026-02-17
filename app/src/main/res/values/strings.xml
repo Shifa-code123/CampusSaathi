@@ -34,6 +34,8 @@
 
     <string name="owner_dashboard">Owner Dashboard</string>
 
+    <string name="admin_dashboard">Admin Dashboard</string>
+
     <string name="total_listings_count">5</string>
     <string name="total_listings">Total Listings</string>
 

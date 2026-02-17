@@ -5,8 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class ActivityOwnerAddNewList1 : AppCompatActivity() {
 
@@ -14,16 +20,13 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
     private lateinit var messLayout: LinearLayout
     private lateinit var tuitionLayout: LinearLayout
 
-    // ROOM
     private lateinit var etPropertyName: EditText
     private lateinit var rgPropertyType: RadioGroup
     private lateinit var rgGenderAllowed: RadioGroup
 
-    // MESS
     private lateinit var etMessName: EditText
     private lateinit var rgMessType: RadioGroup
 
-    // TUITION
     private lateinit var etTuitionName: EditText
     private lateinit var rgTuitionType: RadioGroup
 
@@ -32,9 +35,23 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private var ownerType: String? = null
 
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var toggle: ActionBarDrawerToggle
+
+    private val uid by lazy { FirebaseAuth.getInstance().currentUser?.uid }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list1)
+
+        if (uid == null) {
+            toast("User not logged in")
+            finish()
+            return
+        }
+
+        setupDrawer()
 
         db = FirebaseFirestore.getInstance()
 
@@ -46,7 +63,33 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
         }
     }
 
+    private fun setupDrawer() {
+
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigation_view)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open,
+            R.string.close
+        )
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        navigationView.setNavigationItemSelectedListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
     private fun initViews() {
+
         roomLayout = findViewById(R.id.layoutRoomStep1)
         messLayout = findViewById(R.id.layoutMessStep1)
         tuitionLayout = findViewById(R.id.layoutTuitionStep1)
@@ -64,32 +107,51 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
         btnNext = findViewById(R.id.btnNext)
     }
 
-    // 🔥 Fetch owner type from users collection
     private fun fetchOwnerType() {
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        if (uid == null) {
-            toast("User not logged in")
-            return
-        }
-
-        db.collection("users")
-            .document(uid)
+        db.collection("owner_verifications")   // ✅ FIXED
+            .document(uid!!)
             .get()
             .addOnSuccessListener { doc ->
 
                 ownerType = doc.getString("ownerType")?.lowercase()
 
                 if (ownerType == null) {
-                    toast("Owner type missing in users collection")
+                    toast("Owner type missing")
                     return@addOnSuccessListener
                 }
 
                 showCorrectLayout()
+                prefillIfExists()
             }
             .addOnFailureListener {
                 toast("Failed to load owner type")
+            }
+    }
+
+    private fun prefillIfExists() {
+
+        db.collection("listings")
+            .document(uid!!)
+            .get()
+            .addOnSuccessListener { listingDoc ->
+
+                if (!listingDoc.exists()) return@addOnSuccessListener
+
+                when (ownerType) {
+
+                    "room", "room_pg" -> {
+                        etPropertyName.setText(listingDoc.getString("propertyName"))
+                    }
+
+                    "mess" -> {
+                        etMessName.setText(listingDoc.getString("messName"))
+                    }
+
+                    "tuition" -> {
+                        etTuitionName.setText(listingDoc.getString("tuitionName"))
+                    }
+                }
             }
     }
 
@@ -101,39 +163,30 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
 
         when (ownerType) {
 
-            "room_pg", "room" -> roomLayout.visibility = View.VISIBLE
-
+            "room", "room_pg" -> roomLayout.visibility = View.VISIBLE
             "mess" -> messLayout.visibility = View.VISIBLE
-
             "tuition" -> tuitionLayout.visibility = View.VISIBLE
 
-            else -> toast("Invalid owner type: $ownerType")
+            else -> toast("Invalid owner type")
         }
     }
 
     private fun saveStep1() {
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        if (uid == null) {
-            toast("User not logged in")
-            return
-        }
-
         val data = hashMapOf<String, Any>()
 
         when (ownerType) {
 
-            "room_pg", "room" -> {
+            "room", "room_pg" -> {
 
                 if (etPropertyName.text.isEmpty()
                     || rgPropertyType.checkedRadioButtonId == -1
                     || rgGenderAllowed.checkedRadioButtonId == -1) {
-
                     toast("Fill all Room details")
                     return
                 }
 
-                data["ownerType"] = "room_pg"
+                data["ownerType"] = ownerType!!
                 data["propertyName"] = etPropertyName.text.toString()
                 data["propertyType"] =
                     findViewById<RadioButton>(rgPropertyType.checkedRadioButtonId).text.toString()
@@ -145,7 +198,6 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
 
                 if (etMessName.text.isEmpty()
                     || rgMessType.checkedRadioButtonId == -1) {
-
                     toast("Fill all Mess details")
                     return
                 }
@@ -160,7 +212,6 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
 
                 if (etTuitionName.text.isEmpty()
                     || rgTuitionType.checkedRadioButtonId == -1) {
-
                     toast("Fill all Tuition details")
                     return
                 }
@@ -177,24 +228,19 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
             }
         }
 
-        // 🔥 Important fields
-        data["ownerId"] = uid
         data["status"] = "draft"
+        data["currentStep"] = 2
 
         db.collection("listings")
-            .add(data)
-            .addOnSuccessListener { docRef ->
-
-                toast("Step 1 saved successfully")
-
-                val intent = Intent(this, ActivityOwnerAddNewList2::class.java)
-                intent.putExtra("LISTING_ID", docRef.id)
-                intent.putExtra("OWNER_TYPE", ownerType)
-                startActivity(intent)
+            .document(uid!!)
+            .set(data, SetOptions.merge())
+            .addOnSuccessListener {
+                toast("Step 1 saved")
+                startActivity(Intent(this, ActivityOwnerAddNewList2::class.java))
                 finish()
             }
             .addOnFailureListener {
-                toast(it.message ?: "Firebase error")
+                toast("Firebase error")
             }
     }
 

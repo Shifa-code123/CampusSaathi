@@ -1,5 +1,6 @@
 package com.example.campussaathi
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -37,9 +38,45 @@ class ActivityOwnerProfile : AppCompatActivity() {
             uri?.let { convertAndSaveProfileImage(it) }
         }
 
+
+    // ===== Drawer Variables Start =====
+    private lateinit var drawerLayout: androidx.drawerlayout.widget.DrawerLayout
+    private lateinit var navigationView: com.google.android.material.navigation.NavigationView
+    private lateinit var toggle: androidx.appcompat.app.ActionBarDrawerToggle
+    // ===== Drawer Variables End =====
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_profile)
+
+        // ===== Drawer Setup Start =====
+
+        // Initialize Drawer & Toolbar
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigation_view)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+
+        // Make Toolbar act as ActionBar
+        setSupportActionBar(toolbar)
+
+        // Connect Drawer with Toolbar (Hamburger logic)
+        toggle = androidx.appcompat.app.ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open,
+            R.string.close
+        )
+
+        // Attach toggle listener
+        drawerLayout.addDrawerListener(toggle)
+
+        // Sync hamburger icon state
+        toggle.syncState()
+
+
 
         bindViews()
         loadProfileData()
@@ -51,6 +88,46 @@ class ActivityOwnerProfile : AppCompatActivity() {
         imgProfile.setOnClickListener {
             imagePicker.launch("image/*")
         }
+
+
+        navigationView.setNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_add_listing -> {
+                    // Already in this screen
+                }
+
+                R.id.nav_submission -> {
+                    startActivity(Intent(this, ActivityOwnerSubmissionList1::class.java))
+                }
+
+                R.id.nav_my_listing -> {
+                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
+                }
+
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
+                }
+
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            // Close drawer after click
+            drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+            true
+        }
+
+        // ===== Drawer Setup End =====
+
+
     }
 
     private fun bindViews() {

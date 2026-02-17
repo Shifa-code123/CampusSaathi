@@ -44,11 +44,18 @@ class SplashActivity : AppCompatActivity() {
 
                     when (role) {
 
+                        "admin" -> {
+                            startActivity(
+                                Intent(this, AdminDashboardActivity::class.java)
+                            )
+                        }
+
                         "student" -> {
                             startActivity(
                                 Intent(this, StudentDashboardActivity::class.java)
                             )
                         }
+
 
                         "owner" -> {
                             when {
@@ -77,7 +84,7 @@ class SplashActivity : AppCompatActivity() {
 
                         else -> {
                             startActivity(
-                                Intent(this, RoleSelectionActivity::class.java)
+                                Intent(this, LoginActivity::class.java)
                             )
                         }
                     }

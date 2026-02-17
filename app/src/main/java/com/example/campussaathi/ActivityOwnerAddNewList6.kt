@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
@@ -24,16 +25,15 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
     private lateinit var btnDraft: Button
 
     private val db = FirebaseFirestore.getInstance()
-    private var listingId: String? = null
+    private var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list6)
 
-        listingId = intent.getStringExtra("LISTING_ID")
-
-        if (listingId == null) {
-            Toast.makeText(this, "Listing ID missing", Toast.LENGTH_SHORT).show()
+        uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -74,32 +74,32 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
         }
 
         btnEditProperty.setOnClickListener {
-            openStep(ActivityOwnerAddNewList1::class.java)
+            startActivity(Intent(this, ActivityOwnerAddNewList1::class.java))
         }
 
         btnEditRent.setOnClickListener {
-            openStep(ActivityOwnerAddNewList2::class.java)
+            startActivity(Intent(this, ActivityOwnerAddNewList2::class.java))
         }
 
         btnEditAmenities.setOnClickListener {
-            openStep(ActivityOwnerAddNewList3::class.java)
+            startActivity(Intent(this, ActivityOwnerAddNewList3::class.java))
         }
 
         btnEditLocation.setOnClickListener {
-            openStep(ActivityOwnerAddNewList4::class.java)
+            startActivity(Intent(this, ActivityOwnerAddNewList4::class.java))
         }
     }
 
     private fun loadPreviewData() {
 
         db.collection("listings")
-            .document(listingId!!)
+            .document(uid!!)
             .get()
             .addOnSuccessListener { doc ->
 
-                val title = doc.getString("title") ?: "-"
-                val type = doc.getString("type") ?: "-"
-                val gender = doc.getString("gender") ?: "-"
+                val propertyName = doc.getString("propertyName") ?: "-"
+                val propertyType = doc.getString("propertyType") ?: "-"
+                val gender = doc.getString("genderAllowed") ?: "-"
 
                 val rent = doc.getString("rent") ?: "-"
                 val deposit = doc.getString("deposit") ?: "-"
@@ -113,54 +113,43 @@ class ActivityOwnerAddNewList6 : AppCompatActivity() {
                     (doc.get("amenities") as? List<*>)?.joinToString(", ") ?: "-"
 
                 txtPropertyInfo.text =
-                    "$title\nType: $type\nPreferred Gender: $gender"
+                    "$propertyName\nType: $propertyType\nPreferred Gender: $gender"
 
                 txtRentInfo.text =
-                    "Monthly Rent: ₹$rent\n" +
-                            "Security Deposit: ₹$deposit\n" +
-                            "Availability: $availability"
+                    "Monthly Rent: ₹$rent\nSecurity Deposit: ₹$deposit\nAvailability: $availability"
 
                 txtAmenities.text = amenitiesList
 
                 txtLocation.text =
                     "$area\nLandmark: $landmark\nCity: $city"
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to load preview", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun submitListing() {
 
         db.collection("listings")
-            .document(listingId!!)
+            .document(uid!!)
             .set(mapOf("status" to "pending"), SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Submitted for approval", Toast.LENGTH_SHORT).show()
+
+                startActivity(
+                    Intent(this, ActivityOwnerSubmissionList1::class.java)
+                )
+
+
                 finish()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Submission failed", Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun saveAsDraft() {
 
         db.collection("listings")
-            .document(listingId!!)
+            .document(uid!!)
             .set(mapOf("status" to "draft"), SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Saved as draft", Toast.LENGTH_SHORT).show()
                 finish()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to save draft", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun openStep(clazz: Class<*>) {
-        val intent = Intent(this, clazz)
-        intent.putExtra("LISTING_ID", listingId)
-        startActivity(intent)
     }
 }

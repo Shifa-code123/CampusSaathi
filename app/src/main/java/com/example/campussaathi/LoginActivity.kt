@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // 🔥 ROLE + VERIFICATION LOGIC
+    //  ROLE + VERIFICATION LOGIC
     private fun checkUserRole(uid: String) {
 
         db.collection("users").document(uid).get()

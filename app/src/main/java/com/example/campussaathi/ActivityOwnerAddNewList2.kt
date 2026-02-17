@@ -5,16 +5,22 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class ActivityOwnerAddNewList2 : AppCompatActivity() {
 
-    // Layouts
     private lateinit var layoutRoom: LinearLayout
     private lateinit var layoutMess: LinearLayout
     private lateinit var layoutTuition: LinearLayout
 
-    // Room fields
+    // Room
     private lateinit var etRoomRent: EditText
     private lateinit var etRoomDeposit: EditText
     private lateinit var rgRentType: RadioGroup
@@ -23,11 +29,11 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
     private lateinit var etAvailableUnits: EditText
     private lateinit var etAvailableFrom: EditText
 
-    // Mess fields
+    // Mess
     private lateinit var etMessMonthly: EditText
     private lateinit var etMessDaily: EditText
 
-    // Tuition fields
+    // Tuition
     private lateinit var etTuitionFees: EditText
     private lateinit var etCourseDuration: EditText
 
@@ -35,26 +41,68 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
 
     private var ownerType: String? = null
-    private var listingId: String? = null
+
+    // Drawer
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list2)
 
-        db = FirebaseFirestore.getInstance()
+        // Drawer Setup
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigation_view)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        ownerType = intent.getStringExtra("OWNER_TYPE")
-        listingId = intent.getStringExtra("LISTING_ID")
+        setSupportActionBar(toolbar)
 
-        if (ownerType == null || listingId == null) {
-            toast("Invalid owner or listing")
-            finish()
-            return
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open,
+            R.string.close
+        )
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        navigationView.setNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_submission -> {
+                    startActivity(Intent(this, ActivityOwnerSubmissionList1::class.java))
+                }
+
+                R.id.nav_my_listing -> {
+                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
+                }
+
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
+                }
+
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
 
+        db = FirebaseFirestore.getInstance()
+
         initViews()
-        showCorrectLayout()
-        availabilityLogic()
+        fetchOwnerType()
 
         btnNext.setOnClickListener {
             saveStep2()
@@ -62,6 +110,7 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
     }
 
     private fun initViews() {
+
         layoutRoom = findViewById(R.id.layoutRoomStep2)
         layoutMess = findViewById(R.id.layoutMessStep2)
         layoutTuition = findViewById(R.id.layoutTuitionStep2)
@@ -81,6 +130,41 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
         etCourseDuration = findViewById(R.id.etCourseDuration)
 
         btnNext = findViewById(R.id.btnNextStep2)
+
+        availabilityLogic()
+    }
+
+    private fun fetchOwnerType() {
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        db.collection("listings")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                ownerType = doc.getString("ownerType")?.lowercase()
+
+                if (ownerType == null) {
+                    toast("Owner type missing")
+                    return@addOnSuccessListener
+                }
+
+                showCorrectLayout()
+
+                // 🔥 Pre-fill if exists
+                etRoomRent.setText(doc.getString("rent"))
+                etRoomDeposit.setText(doc.getString("deposit"))
+                etAvailableFrom.setText(doc.getString("availableFrom"))
+                etTotalUnits.setText(doc.getString("totalUnits"))
+                etAvailableUnits.setText(doc.getString("availableUnits"))
+
+                etMessMonthly.setText(doc.getString("monthlyCharge"))
+                etMessDaily.setText(doc.getString("dailyCharge"))
+
+                etTuitionFees.setText(doc.getString("fees"))
+                etCourseDuration.setText(doc.getString("duration"))
+            }
     }
 
     private fun showCorrectLayout() {
@@ -89,15 +173,10 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
         layoutMess.visibility = View.GONE
         layoutTuition.visibility = View.GONE
 
-        when (ownerType?.lowercase()) {
-
+        when (ownerType) {
             "room", "room_pg" -> layoutRoom.visibility = View.VISIBLE
-
             "mess" -> layoutMess.visibility = View.VISIBLE
-
             "tuition" -> layoutTuition.visibility = View.VISIBLE
-
-            else -> toast("Invalid owner type: $ownerType")
         }
     }
 
@@ -121,11 +200,12 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
 
     private fun saveStep2() {
 
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         val data = hashMapOf<String, Any>()
 
-        when (ownerType?.lowercase()) {
+        when (ownerType) {
 
-            // 🔵 ROOM
             "room", "room_pg" -> {
 
                 if (etRoomRent.text.isEmpty()
@@ -136,22 +216,17 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
                     return
                 }
 
-                val availability =
-                    findViewById<RadioButton>(rgAvailability.checkedRadioButtonId)
-                        .text.toString()
-
                 data["rent"] = etRoomRent.text.toString()
                 data["deposit"] = etRoomDeposit.text.toString()
                 data["rentType"] =
-                    findViewById<RadioButton>(rgRentType.checkedRadioButtonId)
-                        .text.toString()
-                data["availability"] = availability
-                data["totalUnits"] = etTotalUnits.text.toString().ifEmpty { "0" }
-                data["availableUnits"] = etAvailableUnits.text.toString().ifEmpty { "0" }
+                    findViewById<RadioButton>(rgRentType.checkedRadioButtonId).text.toString()
+                data["availability"] =
+                    findViewById<RadioButton>(rgAvailability.checkedRadioButtonId).text.toString()
+                data["totalUnits"] = etTotalUnits.text.toString()
+                data["availableUnits"] = etAvailableUnits.text.toString()
                 data["availableFrom"] = etAvailableFrom.text.toString()
             }
 
-            // 🟢 MESS
             "mess" -> {
 
                 if (etMessMonthly.text.isEmpty()) {
@@ -163,7 +238,6 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
                 data["dailyCharge"] = etMessDaily.text.toString()
             }
 
-            // 🟣 TUITION
             "tuition" -> {
 
                 if (etTuitionFees.text.isEmpty()) {
@@ -176,19 +250,18 @@ class ActivityOwnerAddNewList2 : AppCompatActivity() {
             }
         }
 
-        // 🔥 SAME DOCUMENT UPDATE
+        data["currentStep"] = 3
+
         db.collection("listings")
-            .document(listingId!!)
-            .update(data)
+            .document(uid)
+            .set(data, SetOptions.merge())
             .addOnSuccessListener {
 
                 toast("Step 2 saved")
 
-                val i = Intent(this, ActivityOwnerAddNewList3::class.java)
-                i.putExtra("LISTING_ID", listingId)
-                i.putExtra("OWNER_TYPE", ownerType)
-                startActivity(i)
-                finish()
+                startActivity(
+                    Intent(this, ActivityOwnerAddNewList3::class.java)
+                )
             }
             .addOnFailureListener {
                 toast(it.message ?: "Firebase error")

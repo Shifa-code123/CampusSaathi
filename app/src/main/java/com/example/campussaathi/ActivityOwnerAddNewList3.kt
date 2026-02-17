@@ -5,44 +5,118 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class ActivityOwnerAddNewList3 : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
-    private var listingId: String? = null
     private var ownerType: String? = null
 
-    // Layout groups
     private lateinit var layoutRoom: LinearLayout
     private lateinit var layoutMess: LinearLayout
     private lateinit var layoutTuition: LinearLayout
+
+    // Drawer
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list3)
 
-        db = FirebaseFirestore.getInstance()
+        // Drawer setup
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigation_view)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        listingId = intent.getStringExtra("LISTING_ID")
-        ownerType = intent.getStringExtra("OWNER_TYPE")?.lowercase()
+        setSupportActionBar(toolbar)
 
-        if (listingId == null) {
-            toast("Listing ID missing")
-            finish()
-            return
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open,
+            R.string.close
+        )
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        navigationView.setNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_submission -> {
+                    startActivity(Intent(this, ActivityOwnerSubmissionList1::class.java))
+                }
+
+                R.id.nav_my_listing -> {
+                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
+                }
+
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
+                }
+
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
 
-        // 🔥 layout ids (make sure XML me same ids hai)
+        db = FirebaseFirestore.getInstance()
+
         layoutRoom = findViewById(R.id.layoutRoomStep3)
         layoutMess = findViewById(R.id.layoutMessStep3)
         layoutTuition = findViewById(R.id.layoutTuitionStep3)
 
-        showCorrectLayout()
+        fetchOwnerType()
 
         findViewById<Button>(R.id.btnNextStep3).setOnClickListener {
             saveStep3()
         }
+    }
+
+    private fun fetchOwnerType() {
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        db.collection("listings")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                ownerType = doc.getString("ownerType")?.lowercase()
+
+                if (ownerType == null) {
+                    toast("Owner type missing")
+                    return@addOnSuccessListener
+                }
+
+                showCorrectLayout()
+
+                // 🔥 Pre-fill amenities if exists
+                val amenities =
+                    (doc.get("amenities") as? List<*>)?.map { it.toString() } ?: emptyList()
+
+                restoreCheckboxes(amenities)
+            }
     }
 
     private fun showCorrectLayout() {
@@ -55,17 +129,17 @@ class ActivityOwnerAddNewList3 : AppCompatActivity() {
             "room", "room_pg" -> layoutRoom.visibility = View.VISIBLE
             "mess" -> layoutMess.visibility = View.VISIBLE
             "tuition" -> layoutTuition.visibility = View.VISIBLE
-            else -> toast("Invalid owner type")
         }
     }
 
     private fun saveStep3() {
 
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         val amenities = mutableListOf<String>()
 
         when (ownerType) {
 
-            // ================= ROOM =================
             "room", "room_pg" -> {
 
                 addCB(R.id.cbWifi, "Wi-Fi", amenities)
@@ -84,13 +158,11 @@ class ActivityOwnerAddNewList3 : AppCompatActivity() {
                 val bathGroup = findViewById<RadioGroup>(R.id.rgBathroomType)
                 if (bathGroup.checkedRadioButtonId != -1) {
                     amenities.add(
-                        findViewById<RadioButton>(bathGroup.checkedRadioButtonId)
-                            .text.toString()
+                        findViewById<RadioButton>(bathGroup.checkedRadioButtonId).text.toString()
                     )
                 }
             }
 
-            // ================= MESS =================
             "mess" -> {
 
                 addCB(R.id.cbBreakfast, "Breakfast", amenities)
@@ -104,13 +176,11 @@ class ActivityOwnerAddNewList3 : AppCompatActivity() {
                 val messType = findViewById<RadioGroup>(R.id.rgMessType)
                 if (messType.checkedRadioButtonId != -1) {
                     amenities.add(
-                        findViewById<RadioButton>(messType.checkedRadioButtonId)
-                            .text.toString()
+                        findViewById<RadioButton>(messType.checkedRadioButtonId).text.toString()
                     )
                 }
             }
 
-            // ================= TUITION =================
             "tuition" -> {
 
                 addCB(R.id.cbBoard, "Whiteboard / Digital Board", amenities)
@@ -122,29 +192,54 @@ class ActivityOwnerAddNewList3 : AppCompatActivity() {
                 val tuitionMode = findViewById<RadioGroup>(R.id.rgTuitionMode)
                 if (tuitionMode.checkedRadioButtonId != -1) {
                     amenities.add(
-                        findViewById<RadioButton>(tuitionMode.checkedRadioButtonId)
-                            .text.toString()
+                        findViewById<RadioButton>(tuitionMode.checkedRadioButtonId).text.toString()
                     )
                 }
             }
         }
 
+        val data = hashMapOf(
+            "amenities" to amenities,
+            "currentStep" to 4
+        )
+
         db.collection("listings")
-            .document(listingId!!)
-            .update("amenities", amenities)
+            .document(uid)
+            .set(data, SetOptions.merge())
             .addOnSuccessListener {
 
                 toast("Step 3 saved successfully")
 
-                val i = Intent(this, ActivityOwnerAddNewList4::class.java)
-                i.putExtra("LISTING_ID", listingId)
-                i.putExtra("OWNER_TYPE", ownerType)
-                startActivity(i)
-                finish()
+                startActivity(
+                    Intent(this, ActivityOwnerAddNewList4::class.java)
+                )
             }
             .addOnFailureListener {
                 toast(it.message ?: "Firebase error")
             }
+    }
+
+    private fun restoreCheckboxes(saved: List<String>) {
+
+        val allIds = listOf(
+            R.id.cbWifi, R.id.cbWater, R.id.cbElectricity,
+            R.id.cbFanLight, R.id.cbBed, R.id.cbStudyTable,
+            R.id.cbCupboard, R.id.cbHotWater, R.id.cbCleaning,
+            R.id.cbToiletType, R.id.cbVisitors, R.id.cbOutsideFood,
+            R.id.cbBreakfast, R.id.cbLunch, R.id.cbDinner,
+            R.id.cbFestivalMeal, R.id.cbTiffin, R.id.cbDelivery,
+            R.id.cbTrial, R.id.cbBoard, R.id.cbNotes,
+            R.id.cbRecorded, R.id.cbDoubt, R.id.cbTestSeries
+        )
+
+        for (id in allIds) {
+            val cb = findViewById<CheckBox?>(id)
+            cb?.let {
+                if (saved.contains(it.text.toString())) {
+                    it.isChecked = true
+                }
+            }
+        }
     }
 
     private fun addCB(id: Int, value: String, list: MutableList<String>) {

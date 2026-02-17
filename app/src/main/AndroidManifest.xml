@@ -17,9 +17,14 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".TestActivity"
+            android:name=".ActivityOwnerViewListing"
             android:exported="false" />
-        <!-- ALL ACTIVITIES SAME -->
+        <activity
+            android:name=".ActivityOwnerEditListing"
+            android:exported="false" />
+        <activity
+            android:name=".TestActivity"
+            android:exported="false" /> <!-- ALL ACTIVITIES SAME -->
         <activity
             android:name=".ActivityOwnerAddNewList6"
             android:exported="false" />
@@ -81,6 +86,9 @@
             android:name=".ChooseOwnerType"
             android:exported="false" />
         <activity
+            android:name=".ActivityOwnerSubmissionList1"
+            android:exported="false" />
+        <activity
             android:name=".StudentDashboardActivity"
             android:exported="false" />
         <activity
@@ -95,6 +103,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_KEY" />
     </application>
 
 </manifest>

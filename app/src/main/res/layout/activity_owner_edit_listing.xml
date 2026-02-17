@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#F4F6FA"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- TITLE -->
+        <TextView
+            android:text="Edit Listing"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- ================= ROOM SECTION ================= -->
+
+        <LinearLayout
+            android:id="@+id/layoutRoom"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:text="Property Name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etPropertyName"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Rent"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etRent"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Total Rooms"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etTotalUnits"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Vacant Rooms"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etAvailableUnits"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- ================= MESS SECTION ================= -->
+
+        <LinearLayout
+            android:id="@+id/layoutMess"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:text="Mess Name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etMessName"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Monthly Charge"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etMonthlyCharge"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Daily Charge"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etDailyCharge"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- ================= TUITION SECTION ================= -->
+
+        <LinearLayout
+            android:id="@+id/layoutTuition"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:text="Tuition Name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etTuitionName"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Fees"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etFees"
+                android:inputType="number"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:text="Duration"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+            <EditText
+                android:id="@+id/etDuration"
+                android:background="@drawable/edit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- ================= LOCATION ================= -->
+
+        <TextView android:text="Area"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <EditText
+            android:id="@+id/etArea"
+            android:background="@drawable/edit_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView android:text="City"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <EditText
+            android:id="@+id/etCity"
+            android:background="@drawable/edit_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView android:text="Landmark"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <EditText
+            android:id="@+id/etLandmark"
+            android:background="@drawable/edit_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- SAVE BUTTON -->
+        <Button
+            android:id="@+id/btnSave"
+            android:text="Save Changes"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+
+    </LinearLayout>
+</ScrollView>

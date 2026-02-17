@@ -1,13 +1,13 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")   // ✅ VERY IMPORTANT
-    id("com.google.gms.google-services")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.example.campussaathi"
-    compileSdk = 36
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.example.campussaathi"
@@ -15,6 +15,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,41 +28,61 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    // OSMDroid
-    implementation("org.osmdroid:osmdroid-android:6.1.16")
-
-    // Circle Image View  👈 VERY IMPORTANT
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    // Firebase
+
+    // 🔥 Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Firebase Storage (profile image)
+    implementation("com.google.firebase:firebase-storage")
+
+// Glide (image loading)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+
+    // 🔥 Firebase BOM
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+    // 🔐 Firebase Auth
     implementation("com.google.firebase:firebase-auth-ktx")
+
+    // 🗄️ Firestore
     implementation("com.google.firebase:firebase-firestore-ktx")
+
+    // 📦 Firebase Storage (VERY IMPORTANT FOR YOUR ISSUE)
     implementation("com.google.firebase:firebase-storage-ktx")
 
-    // Glide
+    // 🖼️ Glide (OK as is)
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation(libs.androidx.activity)
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Location
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+
+
 }
+apply(plugin = "com.google.gms.google-services")
