@@ -168,7 +168,8 @@ class OwnerVerification : AppCompatActivity() {
                         mapOf(
                             "verificationSubmitted" to true,
                             "isVerified" to false,
-                            "ownerSetupDone" to true
+                            "ownerSetupDone" to true,
+                            "fullName" to idProof
                         )
                     )
 

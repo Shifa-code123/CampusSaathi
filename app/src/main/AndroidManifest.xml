@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- ✅ Permissions yaha aate hai (Application ke bahar) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,23 +14,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CampusSaathi">
+        android:theme="@style/Theme.CampusSaathi"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+        <!-- ALL ACTIVITIES SAME -->
         <activity
             android:name=".ActivityOwnerAddNewList6"
             android:exported="false" />
         <activity
             android:name=".OwnerVerification"
             android:exported="false" />
-        <!-- GOOGLE MAP API -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY_HERE" /> <!-- ADMIN -->
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false" />
         <activity
             android:name=".AdminReviewActivity"
-            android:exported="false" /> <!-- OWNER -->
+            android:exported="false" />
         <activity
             android:name=".ActivityOwnerDashboard"
             android:exported="false" />
@@ -62,7 +67,7 @@
             android:exported="false" />
         <activity
             android:name=".OwnerVerificationStatus"
-            android:exported="false" /> <!-- AUTH -->
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -74,10 +79,10 @@
             android:exported="false" />
         <activity
             android:name=".ChooseOwnerType"
-            android:exported="false" /> <!-- STUDENT -->
+            android:exported="false" />
         <activity
             android:name=".StudentDashboardActivity"
-            android:exported="false" /> <!-- SPLASH (LAUNCHER) -->
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">

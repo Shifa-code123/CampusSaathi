@@ -76,7 +76,8 @@ class ActivityOwnerProfile : AppCompatActivity() {
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) return@addOnSuccessListener
 
-                txtName.text = doc.getString("name")
+                val name = doc.getString("fullName")
+                txtName.text = if (!name.isNullOrEmpty()) name else "Owner"
                 txtRole.text = doc.getString("role")
                 txtPhone.text = doc.getString("phone")
                 txtEmail.text = doc.getString("email")

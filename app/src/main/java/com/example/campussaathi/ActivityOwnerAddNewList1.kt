@@ -191,6 +191,7 @@ class ActivityOwnerAddNewList1 : AppCompatActivity() {
                 intent.putExtra("LISTING_ID", docRef.id)
                 intent.putExtra("OWNER_TYPE", ownerType)
                 startActivity(intent)
+                finish()
             }
             .addOnFailureListener {
                 toast(it.message ?: "Firebase error")

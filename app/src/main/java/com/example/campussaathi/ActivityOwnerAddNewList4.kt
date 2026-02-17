@@ -1,75 +1,65 @@
 package com.example.campussaathi
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.*
 import com.google.firebase.firestore.FirebaseFirestore
+import org.osmdroid.config.Configuration
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
-class ActivityOwnerAddNewList4 : AppCompatActivity(),
-    OnMapReadyCallback,
-    GoogleMap.OnMapClickListener {
+class ActivityOwnerAddNewList4 : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
-    private lateinit var mMap: GoogleMap
-
-    private var listingId: String? = null
-    private var ownerType: String? = null
-
-    private var selectedLatLng: LatLng? = null
-    private var distanceKm: Double = 0.0
-
-    // 📍 Khamgaon Campus Location
-    private val campusLatLng = LatLng(20.7074, 76.5680)
-
-    // Views
-    private lateinit var etArea: EditText
-    private lateinit var etLandmark: EditText
-    private lateinit var etCity: EditText
-    private lateinit var etPincode: EditText
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var map: MapView
     private lateinit var txtDistance: TextView
+    private lateinit var btnGps: ImageView
+    private lateinit var btnNext: Button
 
-    // Layouts
     private lateinit var layoutRoom: LinearLayout
     private lateinit var layoutMess: LinearLayout
     private lateinit var layoutTuition: LinearLayout
 
-    // Room
-    private lateinit var cbNearCampus: CheckBox
-    private lateinit var cbMarketNearby: CheckBox
-    private lateinit var cbHospitalNearby: CheckBox
+    private var ownerType: String? = null
+    private var listingId: String? = null
 
-    // Mess
-    private lateinit var etServiceRadius: EditText
-    private lateinit var cbHomeDelivery: CheckBox
-    private lateinit var cbPickupAvailable: CheckBox
+    private var selectedGeoPoint: GeoPoint? = null
+    private var distanceKm: Double = 0.0
 
-    // Tuition
-    private lateinit var cbMainRoad: CheckBox
-    private lateinit var cbSafeArea: CheckBox
-    private lateinit var cbParkingAvailable: CheckBox
+    private val LOCATION_PERMISSION_CODE = 100
 
-    private lateinit var btnNext: Button
+    private val campusLat = 20.7074
+    private val campusLng = 76.5680
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list4)
 
         db = FirebaseFirestore.getInstance()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        listingId = intent.getStringExtra("LISTING_ID")
         ownerType = intent.getStringExtra("OWNER_TYPE")?.lowercase()
+        listingId = intent.getStringExtra("LISTING_ID")
+
 
         initViews()
         showCorrectLayout()
+        setupMap()
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        btnGps.setOnClickListener {
+            checkLocationPermission()
+        }
 
         btnNext.setOnClickListener {
             saveStep4()
@@ -77,34 +67,17 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     }
 
     private fun initViews() {
-
-        etArea = findViewById(R.id.etArea)
-        etLandmark = findViewById(R.id.etLandmark)
-        etCity = findViewById(R.id.etCity)
-        etPincode = findViewById(R.id.etPincode)
+        map = findViewById(R.id.map)
         txtDistance = findViewById(R.id.txtDistance)
+        btnGps = findViewById(R.id.btnGps)
+        btnNext = findViewById(R.id.btnNextStep4)
 
         layoutRoom = findViewById(R.id.layoutRoomStep4)
         layoutMess = findViewById(R.id.layoutMessStep4)
         layoutTuition = findViewById(R.id.layoutTuitionStep4)
-
-        cbNearCampus = findViewById(R.id.cbNearCampus)
-        cbMarketNearby = findViewById(R.id.cbMarketNearby)
-        cbHospitalNearby = findViewById(R.id.cbHospitalNearby)
-
-        etServiceRadius = findViewById(R.id.etServiceRadius)
-        cbHomeDelivery = findViewById(R.id.cbHomeDelivery)
-        cbPickupAvailable = findViewById(R.id.cbPickupAvailable)
-
-        cbMainRoad = findViewById(R.id.cbMainRoad)
-        cbSafeArea = findViewById(R.id.cbSafeArea)
-        cbParkingAvailable = findViewById(R.id.cbParkingAvailable)
-
-        btnNext = findViewById(R.id.btnNextStep4)
     }
 
     private fun showCorrectLayout() {
-
         layoutRoom.visibility = View.GONE
         layoutMess.visibility = View.GONE
         layoutTuition.visibility = View.GONE
@@ -118,50 +91,114 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
 
     /* ================= MAP ================= */
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+    private fun setupMap() {
 
-        mMap.moveCamera(
-            CameraUpdateFactory.newLatLngZoom(campusLatLng, 16f)
+        Configuration.getInstance().load(
+            applicationContext,
+            getSharedPreferences("osm", MODE_PRIVATE)
         )
 
-        mMap.addMarker(
-            MarkerOptions().position(campusLatLng).title("Campus - Khamgaon")
-        )
+        map.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK)
+        map.setMultiTouchControls(true)
 
-        mMap.setOnMapClickListener(this)
+        val startPoint = GeoPoint(campusLat, campusLng)
+        map.controller.setZoom(16.0)
+        map.controller.setCenter(startPoint)
+
+        map.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+
+                val projection = map.projection
+                val geoPoint = projection.fromPixels(
+                    event.x.toInt(),
+                    event.y.toInt()
+                ) as GeoPoint
+
+                selectedGeoPoint = geoPoint
+                showMarker(geoPoint)
+                calculateDistance(geoPoint)
+            }
+            false
+        }
     }
 
-    override fun onMapClick(latLng: LatLng) {
+    private fun showMarker(point: GeoPoint) {
+        map.overlays.clear()
 
-        mMap.clear()
+        val marker = Marker(map)
+        marker.position = point
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
 
-        mMap.addMarker(
-            MarkerOptions().position(campusLatLng).title("Campus")
-        )
-
-        mMap.addMarker(
-            MarkerOptions().position(latLng).title("Selected Location")
-        )
-
-        selectedLatLng = latLng
-        calculateDistance(latLng)
+        map.overlays.add(marker)
+        map.invalidate()
     }
 
-    private fun calculateDistance(dest: LatLng) {
+    /* ================= GPS ================= */
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_CODE
+            )
+        } else {
+            getCurrentLocation()
+        }
+    }
+
+    private fun getCurrentLocation() {
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) return
+
+        fusedLocationClient.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            null
+        ).addOnSuccessListener { location ->
+
+            if (location != null) {
+
+                val geoPoint = GeoPoint(location.latitude, location.longitude)
+                selectedGeoPoint = geoPoint
+
+                map.controller.setCenter(geoPoint)
+                showMarker(geoPoint)
+                calculateDistance(geoPoint)
+
+            } else {
+                Toast.makeText(this, "Turn ON GPS", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /* ================= DISTANCE ================= */
+
+    private fun calculateDistance(dest: GeoPoint) {
 
         val result = FloatArray(1)
 
         Location.distanceBetween(
-            campusLatLng.latitude,
-            campusLatLng.longitude,
+            campusLat,
+            campusLng,
             dest.latitude,
             dest.longitude,
             result
         )
 
-        distanceKm = result[0].toDouble() / 1000
-        txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
+        distanceKm = result[0] / 1000.0
+
+        txtDistance.text = String.format(
+            "Distance from campus: %.2f km",
+            distanceKm
+        )
     }
 
     /* ================= SAVE ================= */
@@ -169,72 +206,39 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     private fun saveStep4() {
 
         if (listingId == null) {
-            toast("Listing ID missing")
+            Toast.makeText(this, "Listing ID missing", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (selectedLatLng == null) {
-            toast("Please select location on map")
+        if (selectedGeoPoint == null) {
+            Toast.makeText(this, "Select location on map", Toast.LENGTH_SHORT).show()
             return
         }
+        Toast.makeText(this, "ID = $listingId", Toast.LENGTH_LONG).show()
 
-        if (etArea.text.isEmpty() || etCity.text.isEmpty() || etPincode.text.isEmpty()) {
-            toast("Fill required address fields")
-            return
-        }
 
-        val data = hashMapOf<String, Any>()
-
-        // Common
-        data["area"] = etArea.text.toString()
-        data["landmark"] = etLandmark.text.toString()
-        data["city"] = etCity.text.toString()
-        data["pincode"] = etPincode.text.toString()
-
-        data["latitude"] = selectedLatLng!!.latitude
-        data["longitude"] = selectedLatLng!!.longitude
-        data["distanceFromCampus"] = distanceKm
-
-        // Owner type specific
-        when (ownerType) {
-
-            "room", "room_pg" -> {
-                data["nearCampus"] = cbNearCampus.isChecked
-                data["marketNearby"] = cbMarketNearby.isChecked
-                data["hospitalNearby"] = cbHospitalNearby.isChecked
-            }
-
-            "mess" -> {
-                data["serviceRadius"] = etServiceRadius.text.toString()
-                data["homeDelivery"] = cbHomeDelivery.isChecked
-                data["pickupAvailable"] = cbPickupAvailable.isChecked
-            }
-
-            "tuition" -> {
-                data["nearMainRoad"] = cbMainRoad.isChecked
-                data["safeArea"] = cbSafeArea.isChecked
-                data["parkingAvailable"] = cbParkingAvailable.isChecked
-            }
-        }
+        val data = hashMapOf(
+            "latitude" to selectedGeoPoint!!.latitude,
+            "longitude" to selectedGeoPoint!!.longitude,
+            "distanceFromCampus" to distanceKm
+        )
 
         db.collection("listings")
             .document(listingId!!)
-            .update(data)
+            .set(data, com.google.firebase.firestore.SetOptions.merge())
             .addOnSuccessListener {
 
-                toast("Step-4 saved successfully")
+                Toast.makeText(this, "Step 4 Saved", Toast.LENGTH_SHORT).show()
 
-                val i = Intent(this, ActivityOwnerAddNewList5::class.java)
-                i.putExtra("LISTING_ID", listingId)
-                i.putExtra("OWNER_TYPE", ownerType)
-                startActivity(i)
+                val intent = Intent(this, TestActivity::class.java)
+                intent.putExtra("LISTING_ID", listingId)
+                intent.putExtra("OWNER_TYPE", ownerType)
+                startActivity(intent)
+                finish()
             }
             .addOnFailureListener {
-                toast(it.message ?: "Firebase error")
+                Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_LONG).show()
             }
     }
 
-    private fun toast(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-    }
 }

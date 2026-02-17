@@ -1,5 +1,6 @@
 package com.example.campussaathi
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.*
@@ -36,7 +37,12 @@ class ActivityOwnerAddNewList5 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_add_new_list5)
 
+
         listingId = intent.getStringExtra("LISTING_ID")
+
+        Toast.makeText(this, "Step5 listingId = $listingId", Toast.LENGTH_LONG).show()
+
+
 
         if (listingId == null) {
             Toast.makeText(this, "Listing ID missing", Toast.LENGTH_SHORT).show()
@@ -126,7 +132,11 @@ class ActivityOwnerAddNewList5 : AppCompatActivity() {
             .addOnSuccessListener {
 
                 Toast.makeText(this, "Listing submitted successfully", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ActivityOwnerAddNewList6::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
                 finish()
+
             }
             .addOnFailureListener {
                 btnSubmit.isEnabled = true
