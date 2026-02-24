@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F7F9FC">
+        android:background="#FFFFFF">
 
         <!-- ================= HEADER ================= -->
         <RelativeLayout
@@ -45,6 +45,32 @@
                 android:textStyle="bold"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
+
+        <!-- ===== GREETING SECTION ===== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#111827"/>
+
+            <TextView
+                android:id="@+id/txtOwnerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#6B7280"/>
+        </LinearLayout>
 
 
 
@@ -78,7 +104,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#5C8EF2"
+                        android:background="#BB4370CA"
                         android:padding="16dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
@@ -127,7 +153,7 @@
                     <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#FFA726"
+                    android:background="#DD9876D3"
                     android:padding="16dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
@@ -185,7 +211,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#66BB6A"
+                        android:background="#DA8ED192"
                         android:padding="16dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
@@ -235,7 +261,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#EF5350"
+                        android:background="#DEE07473"
                         android:padding="16dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
@@ -281,11 +307,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:text="@string/add_new_listing"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#A7D5F8"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="#CAE3F4"
                 android:textColor="#000000"
                 android:textAllCaps="false"
                 android:drawableStart="@drawable/ic_add"
+                android:drawableTint="@android:color/white"
                 android:drawablePadding="12dp" />
 
             <Button
@@ -294,8 +321,8 @@
                 android:layout_height="wrap_content"
                 android:text="Edit Listing"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="#FF9800"
-                android:textColor="@android:color/white"/>
+                android:backgroundTint="#CAE3F4"
+                android:textColor="#000000"/>
 
             <Button
                 android:id="@+id/btnViewListing"
@@ -303,8 +330,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="#83D987"
-                android:textColor="@android:color/white"/>
+                android:backgroundTint="#CAE3F4"
+                android:textColor="#000000"/>
 
 
             <Button
@@ -312,7 +339,7 @@
                 android:layout_height="48dp"
                 android:text="@string/manage_listing"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="#AA9AD1"
+                android:backgroundTint="#CAE3F4"
                 android:textColor="#000000"
                 android:textAllCaps="false"
                 android:drawableStart="@drawable/ic_list"
@@ -324,278 +351,12 @@
                 android:layout_height="48dp"
                 android:text="@string/view_requests"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="#6B97B8"
+                android:backgroundTint="#CAE3F4"
                 android:textColor="#000000"
                 android:textAllCaps="false"
                 android:drawableStart="@drawable/ic_send"
                 android:drawablePadding="12dp" />
 
-
-
-
-
-            <!-- ================= MY LISTINGS ================= -->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_marginTop="20dp">-->
-
-<!--            &lt;!&ndash; Header &ndash;&gt;-->
-<!--            <RelativeLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="8dp">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/my_listings"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:textColor="#000000"/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/view_all_listings"-->
-<!--                    android:textSize="12sp"-->
-<!--                    android:textColor="#2196F3"-->
-<!--                    android:layout_alignParentEnd="true"/>-->
-<!--            </RelativeLayout>-->
-
-<!--            &lt;!&ndash; ========= LIST ITEM 1 ========= &ndash;&gt;-->
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="10dp"-->
-<!--                app:cardCornerRadius="12dp"-->
-<!--                app:cardElevation="4dp">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:padding="10dp">-->
-
-<!--                    &lt;!&ndash; Thumbnail &ndash;&gt;-->
-<!--                    <ImageView-->
-<!--                        android:layout_width="50dp"-->
-<!--                        android:layout_height="50dp"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/ic_room" />-->
-
-<!--                    &lt;!&ndash; Details &ndash;&gt;-->
-
-<!--                    &lt;!&ndash; Status &ndash;&gt;-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="10dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:orientation="vertical">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Shivaji Girls PG"-->
-<!--                            android:textSize="13sp"-->
-<!--                            android:textStyle="bold" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="₹8,000 / month"-->
-<!--                            android:textColor="#666666"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="end"-->
-<!--                            android:orientation="horizontal"-->
-<!--                            android:padding="8dp">-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="Edit"-->
-<!--                                android:textColor="#2196F3"-->
-<!--                                android:textSize="12sp" />-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="  |  "-->
-<!--                                android:textColor="#999999" />-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="View"-->
-<!--                                android:textColor="#2196F3"-->
-<!--                                android:textSize="12sp" />-->
-<!--                        </LinearLayout>-->
-<!--                    </LinearLayout>-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:background="@drawable/status_pending"-->
-<!--                        android:paddingHorizontal="8dp"-->
-<!--                        android:paddingVertical="4dp"-->
-<!--                        android:text="Pending"-->
-<!--                        android:textColor="#856404"-->
-<!--                        android:textSize="10sp" />-->
-<!--                </LinearLayout>-->
-
-<!--                &lt;!&ndash; Edit | View &ndash;&gt;-->
-<!--            </androidx.cardview.widget.CardView>-->
-
-<!--            &lt;!&ndash; ========= LIST ITEM 2 ========= &ndash;&gt;-->
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="10dp"-->
-<!--                app:cardCornerRadius="12dp"-->
-<!--                app:cardElevation="4dp">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:padding="10dp"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="50dp"-->
-<!--                        android:layout_height="50dp"-->
-<!--                        android:src="@drawable/ic_room"/>-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_marginStart="10dp">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Shivaji Girls PG"-->
-<!--                            android:textStyle="bold"-->
-<!--                            android:textSize="13sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="2-Shared Room"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="#666666"/>-->
-
-<!--                    </LinearLayout>-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Edit"-->
-<!--                        android:textColor="#2196F3"-->
-<!--                        android:textSize="12sp" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="  |  "-->
-<!--                        android:textColor="#999999" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="View"-->
-<!--                        android:textColor="#2196F3"-->
-<!--                        android:textSize="12sp" />-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Accepted"-->
-<!--                        android:textSize="10sp"-->
-<!--                        android:textColor="#155724"-->
-<!--                        android:background="@drawable/status_accepted"-->
-<!--                        android:paddingHorizontal="8dp"-->
-<!--                        android:paddingVertical="4dp"/>-->
-<!--                </LinearLayout>-->
-<!--            </androidx.cardview.widget.CardView>-->
-
-<!--            &lt;!&ndash; ========= LIST ITEM 3 ========= &ndash;&gt;-->
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:cardCornerRadius="12dp"-->
-<!--                app:cardElevation="4dp">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:padding="10dp"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="50dp"-->
-<!--                        android:layout_height="50dp"-->
-<!--                        android:src="@drawable/ic_room"/>-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_marginStart="10dp">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Shivaji Girls PG"-->
-<!--                            android:textStyle="bold"-->
-<!--                            android:textSize="13sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="3-Sharing Room"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="#666666"/>-->
-
-<!--                    </LinearLayout>-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Edit"-->
-<!--                        android:textColor="#2196F3"-->
-<!--                        android:textSize="12sp" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="  |  "-->
-<!--                        android:textColor="#999999" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="View"-->
-<!--                        android:textColor="#2196F3"-->
-<!--                        android:textSize="12sp" />-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Rejected"-->
-<!--                        android:textSize="10sp"-->
-<!--                        android:textColor="#721C24"-->
-<!--                        android:background="@drawable/status_rejected"-->
-<!--                        android:paddingHorizontal="8dp"-->
-<!--                        android:paddingVertical="4dp"/>-->
-<!--                </LinearLayout>-->
-<!--            </androidx.cardview.widget.CardView>-->
-<!--        </LinearLayout>-->
         </LinearLayout>
 
     </ScrollView>

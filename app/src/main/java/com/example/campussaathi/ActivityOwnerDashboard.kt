@@ -12,6 +12,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
+import android.widget.TextView
 
 class ActivityOwnerDashboard : AppCompatActivity() {
 
@@ -24,6 +26,40 @@ class ActivityOwnerDashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_dashboard)
+
+        val txtGreeting = findViewById<TextView>(R.id.txtGreeting)
+        val txtOwnerName = findViewById<TextView>(R.id.txtOwnerName)
+
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+        val greeting = when (hour) {
+            in 0..11 -> "Good Morning,"
+            in 12..16 -> "Good Afternoon,"
+            in 17..20 -> "Good Evening,"
+            else -> "Good Night,"
+        }
+
+        txtGreeting.text = greeting
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uid != null) {
+            db.collection("owner_verifications")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val name = document.getString("fullName") ?: "Owner"
+                        txtOwnerName.text = name
+                    } else {
+                        txtOwnerName.text = "Owner"
+                    }
+                }
+                .addOnFailureListener {
+                    txtOwnerName.text = "Owner"
+                }
+        }
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigation_view)

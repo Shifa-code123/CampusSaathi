@@ -9,6 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.app.AlertDialog
+import android.content.Intent
+import android.widget.Toast
 
 class ActivityOwnerViewListing : AppCompatActivity() {
 
@@ -19,6 +22,7 @@ class ActivityOwnerViewListing : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_view_listing)
 
+
         uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid == null) {
             finish()
@@ -26,6 +30,12 @@ class ActivityOwnerViewListing : AppCompatActivity() {
         }
 
         loadListing()
+
+        val btnDelete = findViewById<TextView>(R.id.btnDelete)
+
+        btnDelete.setOnClickListener {
+            showDeleteConfirmation()
+        }
     }
 
     private fun loadListing() {
@@ -128,16 +138,53 @@ class ActivityOwnerViewListing : AppCompatActivity() {
                     val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
                     val imageView = ImageView(this)
-                    imageView.layoutParams = LinearLayout.LayoutParams(
+
+                    val params = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         500
                     )
-                    imageView.setImageBitmap(bitmap)
+                    params.setMargins(0, 12, 0, 20)
+
+                    imageView.layoutParams = params
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    imageView.setPadding(0, 16, 0, 16)
+                    imageView.setImageBitmap(bitmap)
 
                     layoutImages.addView(imageView)
                 }
+            }
+    }
+
+    // ✅ ADDED: Show confirmation before delete
+    private fun showDeleteConfirmation() {
+
+        AlertDialog.Builder(this)
+            .setTitle("Delete Listing")
+            .setMessage("Are you sure you want to delete this listing? This action cannot be undone.")
+            .setPositiveButton("Delete") { _, _ ->
+                deleteListing()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    // ✅ ADDED: Delete listing from Firestore
+    private fun deleteListing() {
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        FirebaseFirestore.getInstance()
+            .collection("listings")
+            .document(uid)
+            .delete()
+            .addOnSuccessListener {
+
+                Toast.makeText(this, "Listing deleted", Toast.LENGTH_SHORT).show()
+
+                // Navigate back to dashboard after delete
+                startActivity(Intent(this, ActivityOwnerDashboard::class.java))
+                finish()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to delete listing", Toast.LENGTH_SHORT).show()
             }
     }
 }

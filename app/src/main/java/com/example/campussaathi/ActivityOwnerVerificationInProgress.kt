@@ -16,13 +16,14 @@ class ActivityOwnerVerificationInProgress : AppCompatActivity() {
         val uid = user.uid
 
         FirebaseFirestore.getInstance()
-            .collection("users").document(uid)
+            .collection("owner_verifications") // ✅ FIXED
+            .document(uid)
             .addSnapshotListener { doc, _ ->
-                if (doc == null) return@addSnapshotListener
+                if (doc == null || !doc.exists()) return@addSnapshotListener
 
-                val isVerified = doc.getBoolean("isVerified") ?: false
+                val status = doc.getString("status") ?: "pending"
 
-                if (isVerified) {
+                if (status == "approved") {
                     startActivity(Intent(this, ActivityOwnerDashboard::class.java))
                     finish()
                 }
