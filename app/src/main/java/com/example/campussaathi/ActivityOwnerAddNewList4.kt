@@ -1,6 +1,7 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.View
@@ -10,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.android.gms.location.FusedLocationProviderClient
+
 
 class ActivityOwnerAddNewList4 : AppCompatActivity(),
     OnMapReadyCallback,
@@ -31,11 +35,14 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     private val campusLatLng = LatLng(20.7074, 76.5680)
 
     private lateinit var etArea: EditText
+    private lateinit var btnGps: ImageView
     private lateinit var etLandmark: EditText
     private lateinit var etCity: EditText
     private lateinit var etPincode: EditText
     private lateinit var txtDistance: TextView
     private lateinit var btnNext: Button
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val LOCATION_PERMISSION_REQUEST = 100
 
     // Layouts
     private lateinit var layoutRoom: LinearLayout
@@ -73,6 +80,9 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             finish()
             return
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+
 
         db = FirebaseFirestore.getInstance()
 
@@ -108,6 +118,11 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     }
 
     private fun initViews() {
+        btnGps = findViewById(R.id.btnGps)
+
+        btnGps.setOnClickListener {
+            getCurrentLocation()
+        }
 
         etArea = findViewById(R.id.etArea)
         etLandmark = findViewById(R.id.etLandmark)
@@ -119,6 +134,7 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         layoutRoom = findViewById(R.id.layoutRoomStep4)
         layoutMess = findViewById(R.id.layoutMessStep4)
         layoutTuition = findViewById(R.id.layoutTuitionStep4)
+
 
         cbNearCampus = findViewById(R.id.cbNearCampus)
         cbMarketNearby = findViewById(R.id.cbMarketNearby)
@@ -256,6 +272,69 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
 
                 finish()
             }
+    }
+    private fun getCurrentLocation() {
+
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+
+                if (location != null) {
+
+                    val latLng = LatLng(location.latitude, location.longitude)
+
+                    selectedLatLng = latLng
+
+                    mMap?.clear()
+
+                    mMap?.addMarker(
+                        MarkerOptions()
+                            .position(campusLatLng)
+                            .title("Campus")
+                    )
+
+                    mMap?.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title("Your Location")
+                    )
+
+                    mMap?.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(latLng, 17f)
+                    )
+
+                    calculateDistance(latLng)
+
+                    toast("Current location detected")
+
+                } else {
+                    toast("Unable to get location")
+                }
+            }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST &&
+            grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            getCurrentLocation()
+        }
     }
 
     private fun toast(msg: String) {

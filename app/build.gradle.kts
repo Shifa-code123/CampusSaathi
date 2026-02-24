@@ -56,6 +56,7 @@ dependencies {
 
     // Firebase Storage (profile image)
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 // Glide (image loading)
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -80,6 +81,7 @@ dependencies {
     // 🖼️ Glide (OK as is)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
 
 
 
