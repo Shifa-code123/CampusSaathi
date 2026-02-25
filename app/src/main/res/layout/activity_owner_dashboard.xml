@@ -28,10 +28,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- Empty space to balance left icon -->
-            <Space
-                android:layout_width="48dp"
-                android:layout_height="match_parent"/>
+
 
             <!-- Center Title -->
             <TextView

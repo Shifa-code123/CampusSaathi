@@ -21,6 +21,20 @@
     <string name="id_proof_hint">Upload Aadhaar card, PAN card, or college ID</string>
     <string name="upload_id">Upload ID Proof</string>
     <string name="id_safe">Your ID is safe and will not be shared with students.</string>
+    <string-array name="filter_days">
+        <item>Last 7 Days</item>
+        <item>Last 30 Days</item>
+        <item>Last 90 Days</item>
+        <item>Last 6 Months</item>
+        <item>Last 1 Year</item>
+    </string-array>
+
+    <string-array name="filter_services">
+        <item>All Services</item>
+        <item>Room / PG</item>
+        <item>Mess</item>
+        <item>Tuition</item>
+    </string-array>
 
     <string name="property_proof">Property Proof</string>
     <string name="electricity_bill">Electricity bill</string>
