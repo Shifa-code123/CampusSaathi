@@ -69,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="12dp">
+            android:padding="12dp"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -443,7 +444,7 @@
                         android:id="@+id/btnAddListing"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="+ Add Service"
+                        android:text="Add Service"
                         android:textColor="#ffffff"
                         android:background="@drawable/blue_button"
                         app:backgroundTint="@null"
@@ -469,28 +470,26 @@
 
 
                     <com.google.android.material.button.MaterialButton
-                        android:layout_height="48dp"
                         android:id="@+id/btnViewListing"
                         android:layout_width="0dp"
+                        android:layout_height="48dp"
                         android:layout_weight="1"
                         android:text="View Listing"
                         android:textColor="#ffffff"
-                        android:background="@drawable/blue_button"
+                        android:background="@drawable/teal_button"
                         app:backgroundTint="@null"
                         android:layout_margin="5dp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:layout_height="48dp"
                         android:id="@+id/btnManageListing"
                         android:layout_width="0dp"
+                        android:layout_height="48dp"
                         android:layout_weight="1"
                         android:text="Manage listing"
                         android:textColor="#ffffff"
-                        android:background="@drawable/orange_button"
+                        android:background="@drawable/purple_button"
                         app:backgroundTint="@null"
                         android:layout_margin="5dp"/>
-
-
                 </LinearLayout>
                 <!-- ================= TABS ================= -->
 
@@ -698,11 +697,13 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <!-- DRAWER MENU -->
-<com.google.android.material.navigation.NavigationView
-android:id="@+id/navigation_view"
-android:layout_width="280dp"
-android:layout_height="match_parent"
-android:layout_gravity="start"
-app:menu="@menu/owner_menu_drawer"/>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemBackground="@drawable/nav_item_background"
+        app:menu="@menu/owner_menu_drawer"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>

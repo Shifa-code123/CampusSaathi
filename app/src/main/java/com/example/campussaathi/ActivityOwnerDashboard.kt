@@ -34,6 +34,10 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         val headerProfile = findViewById<ImageView>(R.id.headerProfile)
         val profileImage = findViewById<ImageView>(R.id.profileImage)
 
+
+
+
+
         headerProfile.setOnClickListener {
             startActivity(Intent(this, ActivityOwnerProfile::class.java))
         }
@@ -86,6 +90,35 @@ class ActivityOwnerDashboard : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        val headerView = navigationView.inflateHeaderView(R.layout.owner_drawer_header)
+        val headerName = headerView.findViewById<TextView>(R.id.headerName)
+        val headerRole = headerView.findViewById<TextView>(R.id.headerRole)
+        val headerProfileDrawer = headerView.findViewById<ImageView>(R.id.headerProfile)
+
+        val uidDrawer = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uidDrawer != null) {
+
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(uidDrawer)
+                .get()
+                .addOnSuccessListener { doc ->
+
+                    headerName.text = doc.getString("fullName") ?: "Owner"
+                    headerRole.text = doc.getString("role") ?: "Owner"
+
+                    val base64 = doc.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                        headerProfileDrawer.setImageBitmap(bitmap)
+                    }
+                }
+        }
 
         val btnViewListing = findViewById<Button>(R.id.btnViewListing)
 

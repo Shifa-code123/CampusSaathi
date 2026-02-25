@@ -57,6 +57,11 @@ class ActivityOwnerProfile : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigation_view)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val headerView = navigationView.inflateHeaderView(R.layout.owner_drawer_header)
+
+        val headerName = headerView.findViewById<TextView>(R.id.headerName)
+        val headerRole = headerView.findViewById<TextView>(R.id.headerRole)
+        val headerProfile = headerView.findViewById<ImageView>(R.id.headerProfile)
 
         // Make Toolbar act as ActionBar
         setSupportActionBar(toolbar)
@@ -76,7 +81,26 @@ class ActivityOwnerProfile : AppCompatActivity() {
         // Sync hamburger icon state
         toggle.syncState()
 
+// ADD THIS HERE ↓↓↓
 
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uid != null) {
+            db.collection("users").document(uid).get()
+                .addOnSuccessListener { doc ->
+                    headerName.text = doc.getString("fullName") ?: "Owner"
+                    headerRole.text = doc.getString("role") ?: "Owner"
+
+                    val base64 = doc.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        headerProfile.setImageBitmap(bitmap)
+                    }
+                }
+        }
 
         bindViews()
         loadProfileData()
