@@ -1,6 +1,7 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
@@ -62,22 +63,120 @@ class ActivityOwnerAddNewList5 : AppCompatActivity() {
     }
 
     private fun setupDrawer() {
+
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigation_view)
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         setSupportActionBar(toolbar)
 
         toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            R.string.open, R.string.close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open,
+            R.string.close
         )
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+
+        // ✅ HEADER CONNECT
+        val headerView =
+            navigationView.inflateHeaderView(R.layout.owner_drawer_header)
+
+        val headerName =
+            headerView.findViewById<TextView>(R.id.headerName)
+
+        val headerRole =
+            headerView.findViewById<TextView>(R.id.headerRole)
+
+        val headerProfile =
+            headerView.findViewById<ImageView>(R.id.headerProfile)
+
+        val uidDrawer =
+            FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uidDrawer != null) {
+
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(uidDrawer)
+                .get()
+                .addOnSuccessListener {
+
+                    headerName.text =
+                        it.getString("fullName") ?: "Owner"
+
+                    headerRole.text =
+                        it.getString("role") ?: "Owner"
+
+                    val base64 =
+                        it.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+
+                        val bytes =
+                            Base64.decode(base64, Base64.DEFAULT)
+
+                        val bitmap =
+                            BitmapFactory.decodeByteArray(
+                                bytes,
+                                0,
+                                bytes.size
+                            )
+
+                        headerProfile.setImageBitmap(bitmap)
+                    }
+                }
+        }
+
+
+        // ✅ MENU CLICK NAVIGATION
         navigationView.setNavigationItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_dashboard ->
+                    startActivity(
+                        Intent(this, ActivityOwnerDashboard::class.java)
+                    )
+
+                R.id.nav_profile ->
+                    startActivity(
+                        Intent(this, ActivityOwnerProfile::class.java)
+                    )
+
+                R.id.nav_my_listing ->
+                    startActivity(
+                        Intent(this, ActivityOwnerViewListing::class.java)
+                    )
+
+                R.id.nav_add_listing -> {
+                    // already here
+                }
+
+                R.id.nav_submission ->
+                    startActivity(
+                        Intent(this, ActivityOwnerSubmissionList1::class.java)
+                    )
+
+                R.id.nav_logout -> {
+
+                    FirebaseAuth.getInstance().signOut()
+
+                    startActivity(
+                        Intent(this, LoginActivity::class.java)
+                    )
+
+                    finish()
+                }
+            }
+
             drawerLayout.closeDrawer(GravityCompat.START)
+
             true
         }
     }
