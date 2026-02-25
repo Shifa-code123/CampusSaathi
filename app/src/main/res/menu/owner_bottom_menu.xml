@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_home"
+        android:title="Dashboard"/>
+
+    <item
+        android:id="@+id/nav_services"
+        android:icon="@drawable/ic_availability"
+        android:title="My Services"/>
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_add"
+        android:title="Add"/>
+
+    <item
+        android:id="@+id/nav_reviews"
+        android:icon="@drawable/ic_star"
+        android:title="Reviews"/>
+
+    <item
+        android:id="@+id/nav_insights"
+        android:icon="@drawable/ic_chart"
+        android:title="Insights"/>
+
 </menu>

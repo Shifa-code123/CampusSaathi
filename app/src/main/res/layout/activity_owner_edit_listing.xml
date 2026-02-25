@@ -1,286 +1,374 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#F4F6FA"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="32dp"
-        android:orientation="vertical"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="#F4F6FA">
 
-        <!-- TITLE -->
-        <TextView
-            android:text="Edit Listing"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#111827"
-            android:layout_marginBottom="28dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- ================= ROOM SECTION ================= -->
-        <LinearLayout
-            android:id="@+id/layoutRoom"
-            android:orientation="vertical"
+        <!-- HEADER TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:background="#2196F3"
+            app:navigationIcon="@drawable/ic_menu">
 
-            <TextView
-                android:text="Property Name"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etPropertyName"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:text="Rent"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <Space
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"/>
 
-            <EditText
-                android:id="@+id/etRent"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Edit Listing"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/headerProfile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/default_avatar"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <!-- BODY + FOOTER CONTAINER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize">
+
+            <!-- BODY -->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            <TextView
-                android:text="Total Rooms"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <!-- YOUR EXISTING FORM CONTENT -->
+                <LinearLayout
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="32dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/etTotalUnits"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
+                    <!-- TITLE -->
+                    <TextView
+                        android:text="Edit Listing"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="#111827"
+                        android:layout_marginBottom="28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- ================= ROOM SECTION ================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutRoom"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="Property Name"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etPropertyName"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Rent"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etRent"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Total Rooms"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etTotalUnits"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Vacant Rooms"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etAvailableUnits"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="28dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                    </LinearLayout>
+
+                    <!-- ================= MESS SECTION ================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutMess"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="Mess Name"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etMessName"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Monthly Charge"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etMonthlyCharge"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Daily Charge"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etDailyCharge"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="28dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                    </LinearLayout>
+
+                    <!-- ================= TUITION SECTION ================= -->
+                    <LinearLayout
+                        android:id="@+id/layoutTuition"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="Tuition Name"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etTuitionName"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Fees"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etFees"
+                            android:inputType="number"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                        <TextView
+                            android:text="Duration"
+                            android:textSize="14sp"
+                            android:textColor="#6B7280"
+                            android:layout_marginBottom="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:id="@+id/etDuration"
+                            android:background="@drawable/edit_bg"
+                            android:padding="14dp"
+                            android:layout_marginBottom="28dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"/>
+
+                    </LinearLayout>
+
+                    <!-- ================= LOCATION ================= -->
+
+                    <TextView
+                        android:text="Area"
+                        android:textSize="14sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/etArea"
+                        android:background="@drawable/edit_bg"
+                        android:padding="14dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"/>
+
+                    <TextView
+                        android:text="City"
+                        android:textSize="14sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/etCity"
+                        android:background="@drawable/edit_bg"
+                        android:padding="14dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"/>
+
+                    <TextView
+                        android:text="Landmark"
+                        android:textSize="14sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/etLandmark"
+                        android:background="@drawable/edit_bg"
+                        android:padding="14dp"
+                        android:layout_marginBottom="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"/>
+
+                    <!-- SAVE BUTTON -->
+                    <Button
+                        android:id="@+id/btnSave"
+                        android:text="Save Changes"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#2563EB"
+                        android:textColor="@android:color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+            <!-- FOOTER -->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNav"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <TextView
-                android:text="Vacant Rooms"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etAvailableUnits"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="28dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="wrap_content"
+                android:minHeight="65dp"
+                android:background="@drawable/bottom_nav_bg"
+                app:menu="@menu/owner_bottom_menu"
+                app:itemIconTint="@color/bottom_nav_selector"
+                app:itemTextColor="@color/bottom_nav_selector"
+                app:labelVisibilityMode="labeled"/>
 
         </LinearLayout>
 
-        <!-- ================= MESS SECTION ================= -->
-        <LinearLayout
-            android:id="@+id/layoutMess"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <TextView
-                android:text="Mess Name"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etMessName"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+    <!-- DRAWER MENU -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
 
-            <TextView
-                android:text="Monthly Charge"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etMonthlyCharge"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <TextView
-                android:text="Daily Charge"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etDailyCharge"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="28dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-        </LinearLayout>
-
-        <!-- ================= TUITION SECTION ================= -->
-        <LinearLayout
-            android:id="@+id/layoutTuition"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="Tuition Name"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etTuitionName"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <TextView
-                android:text="Fees"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etFees"
-                android:inputType="number"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <TextView
-                android:text="Duration"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etDuration"
-                android:background="@drawable/edit_bg"
-                android:padding="14dp"
-                android:layout_marginBottom="28dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-        </LinearLayout>
-
-        <!-- ================= LOCATION ================= -->
-
-        <TextView
-            android:text="Area"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:layout_marginBottom="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/etArea"
-            android:background="@drawable/edit_bg"
-            android:padding="14dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-        <TextView
-            android:text="City"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:layout_marginBottom="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/etCity"
-            android:background="@drawable/edit_bg"
-            android:padding="14dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-        <TextView
-            android:text="Landmark"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:layout_marginBottom="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/etLandmark"
-            android:background="@drawable/edit_bg"
-            android:padding="14dp"
-            android:layout_marginBottom="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-        <!-- SAVE BUTTON -->
-        <Button
-            android:id="@+id/btnSave"
-            android:text="Save Changes"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="#2563EB"
-            android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"/>
-
-    </LinearLayout>
-</ScrollView>
+</androidx.drawerlayout.widget.DrawerLayout>

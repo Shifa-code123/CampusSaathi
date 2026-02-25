@@ -14,6 +14,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 import android.widget.TextView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.widget.ImageView
 
 class ActivityOwnerDashboard : AppCompatActivity() {
 
@@ -27,20 +31,20 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_dashboard)
 
-        val txtGreeting = findViewById<TextView>(R.id.txtGreeting)
-        val txtOwnerName = findViewById<TextView>(R.id.txtOwnerName)
+        val headerProfile = findViewById<ImageView>(R.id.headerProfile)
+        val profileImage = findViewById<ImageView>(R.id.profileImage)
 
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-
-        val greeting = when (hour) {
-            in 0..11 -> "Good Morning,"
-            in 12..16 -> "Good Afternoon,"
-            in 17..20 -> "Good Evening,"
-            else -> "Good Night,"
+        headerProfile.setOnClickListener {
+            startActivity(Intent(this, ActivityOwnerProfile::class.java))
         }
 
-        txtGreeting.text = greeting
+
+        val txtOwnerName = findViewById<TextView>(R.id.txtOwnerName)
+
+        val txtOwnerType = findViewById<TextView>(R.id.txtOwnerType)
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNav.selectedItemId = R.id.nav_dashboard
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -51,13 +55,18 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         val name = document.getString("fullName") ?: "Owner"
+                        val ownerType = document.getString("ownerType") ?: "Owner"
+
                         txtOwnerName.text = name
+                        txtOwnerType.text = ownerType
                     } else {
                         txtOwnerName.text = "Owner"
+                        txtOwnerType.text = "null"
                     }
                 }
                 .addOnFailureListener {
                     txtOwnerName.text = "Owner"
+                    txtOwnerType.text = "null"
                 }
         }
 
@@ -121,11 +130,11 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                 R.id.nav_add_listing -> openOrResumeListing()
 
                 R.id.nav_submission -> {
-                    startActivity(Intent(this, ActivityOwnerSubmissionList1::class.java))
+                    startActivity(Intent(this, ActivityOwnerEditListing::class.java))
                 }
 
                 R.id.nav_my_listing -> {
-                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
+                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
                 }
 
                 R.id.nav_profile -> {
@@ -137,6 +146,74 @@ class ActivityOwnerDashboard : AppCompatActivity() {
 
             drawerLayout.closeDrawer(GravityCompat.START)
             true
+        }
+
+        bottomNav.setOnItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_dashboard -> {
+                    // Already on dashboard
+                    true
+                }
+
+                R.id.nav_services -> {
+                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
+                    true
+                }
+
+                R.id.nav_add -> {
+                    openOrResumeListing()
+                    true
+                }
+
+                R.id.nav_reviews -> {
+                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
+                    true
+                }
+
+                R.id.nav_insights -> {
+                    startActivity(Intent(this, OwnerInsightsActivity::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+
+
+        if (uid != null) {
+
+            db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { doc ->
+
+                    try {
+
+                        val base64 = doc.getString("profileImageBase64")
+
+                        if (!base64.isNullOrEmpty()) {
+
+                            val bytes = Base64.decode(base64, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                            // SET IMAGE BOTH PLACES
+                            headerProfile.setImageBitmap(bitmap)
+                            profileImage.setImageBitmap(bitmap)
+
+                        } else {
+
+                            headerProfile.setImageResource(R.drawable.default_avatar)
+                            profileImage.setImageResource(R.drawable.default_avatar)
+                        }
+
+                    } catch (e: Exception) {
+
+                        headerProfile.setImageResource(R.drawable.default_avatar)
+                    }
+                }
         }
     }
 

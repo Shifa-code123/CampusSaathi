@@ -1,129 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#F4F6FA"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:padding="16dp"
-        android:orientation="vertical"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="#F4F6FA">
 
-        <!-- TITLE -->
-        <TextView
-            android:text="My Listing"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <!-- HEADER TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#2196F3"
+            app:navigationIcon="@drawable/ic_menu">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="View Listing"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/headerProfile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/default_avatar"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <!-- BODY + FOOTER CONTAINER -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize">
 
-            <!-- STATUS BADGE -->
-            <TextView
-                android:id="@+id/txtStatus"
-                android:layout_width="wrap_content"
+            <!-- BODY -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <!-- YOUR EXISTING FORM CONTENT -->
+                <LinearLayout
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TITLE -->
+                    <TextView
+                        android:text="My Listing"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <!-- STATUS BADGE -->
+                        <TextView
+                            android:id="@+id/txtStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+
+                        <!-- SPACE PUSHER -->
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                        <!-- DELETE BUTTON -->
+                        <TextView
+                            android:id="@+id/btnDelete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete"
+                            android:textColor="#DC2626"
+                            android:textStyle="bold"
+                            android:padding="8dp"/>
+                    </LinearLayout>
+
+                    <!-- BASIC INFO -->
+                    <TextView
+                        android:id="@+id/txtBasicInfo"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- RENT / FEES -->
+                    <TextView
+                        android:id="@+id/txtPricing"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- AMENITIES -->
+                    <TextView
+                        android:text="Amenities"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/txtAmenities"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- LOCATION -->
+                    <TextView
+                        android:text="Location"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/txtLocation"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- MAP PREVIEW -->
+                    <TextView
+                        android:id="@+id/txtCoordinates"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- PHOTOS -->
+                    <TextView
+                        android:text="Photos"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:id="@+id/layoutImages"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="16dp"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+            <!-- FOOTER -->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNav"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"/>
+                android:minHeight="65dp"
+                android:background="@drawable/bottom_nav_bg"
+                app:menu="@menu/owner_bottom_menu"
+                app:itemIconTint="@color/bottom_nav_selector"
+                app:itemTextColor="@color/bottom_nav_selector"
+                app:labelVisibilityMode="labeled"/>
 
-            <!-- SPACE PUSHER -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
-
-            <!-- DELETE BUTTON -->
-            <TextView
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"
-                android:textColor="#DC2626"
-                android:textStyle="bold"
-                android:padding="8dp"/>
         </LinearLayout>
 
-        <!-- BASIC INFO -->
-        <TextView
-            android:id="@+id/txtBasicInfo"
-            android:textSize="16sp"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <!-- RENT / FEES -->
-        <TextView
-            android:id="@+id/txtPricing"
-            android:textSize="15sp"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
-        <!-- AMENITIES -->
-        <TextView
-            android:text="Amenities"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <!-- DRAWER MENU -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
 
-        <TextView
-            android:id="@+id/txtAmenities"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <!-- LOCATION -->
-        <TextView
-            android:text="Location"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/txtLocation"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <!-- MAP PREVIEW -->
-        <TextView
-            android:id="@+id/txtCoordinates"
-            android:textSize="13sp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- PHOTOS -->
-        <TextView
-            android:text="Photos"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/layoutImages"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="16dp"/>
-
-    </LinearLayout>
-</ScrollView>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -6,28 +6,35 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:forceDarkAllowed="false"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
-        android:usesCleartextTraffic="true"
-        android:forceDarkAllowed="false">
-
-
-
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".OwnerInsightsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ownerAddServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerServiceActivity"
+            android:exported="false" />
         <activity
             android:name=".ActivityOwnerViewListing"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerEditListing"
             android:exported="false" />
-
         <activity
             android:name=".ActivityOwnerAddNewList6"
             android:exported="false" />
@@ -107,12 +114,9 @@
             android:name=".MainActivity"
             android:exported="false" />
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_GOOGLE_MAPS_KEY" />
     </application>
-
-
 
 </manifest>

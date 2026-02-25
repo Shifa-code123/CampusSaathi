@@ -10,7 +10,7 @@
 
         <item
             android:id="@+id/nav_submission"
-            android:title="Listing Submission"
+            android:title="Edit Listing"
             android:icon="@drawable/ic_submition"/>
 
         <item
