@@ -6,177 +6,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f4f6f9">
-
-
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#2196F3"
-        app:navigationIcon="@drawable/ic_menu">
+        android:layout_height="match_parent"
+        android:background="#f4f6f9">
+
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#2196F3"
+            app:navigationIcon="@drawable/ic_menu">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+
+
+                <!-- Center Title -->
+                <TextView
+                    android:layout_width="193dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Owner Dashboard"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Profile Image Right -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/headerProfile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/default_avatar"
+                    android:scaleType="centerCrop"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#DDDDDD"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+        <!-- ================= MAIN CONTENT ================= -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize">
 
 
-
-            <!-- Center Title -->
-            <TextView
-                android:layout_width="193dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Owner Dashboard"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!-- Profile Image Right -->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/headerProfile"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/default_avatar"
-                android:scaleType="centerCrop"
-                app:civ_border_width="1dp"
-                app:civ_border_color="#DDDDDD"/>
-
-        </LinearLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-    <!-- ================= MAIN CONTENT ================= -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize">
-
-
-        <!-- Scroll Content -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:fillViewport="true">
-
-            <LinearLayout
+            <!-- Scroll Content -->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-
-                <!-- PROFILE CARD -->
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="12dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="14dp">
-
-
-                        <!-- Profile Image -->
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/profileImage"
-                            android:layout_width="55dp"
-                            android:layout_height="55dp"
-                            android:src="@drawable/default_avatar"
-                            android:scaleType="centerCrop"
-                            app:civ_border_width="1dp"
-                            app:civ_border_color="#DDDDDD"/>
-
-
-                        <!-- Text Section -->
-                        <LinearLayout
-                            android:layout_toEndOf="@id/profileImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginStart="10dp">
-
-                            <!-- Name -->
-                            <TextView
-                                android:id="@+id/txtOwnerName"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:text="Sunshine Mess"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-
-                            <!-- Role -->
-                            <TextView
-                                android:id="@+id/txtOwnerType"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:text="Mess Service Owner"
-                                android:textSize="12sp"
-                                android:textColor="#666"/>
-
-
-                            <!-- Owner Badge -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Owner"
-                                android:textSize="10sp"
-                                android:textColor="#ffffff"
-                                android:background="#FF9800"
-                                android:paddingLeft="6dp"
-                                android:paddingRight="6dp"
-                                android:paddingTop="2dp"
-                                android:paddingBottom="2dp"
-                                android:layout_marginTop="3dp"/>
-
-
-
-                        </LinearLayout>
-
-
-                        <!-- Verified Badge -->
-                        <LinearLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:orientation="horizontal"
-                            android:background="#E8F5E9"
-                            android:padding="6dp"
-                            android:layout_marginTop="4dp">
-
-                            <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:text="✔ Verified"
-                                android:textColor="#2e7d32"
-                                android:textSize="12sp"
-                                android:textStyle="bold"/>
-
-                        </LinearLayout>
-
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
-                <!-- ================= STATS ================= -->
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -184,518 +78,623 @@
                     android:orientation="vertical">
 
 
-                    <!-- ROW 1 -->
-                    <LinearLayout
+
+                    <!-- PROFILE CARD -->
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        android:layout_marginBottom="12dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp">
 
 
-                        <!-- Total Services -->
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="90dp"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="3dp"
-                            android:layout_margin="6dp">
+                            <!-- Profile Image -->
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/profileImage"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/default_avatar"
+                                android:scaleType="centerCrop"
+                                app:civ_border_width="1dp"
+                                app:civ_border_color="#DDDDDD"/>
 
+
+                            <!-- Text Section -->
                             <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:padding="12dp">
+                                android:layout_toEndOf="@id/profileImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="10dp">
 
-                                <ImageView
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:src="@drawable/ic_availability"/>
-
-                                <LinearLayout
-                                    android:orientation="vertical"
-                                    android:layout_marginStart="12dp"
+                                <!-- Name -->
+                                <TextView
+                                    android:id="@+id/txtOwnerName"
+                                    android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                    android:text="Sunshine Mess"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"/>
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2"
-                                        android:textSize="18sp"
-                                        android:textStyle="bold"
-                                        android:textColor="#000"/>
 
-                                    <TextView
-                                        android:id="@+id/txtTotalServices"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Total Services"
-                                        android:textSize="12sp"
-                                        android:textColor="#666"/>
+                                <!-- Role -->
+                                <TextView
+                                    android:id="@+id/txtOwnerType"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:text="Mess Service Owner"
+                                    android:textSize="12sp"
+                                    android:textColor="#666"/>
 
-                                </LinearLayout>
+
+                                <!-- Owner Badge -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Owner"
+                                    android:textSize="10sp"
+                                    android:textColor="#ffffff"
+                                    android:background="#FF9800"
+                                    android:paddingLeft="6dp"
+                                    android:paddingRight="6dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"
+                                    android:layout_marginTop="3dp"/>
+
+
 
                             </LinearLayout>
 
-                        </androidx.cardview.widget.CardView>
 
-
-
-                        <!-- Total Views -->
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="90dp"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="3dp"
-                            android:layout_margin="6dp">
-
+                            <!-- Verified Badge -->
                             <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentEnd="true"
                                 android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:padding="12dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:background="#E8F5E9"
+                                android:padding="6dp"
+                                android:layout_marginTop="4dp">
 
-                                <ImageView
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:src="@drawable/ic_eye"
-                                    android:tint="#1976D2"/>
-
-                                <LinearLayout
-                                    android:orientation="vertical"
-                                    android:layout_marginStart="12dp"
+                                <TextView
+                                    android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="1220"
-                                        android:textSize="18sp"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:id="@+id/txtTotalViews"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Total Views"
-                                        android:textSize="12sp"
-                                        android:textColor="#666"/>
-
-                                </LinearLayout>
+                                    android:text="✔ Verified"
+                                    android:textColor="#2e7d32"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"/>
 
                             </LinearLayout>
 
-                        </androidx.cardview.widget.CardView>
 
-                    </LinearLayout>
+                        </RelativeLayout>
 
+                    </androidx.cardview.widget.CardView>
+                    <!-- ================= STATS ================= -->
 
-
-                    <!-- ROW 2 -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
 
-                        <!-- Average Rating -->
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="90dp"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="3dp"
-                            android:layout_margin="6dp">
+                        <!-- ROW 1 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                            <LinearLayout
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:padding="12dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
 
-                                <ImageView
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:src="@drawable/ic_star"
-                                    />
+                            <!-- Total Services -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="90dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="3dp"
+                                android:layout_margin="6dp">
 
                                 <LinearLayout
-                                    android:orientation="vertical"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
 
-                                    <!-- Rating with reviews -->
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:src="@drawable/ic_availability"/>
+
                                     <LinearLayout
-                                        android:orientation="horizontal"
+                                        android:orientation="vertical"
+                                        android:layout_marginStart="12dp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content">
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="4.5"
+                                            android:text="2"
                                             android:textSize="18sp"
                                             android:textStyle="bold"
                                             android:textColor="#000"/>
 
                                         <TextView
+                                            android:id="@+id/txtTotalServices"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text=" (45 Reviews)"
+                                            android:text="Total Services"
                                             android:textSize="12sp"
-                                            android:textColor="#666"
-                                            android:layout_marginStart="4dp"/>
+                                            android:textColor="#666"/>
 
                                     </LinearLayout>
 
-                                    <!-- Label -->
-                                    <TextView
-                                        android:id="@+id/txtRating"
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+
+                            <!-- Total Views -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="90dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="3dp"
+                                android:layout_margin="6dp">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:src="@drawable/ic_eye"
+                                        app:tint="#1976D2" />
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_marginStart="12dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Average Rating"
-                                        android:textSize="12sp"
-                                        android:textColor="#666"/>
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="1220"
+                                            android:textSize="18sp"
+                                            android:textStyle="bold"/>
+
+                                        <TextView
+                                            android:id="@+id/txtTotalViews"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Total Views"
+                                            android:textSize="12sp"
+                                            android:textColor="#666"/>
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
-                            </LinearLayout>
+                            </androidx.cardview.widget.CardView>
 
-                        </androidx.cardview.widget.CardView>
+                        </LinearLayout>
 
 
 
-                        <!-- New Reviews -->
-                        <androidx.cardview.widget.CardView
+                        <!-- ROW 2 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <!-- Average Rating -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="90dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="3dp"
+                                android:layout_margin="6dp">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:src="@drawable/ic_star"
+                                        />
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_marginStart="12dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <!-- Rating with reviews -->
+                                        <LinearLayout
+                                            android:orientation="horizontal"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="4.5"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold"
+                                                android:textColor="#000"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text=" (45 Reviews)"
+                                                android:textSize="12sp"
+                                                android:textColor="#666"
+                                                android:layout_marginStart="4dp"/>
+
+                                        </LinearLayout>
+
+                                        <!-- Label -->
+                                        <TextView
+                                            android:id="@+id/txtRating"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Average Rating"
+                                            android:textSize="12sp"
+                                            android:textColor="#666"/>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+
+                            <!-- New Reviews -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="90dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="3dp"
+                                android:layout_margin="6dp">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:src="@drawable/ic_mail"
+                                         app:tint="#1976D2" />
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_marginStart="12dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="3"
+                                            android:textSize="18sp"
+                                            android:textStyle="bold"/>
+
+                                        <TextView
+                                            android:id="@+id/txtReviewCount"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="New Reviews"
+                                            android:textSize="12sp"
+                                            android:textColor="#666"/>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quick Actions"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"/>
+
+                    <!-- BUTTONS -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_height="48dp"
+                            android:id="@+id/btnAddListing"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_height="90dp"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="3dp"
-                            android:layout_margin="6dp">
+                            android:text="Add Service"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/blue_button"
+                            app:backgroundTint="@null"
+                            android:layout_margin="5dp"/>
 
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_height="48dp"
+                            android:id="@+id/btnEditListing"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="Edit Services"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/orange_button"
+                            app:backgroundTint="@null"
+                            android:layout_margin="5dp"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnViewListing"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="View Listing"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/teal_button"
+                            app:backgroundTint="@null"
+                            android:layout_margin="5dp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnManageListing"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="Manage listing"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/purple_button"
+                            app:backgroundTint="@null"
+                            android:layout_margin="5dp"/>
+                    </LinearLayout>
+                    <!-- ================= TABS ================= -->
+
+                    <!-- Tabs Layout -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+
+                        <!-- About Media Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="About"
+                                android:textSize="15sp"
+                                android:textColor="#888"
+                                android:layout_marginEnd="30dp"/>
+
+                            <TextView
+                                android:id="@+id/mediaTab"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Media"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:textColor="#1976D2"/>
+
+                        </LinearLayout>
+
+                        <!-- ADD THIS BLUE LINE HERE -->
+                        <View
+                            android:layout_width="60dp"
+                            android:layout_height="3dp"
+                            android:background="#1976D2"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Recent Reviews"
+                            android:textStyle="bold"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View All >"
+                            android:textColor="#1976D2"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"/>
+
+                    </RelativeLayout>
+                    <!-- ================= RECENT REVIEWS ================= -->
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        android:layout_marginTop="10dp">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:padding="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <!-- Header Row -->
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Recent Reviews"
+                                    android:textStyle="bold"
+                                    android:textSize="15sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="View All >"
+                                    android:textColor="#1976D2"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentEnd="true"/>
+
+                            </RelativeLayout>
+
+
+                            <!-- Profile Row -->
                             <LinearLayout
                                 android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:padding="12dp"
+                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content">
 
                                 <ImageView
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:src="@drawable/ic_mail"
-                                    android:tint="#1976D2"/>
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:src="@drawable/default_avatar"
+                                    android:background="@drawable/circle_bg"/>
 
                                 <LinearLayout
                                     android:orientation="vertical"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_width="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="wrap_content">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="3"
-                                        android:textSize="18sp"
+                                        android:text="Amit (ENTC SY)"
                                         android:textStyle="bold"/>
 
                                     <TextView
-                                        android:id="@+id/txtReviewCount"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="New Reviews"
+                                        android:text="6 minutes ago"
                                         android:textSize="12sp"
                                         android:textColor="#666"/>
 
                                 </LinearLayout>
 
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quick Actions"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="4dp"/>
-
-                <!-- BUTTONS -->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_height="48dp"
-                        android:id="@+id/btnAddListing"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="Add Service"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/blue_button"
-                        app:backgroundTint="@null"
-                        android:layout_margin="5dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_height="48dp"
-                        android:id="@+id/btnEditListing"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="Edit Services"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/orange_button"
-                        app:backgroundTint="@null"
-                        android:layout_margin="5dp"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnViewListing"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="View Listing"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/teal_button"
-                        app:backgroundTint="@null"
-                        android:layout_margin="5dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnManageListing"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="Manage listing"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/purple_button"
-                        app:backgroundTint="@null"
-                        android:layout_margin="5dp"/>
-                </LinearLayout>
-                <!-- ================= TABS ================= -->
-
-                <!-- Tabs Layout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp">
-
-                    <!-- About Media Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="About"
-                            android:textSize="15sp"
-                            android:textColor="#888"
-                            android:layout_marginEnd="30dp"/>
-
-                        <TextView
-                            android:id="@+id/mediaTab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Media"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            android:textColor="#1976D2"/>
-
-                    </LinearLayout>
-
-                    <!-- ADD THIS BLUE LINE HERE -->
-                    <View
-                        android:layout_width="60dp"
-                        android:layout_height="3dp"
-                        android:background="#1976D2"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"/>
-
-                </LinearLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Recent Reviews"
-                        android:textStyle="bold"
-                        android:textSize="15sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="View All >"
-                        android:textColor="#1976D2"
-                        android:textStyle="bold"
-                        android:layout_alignParentEnd="true"/>
-
-                </RelativeLayout>
-                <!-- ================= RECENT REVIEWS ================= -->
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginTop="10dp">
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <!-- Header Row -->
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Recent Reviews"
-                                android:textStyle="bold"
-                                android:textSize="15sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="View All >"
-                                android:textColor="#1976D2"
-                                android:textStyle="bold"
-                                android:layout_alignParentEnd="true"/>
-
-                        </RelativeLayout>
-
-
-                        <!-- Profile Row -->
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_marginTop="8dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/default_avatar"
-                                android:background="@drawable/circle_bg"/>
-
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_marginStart="8dp"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="wrap_content">
-
                                 <TextView
-                                    android:id="@+id/txtOwnerName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Amit (ENTC SY)"
+                                    android:text="★★★★★ 4.5"
+                                    android:textColor="#FFC107"
                                     android:textStyle="bold"/>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="6 minutes ago"
-                                    android:textSize="12sp"
-                                    android:textColor="#666"/>
-
                             </LinearLayout>
 
+
+                            <!-- Review Text -->
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="★★★★★ 4.5"
-                                android:textColor="#FFC107"
-                                android:textStyle="bold"/>
+                                android:text="Tasty and hygienic food. Friendly staff."
+                                android:layout_marginTop="6dp"
+                                android:textColor="#333"/>
+
+
+                            <!-- Food Images -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="6dp">
+
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="90dp"
+                                    android:layout_weight="1"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/sample_room2" />
+
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="90dp"
+                                    android:src="@drawable/sample_room1"
+                                    android:scaleType="centerCrop"
+                                    android:layout_marginStart="5dp"/>
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="65dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bottom_nav_bg"
+            app:menu="@menu/owner_bottom_menu"
+            app:itemIconSize="24dp"
+            app:itemIconTint="@color/bottom_nav_selector"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:itemTextAppearanceActive="@style/TextAppearance.AppCompat.Caption"
+            app:itemTextAppearanceInactive="@style/TextAppearance.AppCompat.Caption"
+            app:labelVisibilityMode="labeled"/>
 
-                        <!-- Review Text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tasty and hygienic food. Friendly staff."
-                            android:layout_marginTop="6dp"
-                            android:textColor="#333"/>
-
-
-                        <!-- Food Images -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="6dp">
-
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="90dp"
-                                android:layout_weight="1"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/sample_room2" />
-
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="90dp"
-                                android:src="@drawable/sample_room1"
-                                android:scaleType="centerCrop"
-                                android:layout_marginStart="5dp"/>
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="65dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/bottom_nav_bg"
-        app:menu="@menu/owner_bottom_menu"
-        app:itemIconSize="24dp"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:itemTextAppearanceActive="@style/TextAppearance.AppCompat.Caption"
-        app:itemTextAppearanceInactive="@style/TextAppearance.AppCompat.Caption"
-        app:labelVisibilityMode="labeled"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <!-- DRAWER MENU -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -706,4 +705,4 @@
         app:itemBackground="@drawable/nav_item_background"
         app:menu="@menu/owner_menu_drawer"/>
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

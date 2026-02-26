@@ -9,7 +9,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F6FA">
+        android:background="#FFFFFF">
 
         <!-- HEADER TOOLBAR -->
         <androidx.appcompat.widget.Toolbar

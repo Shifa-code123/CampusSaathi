@@ -25,7 +25,9 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
+                <Space
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -42,7 +44,10 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/default_avatar"/>
+                    android:src="@drawable/default_avatar"
+                    android:scaleType="centerCrop"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#DDDDDD"/>
 
             </LinearLayout>
 
@@ -194,10 +199,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="65dp"
+                android:layout_gravity="bottom"
                 android:background="@drawable/bottom_nav_bg"
                 app:menu="@menu/owner_bottom_menu"
+                app:itemIconSize="24dp"
                 app:itemIconTint="@color/bottom_nav_selector"
                 app:itemTextColor="@color/bottom_nav_selector"
+                app:itemTextAppearanceActive="@style/TextAppearance.AppCompat.Caption"
+                app:itemTextAppearanceInactive="@style/TextAppearance.AppCompat.Caption"
                 app:labelVisibilityMode="labeled"/>
 
         </LinearLayout>
@@ -210,6 +219,9 @@
         android:id="@+id/navigation_view"
         android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemBackground="@drawable/nav_item_background"
+        app:menu="@menu/owner_menu_drawer"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

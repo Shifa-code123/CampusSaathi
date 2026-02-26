@@ -22,8 +22,8 @@
         android:title="Reviews"/>
 
     <item
-        android:id="@+id/nav_insights"
+        android:id="@+id/nav_performance"
         android:icon="@drawable/ic_chart"
-        android:title="Insights"/>
+        android:title="Performance"/>
 
 </menu>

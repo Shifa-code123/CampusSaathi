@@ -32,6 +32,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_owner_dashboard)
 
         val headerProfile = findViewById<ImageView>(R.id.headerProfile)
+
         val profileImage = findViewById<ImageView>(R.id.profileImage)
 
 
@@ -205,8 +206,8 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     true
                 }
 
-                R.id.nav_insights -> {
-                    startActivity(Intent(this, OwnerInsightsActivity::class.java))
+                R.id.nav_performance -> {
+                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
                     true
                 }
 
