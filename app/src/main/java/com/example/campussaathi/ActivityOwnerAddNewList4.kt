@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
@@ -14,21 +15,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 
-
-class ActivityOwnerAddNewList4 : AppCompatActivity(),
-    OnMapReadyCallback,
-    GoogleMap.OnMapClickListener {
+class ActivityOwnerAddNewList4 : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
-    private var mMap: GoogleMap? = null
 
     private var selectedLatLng: LatLng? = null
     private var distanceKm: Double = 0.0
@@ -44,6 +40,7 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
     private lateinit var txtDistance: TextView
     private lateinit var btnNext: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private val LOCATION_PERMISSION_REQUEST = 100
 
     // Layouts
@@ -82,15 +79,13 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             finish()
             return
         }
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-
 
         db = FirebaseFirestore.getInstance()
 
         setupDrawer()
         initViews()
-        initMap()
         fetchOwnerType()
 
         btnNext.setOnClickListener {
@@ -102,7 +97,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigation_view)
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         setSupportActionBar(toolbar)
@@ -118,8 +112,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
-        // ✅ HEADER CONNECT
         val headerView =
             navigationView.inflateHeaderView(R.layout.owner_drawer_header)
 
@@ -169,8 +161,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
                 }
         }
 
-
-        // ✅ MENU CLICK NAVIGATION
         navigationView.setNavigationItemSelectedListener {
 
             when (it.itemId) {
@@ -190,10 +180,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
                         Intent(this, ActivityOwnerViewListing::class.java)
                     )
 
-                R.id.nav_add_listing -> {
-                    // already here
-                }
-
                 R.id.nav_submission ->
                     startActivity(
                         Intent(this, ActivityOwnerSubmissionList1::class.java)
@@ -212,12 +198,12 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             }
 
             drawerLayout.closeDrawer(GravityCompat.START)
-
             true
         }
     }
 
     private fun initViews() {
+
         btnGps = findViewById(R.id.btnGps)
 
         btnGps.setOnClickListener {
@@ -234,7 +220,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         layoutRoom = findViewById(R.id.layoutRoomStep4)
         layoutMess = findViewById(R.id.layoutMessStep4)
         layoutTuition = findViewById(R.id.layoutTuitionStep4)
-
 
         cbNearCampus = findViewById(R.id.cbNearCampus)
         cbMarketNearby = findViewById(R.id.cbMarketNearby)
@@ -254,10 +239,9 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         db.collection("users")
             .document(uid!!)
             .get()
-            .addOnSuccessListener { doc ->
+            .addOnSuccessListener {
 
-                ownerType = doc.getString("ownerType")?.lowercase()
-
+                ownerType = it.getString("ownerType")?.lowercase()
                 showCorrectLayout()
             }
     }
@@ -275,30 +259,8 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         }
     }
 
-    private fun initMap() {
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(campusLatLng, 16f))
-        mMap?.addMarker(MarkerOptions().position(campusLatLng).title("Campus"))
-        mMap?.setOnMapClickListener(this)
-    }
-
-    override fun onMapClick(latLng: LatLng) {
-
-        mMap?.clear()
-        mMap?.addMarker(MarkerOptions().position(campusLatLng).title("Campus"))
-        mMap?.addMarker(MarkerOptions().position(latLng).title("Selected Location"))
-
-        selectedLatLng = latLng
-        calculateDistance(latLng)
-    }
-
     private fun calculateDistance(dest: LatLng) {
+
         val result = FloatArray(1)
 
         Location.distanceBetween(
@@ -310,13 +272,15 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         )
 
         distanceKm = result[0] / 1000.0
-        txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
+
+        txtDistance.text =
+            "Distance from campus: %.2f km".format(distanceKm)
     }
 
     private fun saveStep4() {
 
         if (selectedLatLng == null) {
-            toast("Select location on map")
+            toast("Detect location using GPS")
             return
         }
 
@@ -339,26 +303,6 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
             "currentStep" to 5
         )
 
-        when (ownerType) {
-            "room", "room_pg" -> {
-                data["nearCampus"] = cbNearCampus.isChecked
-                data["marketNearby"] = cbMarketNearby.isChecked
-                data["hospitalNearby"] = cbHospitalNearby.isChecked
-            }
-
-            "mess" -> {
-                data["serviceRadius"] = etServiceRadius.text.toString()
-                data["homeDelivery"] = cbHomeDelivery.isChecked
-                data["pickupAvailable"] = cbPickupAvailable.isChecked
-            }
-
-            "tuition" -> {
-                data["nearMainRoad"] = cbMainRoad.isChecked
-                data["safeArea"] = cbSafeArea.isChecked
-                data["parkingAvailable"] = cbParkingAvailable.isChecked
-            }
-        }
-
         db.collection("listings")
             .document(uid!!)
             .set(data, SetOptions.merge())
@@ -366,17 +310,22 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
 
                 toast("Step 4 saved")
 
-                val intent = Intent(this, ActivityOwnerAddNewList5::class.java)
-                intent.putExtra("LISTING_ID", uid) // or your existing document ID
-                startActivity(intent)
+                startActivity(
+                    Intent(
+                        this,
+                        ActivityOwnerAddNewList5::class.java
+                    )
+                )
 
                 finish()
             }
     }
+
     private fun getCurrentLocation() {
 
         if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED
+        ) {
 
             requestPermissions(
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
@@ -386,53 +335,51 @@ class ActivityOwnerAddNewList4 : AppCompatActivity(),
         }
 
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
+            .addOnSuccessListener {
 
-                if (location != null) {
+                if (it != null) {
 
-                    val latLng = LatLng(location.latitude, location.longitude)
+                    val latLng =
+                        LatLng(it.latitude, it.longitude)
 
                     selectedLatLng = latLng
 
-                    mMap?.clear()
-
-                    mMap?.addMarker(
-                        MarkerOptions()
-                            .position(campusLatLng)
-                            .title("Campus")
-                    )
-
-                    mMap?.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title("Your Location")
-                    )
-
-                    mMap?.animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(latLng, 17f)
-                    )
-
                     calculateDistance(latLng)
 
-                    toast("Current location detected")
+                    toast("Opening Google Maps")
+
+                    val uri =
+                        Uri.parse("geo:${it.latitude},${it.longitude}?q=${it.latitude},${it.longitude}(My Location)")
+
+                    val intent =
+                        Intent(Intent.ACTION_VIEW, uri)
+
+                    intent.setPackage("com.google.android.apps.maps")
+
+                    startActivity(intent)
 
                 } else {
                     toast("Unable to get location")
                 }
             }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
     ) {
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(
+            requestCode,
+            permissions,
+            grantResults
+        )
 
         if (requestCode == LOCATION_PERMISSION_REQUEST &&
             grantResults.isNotEmpty() &&
-            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
             getCurrentLocation()
         }
     }
