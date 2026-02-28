@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/layoutHeader"
+        layout="@layout/layout_cs_header"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <!-- Top Content (normal size, not stretched) -->
     <TextView
         android:id="@+id/top_text"

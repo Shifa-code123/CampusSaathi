@@ -9,12 +9,36 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.util.Log
+import com.example.campussaathi.databinding.ActivityStudentDashboardBinding
+
 
 class StudentDashboardActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityStudentDashboardBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
-        setContentView(R.layout.activity_student_dashboard)
+        binding = ActivityStudentDashboardBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+        // Header title change
+        binding.layoutHeader.tvHeaderTitle.text = "Home"
+
+        // Menu Click
+        binding.layoutHeader.ivMenu.setOnClickListener {
+            // Drawer open code
+        }
+
+        // Notification Click
+        binding.layoutHeader.ivNotification.setOnClickListener {
+            // Open notification screen
+        }
+
+        // Profile Click
+        binding.layoutHeader.ivProfile.setOnClickListener {
+            // Open profile screen
+        }
         Log.d("CHECK_ACTIVITY", "StudentDashboardActivity OPENED")
 
          val home = findViewById<View>(R.id.cs_footer_home_container)

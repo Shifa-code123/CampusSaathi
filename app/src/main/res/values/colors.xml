@@ -20,4 +20,19 @@
 
     <color name="cs_footer_default">#757575</color>
 
+    <!-- Primary Gradient Colors -->
+    <color name="cs_primary_start">#4A6CF7</color>
+    <color name="cs_primary_end">#3B5BDB</color>
+
+    <!-- Surface -->
+    <color name="cs_white">#FFFFFF</color>
+
+    <!-- Icons -->
+    <color name="cs_icon_tint">#FFFFFF</color>
+    <color name="purple_200">#FFBB86FC</color>
+
+    <color name="cs_header_blue">#3B5BDB</color>
+
+
+
 </resources>
