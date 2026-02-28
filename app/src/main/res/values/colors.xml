@@ -2,4 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="cs_primary">#3F6DF6</color>
+    <color name="cs_primary_light">#E8EDFF</color>
+
+    <!-- Text -->
+    <color name="cs_text_primary">?attr/colorOnBackground</color>
+    <color name="cs_text_secondary">?attr/colorOnSurfaceVariant</color>
+
+    <!-- Background -->
+    <color name="cs_surface">?attr/colorSurface</color>
+
 </resources>

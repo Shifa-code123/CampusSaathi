@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="cs_footer_height">72dp</dimen>
+    <dimen name="cs_footer_icon">22dp</dimen>
+    <dimen name="cs_footer_text">12sp</dimen>
+
+    <dimen name="cs_spacing_small">4dp</dimen>
+    <dimen name="cs_spacing_medium">8dp</dimen>
+    <dimen name="cs_spacing_large">16dp</dimen>
+
+    <dimen name="cs_footer_selected_radius">24dp</dimen>
+    <dimen name="cs_footer_selected_padding_horizontal">20dp</dimen>
+    <dimen name="cs_footer_selected_padding_vertical">10dp</dimen>
+
+</resources>
