@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Chat Bubble -->
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M4,4h16a2,2 0 0,1 2,2v8a2,2 0 0,1 -2,2H8l-4,4V6a2,2 0 0,1 2,-2z"/>
+
+    <!-- Message Lines -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,9h10v1.5H7z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,12h7v1.5H7z"/>
+
+</vector>

@@ -18,6 +18,9 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ActivityOwnerNotification"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerPerformance"
             android:exported="false" />
         <activity
