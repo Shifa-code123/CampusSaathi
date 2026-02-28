@@ -340,7 +340,7 @@
                                 android:id="@+id/profile5"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:src="@drawable/Rohit"
+                                android:src="@drawable/ic_rohit"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"/>
 
