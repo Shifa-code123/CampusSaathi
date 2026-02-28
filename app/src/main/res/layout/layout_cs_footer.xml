@@ -4,28 +4,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cs_footer_root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/cs_footer_height">
+    android:layout_height="@dimen/cs_footer_height"
+    android:background="@drawable/cs_footer_bg_surface"
+    android:elevation="12dp">
 
-    <!-- HOME (Selected Example) -->
+    <!-- HOME -->
     <LinearLayout
         android:id="@+id/cs_footer_home_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:paddingHorizontal="@dimen/cs_footer_selected_padding_horizontal"
-        android:paddingVertical="@dimen/cs_footer_selected_padding_vertical"
-        android:background="@drawable/cs_footer_bg_selected"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cs_footer_explore_container"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/cs_footer_home_icon"
             android:layout_width="@dimen/cs_footer_icon"
             android:layout_height="@dimen/cs_footer_icon"
             android:src="@drawable/cs_ic_footer_home"
-            app:tint="@color/cs_primary"/>
+            app:tint="@color/cs_footer_default"/>
 
         <TextView
             android:id="@+id/cs_footer_home_text"
@@ -33,28 +35,29 @@
             android:layout_height="wrap_content"
             android:text="Home"
             android:textSize="@dimen/cs_footer_text"
-            android:textColor="@color/cs_primary"
-            android:layout_marginTop="@dimen/cs_spacing_small"/>
+            android:textColor="@color/cs_footer_default"/>
     </LinearLayout>
 
     <!-- EXPLORE -->
     <LinearLayout
         android:id="@+id/cs_footer_explore_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@id/cs_footer_home_container"
         app:layout_constraintEnd_toStartOf="@id/cs_footer_nearme_container"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/cs_footer_explore_icon"
             android:layout_width="@dimen/cs_footer_icon"
             android:layout_height="@dimen/cs_footer_icon"
             android:src="@drawable/cs_ic_footer_explore"
-            app:tint="@color/cs_text_secondary"/>
+            app:tint="@color/cs_footer_default"/>
 
         <TextView
             android:id="@+id/cs_footer_explore_text"
@@ -62,28 +65,29 @@
             android:layout_height="wrap_content"
             android:text="Explore"
             android:textSize="@dimen/cs_footer_text"
-            android:textColor="@color/cs_text_secondary"
-            android:layout_marginTop="@dimen/cs_spacing_small"/>
+            android:textColor="@color/cs_footer_default"/>
     </LinearLayout>
 
-    <!-- NEAR ME -->
+    <!-- NEARME -->
     <LinearLayout
         android:id="@+id/cs_footer_nearme_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@id/cs_footer_explore_container"
         app:layout_constraintEnd_toStartOf="@id/cs_footer_help_container"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/cs_footer_nearme_icon"
             android:layout_width="@dimen/cs_footer_icon"
             android:layout_height="@dimen/cs_footer_icon"
             android:src="@drawable/cs_ic_footer_nearme"
-            app:tint="@color/cs_text_secondary"/>
+            app:tint="@color/cs_footer_default"/>
 
         <TextView
             android:id="@+id/cs_footer_nearme_text"
@@ -91,27 +95,29 @@
             android:layout_height="wrap_content"
             android:text="NearMe"
             android:textSize="@dimen/cs_footer_text"
-            android:textColor="@color/cs_text_secondary"
-            android:layout_marginTop="@dimen/cs_spacing_small"/>
+            android:textColor="@color/cs_footer_default"/>
     </LinearLayout>
 
     <!-- HELP -->
     <LinearLayout
         android:id="@+id/cs_footer_help_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        app:layout_constraintStart_toEndOf="@id/cs_footer_nearme_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/cs_footer_help_icon"
             android:layout_width="@dimen/cs_footer_icon"
             android:layout_height="@dimen/cs_footer_icon"
             android:src="@drawable/cs_ic_footer_help"
-            app:tint="@color/cs_text_secondary"/>
+            app:tint="@color/cs_footer_default"/>
 
         <TextView
             android:id="@+id/cs_footer_help_text"
@@ -119,8 +125,7 @@
             android:layout_height="wrap_content"
             android:text="Help"
             android:textSize="@dimen/cs_footer_text"
-            android:textColor="@color/cs_text_secondary"
-            android:layout_marginTop="@dimen/cs_spacing_small"/>
+            android:textColor="@color/cs_footer_default"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

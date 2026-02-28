@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="cs_footer_height">72dp</dimen>
-    <dimen name="cs_footer_icon">22dp</dimen>
-    <dimen name="cs_footer_text">12sp</dimen>
+    <dimen name="cs_footer_height">150dp</dimen>
+    <dimen name="cs_footer_icon">24dp</dimen>
+    <dimen name="cs_footer_text">13sp</dimen>
 
     <dimen name="cs_spacing_small">4dp</dimen>
     <dimen name="cs_spacing_medium">8dp</dimen>

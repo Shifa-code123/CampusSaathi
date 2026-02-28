@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/cs_primary_light"/>
+    <solid android:color="@color/cs_footer_selected_bg"/>
     <corners android:radius="@dimen/cs_footer_selected_radius"/>
 </shape>

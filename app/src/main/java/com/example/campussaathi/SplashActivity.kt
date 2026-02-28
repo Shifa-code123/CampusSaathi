@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
 
 class SplashActivity : AppCompatActivity() {
 
@@ -34,7 +35,8 @@ class SplashActivity : AppCompatActivity() {
             // 🔹 If user IS logged in → check role from Firestore
             val uid = currentUser.uid
 
-            db.collection("users").document(uid).get()
+
+           db.collection("users").document(uid).get()
                 .addOnSuccessListener { doc ->
 
                     val role = doc.getString("role")
@@ -91,7 +93,6 @@ class SplashActivity : AppCompatActivity() {
 
                     finish()
                 }
-
         }, 2000) // 2 second splash
     }
 }

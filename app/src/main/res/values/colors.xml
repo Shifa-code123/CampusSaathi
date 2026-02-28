@@ -6,11 +6,18 @@
     <color name="cs_primary">#3F6DF6</color>
     <color name="cs_primary_light">#E8EDFF</color>
 
-    <!-- Text -->
-    <color name="cs_text_primary">?attr/colorOnBackground</color>
-    <color name="cs_text_secondary">?attr/colorOnSurfaceVariant</color>
+
 
     <!-- Background -->
     <color name="cs_surface">?attr/colorSurface</color>
+
+    <color name="cs_footer_divider">#E0E0E0</color>
+
+    <color name="cs_footer_surface">#FFFFFF</color>
+
+    <color name="cs_footer_selected_bg">#E3F2FD</color>
+    <color name="cs_footer_selected_icon">#1565C0</color>
+
+    <color name="cs_footer_default">#757575</color>
 
 </resources>
