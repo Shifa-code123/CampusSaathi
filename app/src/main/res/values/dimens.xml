@@ -23,5 +23,13 @@
     <dimen name="drawer_logo_size">50dp</dimen>
     <dimen name="drawer_icon_text_spacing">16dp</dimen>
 
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="radius_button">24dp</dimen>
+    <dimen name="elevation_card">4dp</dimen>
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_subtitle">13sp</dimen>
+
 
 </resources>

@@ -37,6 +37,10 @@
     <color name="cs_on_primary">#FFFFFF</color>
 
     <color name="cs_black">#000000</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="text_primary">#1C1C1E</color>
+    <color name="text_secondary">#6E6E73</color>
+    <color name="brand_primary">#2D7DD2</color>
 
 
 

@@ -1,5 +1,6 @@
 package com.example.campussaathi
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -61,8 +62,12 @@ class StudentDashboardActivity : AppCompatActivity() {
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         val menuIcon = findViewById<ImageView>(R.id.ivMenu)
 
+
+
         menuIcon.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+
+
         }
 
         fun resetSelection() {
@@ -104,6 +109,9 @@ class StudentDashboardActivity : AppCompatActivity() {
         help.setOnClickListener {
             resetSelection()
             selectItem(help, helpIcon, helpText)
+
+            val intent = Intent(this, HelpActivity::class.java)
+            startActivity(intent)
         }
 
 // Default selected item

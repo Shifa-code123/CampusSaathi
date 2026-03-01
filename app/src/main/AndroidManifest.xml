@@ -18,6 +18,9 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerNotification"
             android:exported="false" />
         <activity
@@ -104,7 +107,6 @@
         <activity
             android:name=".ActivityOwnerSubmissionList1"
             android:exported="false" />
-
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -114,8 +116,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".StudentDashboardActivity" />
+        <activity android:name=".StudentDashboardActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
