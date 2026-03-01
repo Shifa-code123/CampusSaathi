@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <!-- Top Blue Section -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/drawerTop"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/drawer_header_height"
+        android:background="@color/cs_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/ivDrawerLogo"
+            android:layout_width="@dimen/drawer_logo_size"
+            android:layout_height="@dimen/drawer_logo_size"
+            android:src="@drawable/campus_logo"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/spacing_large"/>
+
+        <TextView
+            android:id="@+id/tvDrawerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="@color/cs_on_primary"
+            app:layout_constraintStart_toEndOf="@id/ivDrawerLogo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/spacing_medium"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Menu Items -->
+
+    <TextView
+        android:id="@+id/menuHome"
+        style="@style/DrawerItemStyle"
+        android:text="@string/home"
+        android:drawableStart="@drawable/ic_home"
+        android:drawableTint="@color/cs_black"
+        app:layout_constraintTop_toBottomOf="@id/drawerTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/menuProfile"
+        style="@style/DrawerItemStyle"
+        android:text="@string/my_profile"
+        android:drawableStart="@drawable/ic_profile"
+        app:layout_constraintTop_toBottomOf="@id/menuHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/menuSaved"
+        style="@style/DrawerItemStyle"
+        android:text="@string/saved"
+        android:drawableStart="@drawable/ic_saved"
+        app:layout_constraintTop_toBottomOf="@id/menuProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/menuHelp"
+        style="@style/DrawerItemStyle"
+        android:text="@string/help_support"
+        android:drawableStart="@drawable/ic_help"
+        android:drawableTint="@color/cs_black"
+        app:layout_constraintTop_toBottomOf="@id/menuSaved"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/menuLogout"
+        style="@style/DrawerItemStyle"
+        android:text="@string/logout"
+        android:drawableStart="@drawable/ic_logout"
+        app:layout_constraintTop_toBottomOf="@id/menuHelp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

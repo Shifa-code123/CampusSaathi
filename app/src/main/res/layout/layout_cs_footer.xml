@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cs_footer_root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/cs_footer_height"
+    android:layout_height="wrap_content"
     android:background="@drawable/cs_footer_bg_surface"
     android:elevation="12dp">
 

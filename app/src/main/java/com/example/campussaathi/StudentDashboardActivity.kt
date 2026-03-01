@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.util.Log
 import com.example.campussaathi.databinding.ActivityStudentDashboardBinding
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.view.GravityCompat
 
 
 class StudentDashboardActivity : AppCompatActivity() {
@@ -23,20 +25,20 @@ class StudentDashboardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Header title change
-        binding.layoutHeader.tvHeaderTitle.text = "Home"
+        binding.Header.tvHeaderTitle.text = "Home"
 
         // Menu Click
-        binding.layoutHeader.ivMenu.setOnClickListener {
+        binding.Header.ivMenu.setOnClickListener {
             // Drawer open code
         }
 
         // Notification Click
-        binding.layoutHeader.ivNotification.setOnClickListener {
+        binding.Header.ivNotification.setOnClickListener {
             // Open notification screen
         }
 
         // Profile Click
-        binding.layoutHeader.ivProfile.setOnClickListener {
+        binding.Header.ivProfile.setOnClickListener {
             // Open profile screen
         }
         Log.d("CHECK_ACTIVITY", "StudentDashboardActivity OPENED")
@@ -55,6 +57,13 @@ class StudentDashboardActivity : AppCompatActivity() {
         val exploreText = findViewById<TextView>(R.id.cs_footer_explore_text)
         val nearmeText = findViewById<TextView>(R.id.cs_footer_nearme_text)
         val helpText = findViewById<TextView>(R.id.cs_footer_help_text)
+
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
+        val menuIcon = findViewById<ImageView>(R.id.ivMenu)
+
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
 
         fun resetSelection() {
 

@@ -34,5 +34,10 @@
     <color name="cs_header_blue">#3B5BDB</color>
 
 
+    <color name="cs_on_primary">#FFFFFF</color>
+
+    <color name="cs_black">#000000</color>
+
+
 
 </resources>

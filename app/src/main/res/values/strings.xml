@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">campusSaathi</string>
+    <string name="app_name">CampusSaathi</string>
 
     <string name="owner_verification">Owner Verification</string>
     <string name="owner_verification_subtitle">
@@ -79,5 +79,13 @@
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
     <string name="header_title">Home</string>
+
+
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="saved">Saved</string>
+    <string name="help_support">Help and Support</string>
+    <string name="logout">Logout</string>
+
 
 </resources>

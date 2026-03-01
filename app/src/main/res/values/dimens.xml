@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="cs_footer_height">150dp</dimen>
+    <dimen name="cs_footer_height">100dp</dimen>
     <dimen name="cs_footer_icon">24dp</dimen>
     <dimen name="cs_footer_text">13sp</dimen>
 
@@ -14,6 +14,14 @@
     <dimen name="cs_footer_selected_padding_vertical">10dp</dimen>
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="text_title">18sp</dimen>
+
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+
+    <dimen name="drawer_width">280dp</dimen>
+    <dimen name="drawer_header_height">150dp</dimen>
+    <dimen name="drawer_logo_size">50dp</dimen>
+    <dimen name="drawer_icon_text_spacing">16dp</dimen>
 
 
 </resources>
