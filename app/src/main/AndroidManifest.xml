@@ -18,14 +18,6 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
-<<<<<<< HEAD
-            android:name=".ExploreActivity"
-            android:windowSoftInputMode="adjustPan"
-=======
-            android:name=".HelpActivity"
->>>>>>> 89008c208722c41ca59c3efbe0be7d0278d1b96b
-            android:exported="false" />
-        <activity
             android:name=".ActivityOwnerNotification"
             android:exported="false" />
         <activity
@@ -121,14 +113,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-
-        <activity android:name=".StudentDashboardActivity" />
-
-
-=======
-        <activity android:name=".StudentDashboardActivity" />
->>>>>>> 89008c208722c41ca59c3efbe0be7d0278d1b96b
         <activity
             android:name=".MainActivity"
             android:exported="false" />
@@ -136,6 +120,21 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_GOOGLE_MAPS_KEY" />
+
+        <!-- Student Module Activities -->
+
+        <activity
+            android:name=".ExploreActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".StudentDashboardActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
