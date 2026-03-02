@@ -23,5 +23,20 @@
     <dimen name="drawer_logo_size">50dp</dimen>
     <dimen name="drawer_icon_text_spacing">16dp</dimen>
 
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+
+    <dimen name="text_title1">20sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+
+    <dimen name="search_height">52dp</dimen>
+    <dimen name="icon_small">20dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="category_card_height">160dp</dimen>
+
 
 </resources>

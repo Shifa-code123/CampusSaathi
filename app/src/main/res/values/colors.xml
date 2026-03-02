@@ -38,6 +38,12 @@
 
     <color name="cs_black">#000000</color>
 
+    <color name="colorError">#D32F2F</color>
+    <color name="colorSurface">?attr/colorSurface</color>
+    <color name="colorOnSurface">?attr/colorOnSurface</color>
+    <color name="colorPrimary">?attr/colorPrimary</color>
+    <color name="cs_overlay_black">#80000000</color>
+
 
 
 </resources>

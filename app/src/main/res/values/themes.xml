@@ -11,5 +11,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="Theme.CampusSaathi.Dialog" parent="Theme.Material3.DayNight.Dialog">
+    </style>
 
 </resources>

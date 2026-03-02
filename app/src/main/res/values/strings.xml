@@ -87,5 +87,7 @@
     <string name="help_support">Help and Support</string>
     <string name="logout">Logout</string>
 
+    <string name="search_services">Search Services</string>
+
 
 </resources>
