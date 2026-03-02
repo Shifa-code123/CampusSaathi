@@ -4,11 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.campussaathi.databinding.ActivityHelpBinding
 import com.example.campussaathi.databinding.ItemEmergencyCardBinding
-import androidx.core.view.GravityCompat
-import kotlin.jvm.java
 
 class HelpActivity : AppCompatActivity() {
 
@@ -16,46 +17,95 @@ class HelpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityHelpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // ✅ Change Header Title Here
-        binding.Header.tvHeaderTitle.text = "Help"
 
-        binding.Header.ivMenu.setOnClickListener {
+        // Header Title
+        binding.header.tvHeaderTitle.text = "Help"
+
+        // Drawer Open
+        binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-        val home = findViewById<View>(R.id.cs_footer_home_container)
-        val explore = findViewById<View>(R.id.cs_footer_explore_container)
-        val nearme = findViewById<View>(R.id.cs_footer_nearme_container)
-        val help = findViewById<View>(R.id.cs_footer_help_container)
 
-        home.setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
-            finish()
-        }
+        // Footer Setup
+        setupFooter("help")
 
-        /*explore.setOnClickListener {
-            startActivity(Intent(this, ExploreActivity::class.java))
-            finish()
-        }
-
-        nearme.setOnClickListener {
-            startActivity(Intent(this, NearMeActivity::class.java))
-            finish()
-        }*/
-
-        help.setOnClickListener {
-            // Already on help page
-        }
-
-
+        // Emergency Cards
         setupEmergencyCards()
     }
 
+    // ---------------- FOOTER ----------------
+
+    private fun setupFooter(selectedTab: String) {
+
+        fun resetSelection() {
+            val defaultColor = getColor(R.color.cs_footer_default)
+
+            binding.csFooter.csFooterHomeContainer.setBackgroundResource(0)
+            binding.csFooter.csFooterExploreContainer.setBackgroundResource(0)
+            binding.csFooter.csFooterNearmeContainer.setBackgroundResource(0)
+            binding.csFooter.csFooterHelpContainer.setBackgroundResource(0)
+
+            binding.csFooter.csFooterHomeIcon.setColorFilter(defaultColor)
+            binding.csFooter.csFooterExploreIcon.setColorFilter(defaultColor)
+            binding.csFooter.csFooterNearmeIcon.setColorFilter(defaultColor)
+            binding.csFooter.csFooterHelpIcon.setColorFilter(defaultColor)
+
+            binding.csFooter.csFooterHomeText.setTextColor(defaultColor)
+            binding.csFooter.csFooterExploreText.setTextColor(defaultColor)
+            binding.csFooter.csFooterNearmeText.setTextColor(defaultColor)
+            binding.csFooter.csFooterHelpText.setTextColor(defaultColor)
+        }
+
+        fun selectItem(container: View, icon: ImageView, text: TextView) {
+            val selectedColor = getColor(R.color.cs_footer_selected_icon)
+
+            container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
+            icon.setColorFilter(selectedColor)
+            text.setTextColor(selectedColor)
+
+            container.animate()
+                .scaleX(1.05f)
+                .scaleY(1.05f)
+                .setDuration(120)
+                .withEndAction {
+                    container.animate().scaleX(1f).scaleY(1f).duration = 80
+                }
+        }
+
+        resetSelection()
+
+        when (selectedTab) {
+            "help" -> selectItem(
+                binding.csFooter.csFooterHelpContainer,
+                binding.csFooter.csFooterHelpIcon,
+                binding.csFooter.csFooterHelpText
+            )
+        }
+
+        binding.csFooter.csFooterHomeContainer.setOnClickListener {
+            startActivity(Intent(this, StudentDashboardActivity::class.java))
+        }
+
+        binding.csFooter.csFooterExploreContainer.setOnClickListener {
+            startActivity(Intent(this, ExploreActivity::class.java))
+        }
+
+        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
+            startActivity(Intent(this, NearMeActivity::class.java))
+        }*/
+
+        binding.csFooter.csFooterHelpContainer.setOnClickListener {
+            // Already on Help
+        }
+    }
+
+    // ---------------- EMERGENCY CARDS ----------------
 
     private fun setupEmergencyCards() {
 
-        // Police
         val policeBinding = ItemEmergencyCardBinding.bind(binding.cardPolice.root)
         policeBinding.txtTitle.text = "Police"
         policeBinding.txtNumber.text = "100"
@@ -64,7 +114,6 @@ class HelpActivity : AppCompatActivity() {
             openDialer("100")
         }
 
-        // Medical
         val medicalBinding = ItemEmergencyCardBinding.bind(binding.cardMedical.root)
         medicalBinding.txtTitle.text = "Medical Emergency"
         medicalBinding.txtNumber.text = "108"
@@ -73,7 +122,6 @@ class HelpActivity : AppCompatActivity() {
             openDialer("108")
         }
 
-        // Ambulance
         val ambulanceBinding = ItemEmergencyCardBinding.bind(binding.cardAmbulance.root)
         ambulanceBinding.txtTitle.text = "Ambulance"
         ambulanceBinding.txtNumber.text = "102"
