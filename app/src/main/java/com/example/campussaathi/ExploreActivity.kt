@@ -10,12 +10,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.GravityCompat
-<<<<<<< HEAD
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-=======
-import androidx.appcompat.app.AlertDialog
->>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
 
 class ExploreActivity : AppCompatActivity() {
 
@@ -32,76 +28,25 @@ class ExploreActivity : AppCompatActivity() {
         // Header Title
         binding.header.tvHeaderTitle.text = "Explore"
 
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        // Notification Click (Friend's logic kept)
-        binding.header.ivNotification.setOnClickListener {
-            // Open notification screen
-        }
-
-        // Profile Click (Friend's logic kept)
-        binding.header.ivProfile.setOnClickListener {
-            // Open profile screen
-        }
-
-        // Setup Recycler
-        setupRecycler()
-
-        // Setup Search
-        setupSearch()
-
-        // Setup Footer
-        setupFooter("explore")
-<<<<<<< HEAD
-
-        //Drawer setup
-        setupDrawer()
-    }
-    //----------------Drawer-------------
-    private fun setupDrawer() {
-
-        // PROFILE CLICK
-        binding.studentDrawer.menuProfile.setOnClickListener {
-
-            // Drawer close
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-            // Open Profile Activity
-            startActivity(
-                Intent(this, StudentProfileActivity::class.java)
-            )
-        }
-        binding.studentDrawer.menuLogout.setOnClickListener {
-            showLogoutDialog()
-        }
-    }
-
-    private fun showLogoutDialog() {
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Log out of your account?")
-            .setPositiveButton("Log Out") { _, _ ->
-
-                FirebaseAuth.getInstance().signOut()
-
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-=======
         // Drawer Open
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
+        // Notification Click
+        binding.header.ivNotification.setOnClickListener {
+            // Open notification screen
+        }
+
+        // Profile Click
+        binding.header.ivProfile.setOnClickListener {
+            startActivity(Intent(this, StudentProfileActivity::class.java))
+        }
+
+        setupRecycler()
+        setupSearch()
+        setupFooter("explore")
         setupDrawer()
->>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
     }
 
     // ---------------- RECYCLER ----------------
@@ -120,9 +65,7 @@ class ExploreActivity : AppCompatActivity() {
         )
 
         binding.rvCategories.layoutManager = GridLayoutManager(this, 2)
-
         categoryAdapter = CategoryAdapter(originalList)
-
         binding.rvCategories.adapter = categoryAdapter
     }
 
@@ -141,6 +84,7 @@ class ExploreActivity : AppCompatActivity() {
             categoryAdapter.updateList(filteredList)
         }
     }
+
     // ---------------- DRAWER ----------------
 
     private fun setupDrawer() {
@@ -150,29 +94,40 @@ class ExploreActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        binding.studentDrawer.menuProfile.setOnClickListener {
+            startActivity(Intent(this, StudentProfileActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
         binding.studentDrawer.menuHelp.setOnClickListener {
-            startActivity(Intent(this, SupportActivity::class.java))
+            startActivity(Intent(this, HelpActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         binding.studentDrawer.menuLogout.setOnClickListener {
-            showLogoutDialog()
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            showLogoutDialog()
         }
     }
 
-// ---------------- LOGOUT DIALOG ----------------
+    // ---------------- LOGOUT ----------------
 
     private fun showLogoutDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-        builder.setMessage("Are you sure you want to logout?")
-        builder.setPositiveButton("Yes") { _, _ ->
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-        builder.setNegativeButton("Cancel", null)
-        builder.show()
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Log out of your account?")
+            .setPositiveButton("Log Out") { _, _ ->
+
+                FirebaseAuth.getInstance().signOut()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     // ---------------- FOOTER ----------------
@@ -204,63 +159,24 @@ class ExploreActivity : AppCompatActivity() {
             container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
             icon.setColorFilter(selectedColor)
             text.setTextColor(selectedColor)
-
-            container.animate()
-                .scaleX(1.05f)
-                .scaleY(1.05f)
-                .setDuration(120)
-                .withEndAction {
-                    container.animate().scaleX(1f).scaleY(1f).duration = 80
-                }
         }
 
-        // Default selection
+        resetSelection()
+
         when (selectedTab) {
-            "home" -> selectItem(
-                binding.csFooter.csFooterHomeContainer,
-                binding.csFooter.csFooterHomeIcon,
-                binding.csFooter.csFooterHomeText
-            )
             "explore" -> selectItem(
                 binding.csFooter.csFooterExploreContainer,
                 binding.csFooter.csFooterExploreIcon,
                 binding.csFooter.csFooterExploreText
             )
-            "near" -> selectItem(
-                binding.csFooter.csFooterNearmeContainer,
-                binding.csFooter.csFooterNearmeIcon,
-                binding.csFooter.csFooterNearmeText
-            )
-            "help" -> selectItem(
-                binding.csFooter.csFooterHelpContainer,
-                binding.csFooter.csFooterHelpIcon,
-                binding.csFooter.csFooterHelpText
-            )
         }
 
-        // Click listeners
         binding.csFooter.csFooterHomeContainer.setOnClickListener {
-            if (selectedTab != "home") {
-                startActivity(Intent(this, StudentDashboardActivity::class.java))
-            }
+            startActivity(Intent(this, StudentDashboardActivity::class.java))
         }
-
-        binding.csFooter.csFooterExploreContainer.setOnClickListener {
-            if (selectedTab != "explore") {
-                startActivity(Intent(this, ExploreActivity::class.java))
-            }
-        }
-
-        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
-            if (selectedTab != "near") {
-                startActivity(Intent(this, NearMeActivity::class.java))
-            }
-        }*/
 
         binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            if (selectedTab != "help") {
-                startActivity(Intent(this, HelpActivity::class.java))
-            }
+            startActivity(Intent(this, HelpActivity::class.java))
         }
     }
 }
