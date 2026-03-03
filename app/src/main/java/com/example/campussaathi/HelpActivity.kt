@@ -32,9 +32,13 @@ class HelpActivity : AppCompatActivity() {
         // Footer Setup
         setupFooter("help")
 
+        setupDrawer()
+
         // Emergency Cards
         setupEmergencyCards()
     }
+
+
 
     // ---------------- FOOTER ----------------
 
@@ -101,6 +105,47 @@ class HelpActivity : AppCompatActivity() {
             // Already on Help
         }
     }
+
+    private fun setupDrawer() {
+
+        /*binding.studentDrawer.menuHome.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuSaved.setOnClickListener {
+            startActivity(Intent(this, SavedActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }*/
+
+        binding.studentDrawer.menuHelp.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuLogout.setOnClickListener {
+            showLogoutDialog()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun showLogoutDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Are you sure you want to logout?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+        builder.setNegativeButton("Cancel", null)
+        builder.show()
+    }
+
+
 
     // ---------------- EMERGENCY CARDS ----------------
 

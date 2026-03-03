@@ -18,6 +18,15 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerNotification"
             android:exported="false" />
         <activity
@@ -119,19 +128,14 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_GOOGLE_MAPS_KEY" />
-
-        <!-- Student Module Activities -->
-
+            android:value="YOUR_GOOGLE_MAPS_KEY" /> <!-- Student Module Activities -->
         <activity
             android:name=".ExploreActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".HelpActivity"
             android:exported="false" />
-
         <activity
             android:name=".StudentDashboardActivity"
             android:exported="false" />

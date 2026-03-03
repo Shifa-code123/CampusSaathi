@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cs_background">
+
+    <!-- MAIN CONTENT -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- HEADER -->
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_cs_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Scroll Area -->
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollContent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toTopOf="@id/cs_footer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/cs_spacing_medium">
+
+                <!-- ================= FAQ SECTION ================= -->
+
+                <TextView
+                    android:id="@+id/tvFaqTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FAQs"
+                    android:textSize="@dimen/cs_text_section"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvFaqList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_small"
+                    android:text="• How to use Near Me feature?\n• How to update profile?\n• How to join volunteer program?"
+                    android:textSize="@dimen/cs_text_body"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toBottomOf="@id/tvFaqTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Divider -->
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/cs_spacing_large"
+                    android:background="@color/cs_divider"
+                    app:layout_constraintTop_toBottomOf="@id/tvFaqList"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                <!-- ================= REPORT ISSUE ================= -->
+
+                <TextView
+                    android:id="@+id/tvReportTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_large"
+                    android:text="Report Issue"
+                    android:textSize="@dimen/cs_text_section"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toBottomOf="@id/divider1"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilIssue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_medium"
+                    app:layout_constraintTop_toBottomOf="@id/tvReportTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etIssue"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="top"
+                        android:hint="Describe your issue here"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_medium"
+                    android:text="Submit"
+                    android:enabled="false"
+                    android:alpha="0.5"
+                    app:backgroundTint="@color/cs_primary"
+                    android:textColor="@color/cs_on_primary"
+                    app:cornerRadius="@dimen/cs_corner_radius"
+                    app:layout_constraintTop_toBottomOf="@id/tilIssue"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Divider -->
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/cs_spacing_large"
+                    android:background="@color/cs_divider"
+                    app:layout_constraintTop_toBottomOf="@id/btnSubmit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                <!-- ================= CONTACT DETAILS ================= -->
+
+                <TextView
+                    android:id="@+id/tvContactTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_large"
+                    android:text="Contact Details"
+                    android:textSize="@dimen/cs_text_section"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toBottomOf="@id/divider2"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_small"
+                    android:text="Phone: 9876543210"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactTitle"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_small"
+                    android:text="Email: support@campussaathi.com"
+                    android:textColor="?attr/colorOnBackground"
+                    app:layout_constraintTop_toBottomOf="@id/tvPhone"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cs_spacing_medium"
+                    android:text="Call"
+                    app:backgroundTint="@color/cs_primary"
+                    android:textColor="@color/cs_on_primary"
+                    app:cornerRadius="@dimen/cs_corner_radius"
+                    app:layout_constraintTop_toBottomOf="@id/tvEmail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnMessage"
+                    app:layout_constraintHorizontal_weight="1"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/cs_spacing_small"
+                    android:text="Message"
+                    app:backgroundTint="@color/cs_success"
+                    android:textColor="@color/cs_on_primary"
+                    app:cornerRadius="@dimen/cs_corner_radius"
+                    app:layout_constraintTop_toBottomOf="@id/tvEmail"
+                    app:layout_constraintStart_toEndOf="@id/btnCall"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/cs_footer"
+            layout="@layout/layout_cs_footer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/studentDrawer"
+        layout="@layout/layout_student_drawer"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

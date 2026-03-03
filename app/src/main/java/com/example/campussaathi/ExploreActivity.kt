@@ -9,6 +9,8 @@ import com.example.campussaathi.databinding.ActivityExploreBinding
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AlertDialog
 
 class ExploreActivity : AppCompatActivity() {
 
@@ -33,6 +35,12 @@ class ExploreActivity : AppCompatActivity() {
 
         // Setup Footer
         setupFooter("explore")
+        // Drawer Open
+        binding.header.ivMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        setupDrawer()
     }
 
     // ---------------- RECYCLER ----------------
@@ -71,6 +79,39 @@ class ExploreActivity : AppCompatActivity() {
 
             categoryAdapter.updateList(filteredList)
         }
+    }
+    // ---------------- DRAWER ----------------
+
+    private fun setupDrawer() {
+
+        binding.studentDrawer.menuHome.setOnClickListener {
+            startActivity(Intent(this, StudentDashboardActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuHelp.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuLogout.setOnClickListener {
+            showLogoutDialog()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+// ---------------- LOGOUT DIALOG ----------------
+
+    private fun showLogoutDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Are you sure you want to logout?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+        builder.setNegativeButton("Cancel", null)
+        builder.show()
     }
 
     // ---------------- FOOTER ----------------

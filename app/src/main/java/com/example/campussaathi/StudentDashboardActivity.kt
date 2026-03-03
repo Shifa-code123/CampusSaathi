@@ -126,11 +126,11 @@ class StudentDashboardActivity : AppCompatActivity() {
             }
         }
 
-        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
+        binding.csFooter.csFooterNearmeContainer.setOnClickListener {
             if (selectedTab != "near") {
-                startActivity(Intent(this, NearMeActivity::class.java))
+                startActivity(Intent(this, NearbyActivity::class.java))
             }
-        }*/
+        }
 
         binding.csFooter.csFooterHelpContainer.setOnClickListener {
             if (selectedTab != "help") {
@@ -142,8 +142,29 @@ class StudentDashboardActivity : AppCompatActivity() {
     // ---------------- DRAWER ----------------
 
     private fun setupDrawer() {
+
+        /*binding.studentDrawer.menuHome.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuSaved.setOnClickListener {
+            startActivity(Intent(this, SavedActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }*/
+
+        binding.studentDrawer.menuHelp.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
         binding.studentDrawer.menuLogout.setOnClickListener {
             showLogoutDialog()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
     }
 
