@@ -10,8 +10,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.GravityCompat
+<<<<<<< HEAD
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+=======
+import androidx.appcompat.app.AlertDialog
+>>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
 
 class ExploreActivity : AppCompatActivity() {
 
@@ -50,6 +54,7 @@ class ExploreActivity : AppCompatActivity() {
 
         // Setup Footer
         setupFooter("explore")
+<<<<<<< HEAD
 
         //Drawer setup
         setupDrawer()
@@ -89,6 +94,14 @@ class ExploreActivity : AppCompatActivity() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+=======
+        // Drawer Open
+        binding.header.ivMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        setupDrawer()
+>>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
     }
 
     // ---------------- RECYCLER ----------------
@@ -127,6 +140,39 @@ class ExploreActivity : AppCompatActivity() {
 
             categoryAdapter.updateList(filteredList)
         }
+    }
+    // ---------------- DRAWER ----------------
+
+    private fun setupDrawer() {
+
+        binding.studentDrawer.menuHome.setOnClickListener {
+            startActivity(Intent(this, StudentDashboardActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuHelp.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuLogout.setOnClickListener {
+            showLogoutDialog()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+// ---------------- LOGOUT DIALOG ----------------
+
+    private fun showLogoutDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Are you sure you want to logout?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+        builder.setNegativeButton("Cancel", null)
+        builder.show()
     }
 
     // ---------------- FOOTER ----------------

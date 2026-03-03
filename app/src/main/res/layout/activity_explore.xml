@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.drawerlayout.widget.DrawerLayout
+<<<<<<< HEAD
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
@@ -12,6 +13,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+=======
+android:id="@+id/drawerLayout"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+>>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
 
     <!-- HEADER -->
     <include
@@ -99,8 +112,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+<<<<<<< HEAD
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+=======
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
     <include
         android:id="@+id/studentDrawer"
         layout="@layout/layout_student_drawer"

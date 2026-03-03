@@ -126,11 +126,11 @@ class StudentDashboardActivity : AppCompatActivity() {
             }
         }
 
-        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
+        binding.csFooter.csFooterNearmeContainer.setOnClickListener {
             if (selectedTab != "near") {
-                startActivity(Intent(this, NearMeActivity::class.java))
+                startActivity(Intent(this, NearbyActivity::class.java))
             }
-        }*/
+        }
 
         binding.csFooter.csFooterHelpContainer.setOnClickListener {
             if (selectedTab != "help") {
@@ -143,6 +143,7 @@ class StudentDashboardActivity : AppCompatActivity() {
 
     private fun setupDrawer() {
 
+<<<<<<< HEAD
         // PROFILE CLICK
         binding.studentDrawer.menuProfile.setOnClickListener {
 
@@ -154,8 +155,30 @@ class StudentDashboardActivity : AppCompatActivity() {
                 Intent(this, StudentProfileActivity::class.java)
             )
         }
+=======
+        /*binding.studentDrawer.menuHome.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        binding.studentDrawer.menuSaved.setOnClickListener {
+            startActivity(Intent(this, SavedActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }*/
+
+        binding.studentDrawer.menuHelp.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+>>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
         binding.studentDrawer.menuLogout.setOnClickListener {
             showLogoutDialog()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
     }
 

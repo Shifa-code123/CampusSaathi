@@ -51,5 +51,16 @@
     <color name="cs_light_grey">#E6E6E6</color>
 
 
+    <color name="cs_background">#F5F7FA</color>
+
+    <color name="cs_text_primary">#1C1C1E</color>
+    <color name="cs_text_secondary">#6B7280</color>
+    <color name="cs_divider">#E5E7EB</color>
+
+    <color name="cs_success">#22C55E</color>
+
+
+
+
 
 </resources>
