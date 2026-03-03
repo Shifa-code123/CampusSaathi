@@ -9,6 +9,9 @@ import com.example.campussaathi.databinding.ActivityExploreBinding
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.GravityCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 
 class ExploreActivity : AppCompatActivity() {
 
@@ -25,6 +28,20 @@ class ExploreActivity : AppCompatActivity() {
         // Header Title
         binding.header.tvHeaderTitle.text = "Explore"
 
+        binding.header.ivMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        // Notification Click (Friend's logic kept)
+        binding.header.ivNotification.setOnClickListener {
+            // Open notification screen
+        }
+
+        // Profile Click (Friend's logic kept)
+        binding.header.ivProfile.setOnClickListener {
+            // Open profile screen
+        }
+
         // Setup Recycler
         setupRecycler()
 
@@ -33,6 +50,45 @@ class ExploreActivity : AppCompatActivity() {
 
         // Setup Footer
         setupFooter("explore")
+
+        //Drawer setup
+        setupDrawer()
+    }
+    //----------------Drawer-------------
+    private fun setupDrawer() {
+
+        // PROFILE CLICK
+        binding.studentDrawer.menuProfile.setOnClickListener {
+
+            // Drawer close
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+            // Open Profile Activity
+            startActivity(
+                Intent(this, StudentProfileActivity::class.java)
+            )
+        }
+        binding.studentDrawer.menuLogout.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog() {
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Log out of your account?")
+            .setPositiveButton("Log Out") { _, _ ->
+
+                FirebaseAuth.getInstance().signOut()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     // ---------------- RECYCLER ----------------

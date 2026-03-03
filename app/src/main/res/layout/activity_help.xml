@@ -85,8 +85,10 @@
 
     <!-- Drawer -->
     <include
-    layout="@layout/layout_student_drawer"
-    android:layout_width="280dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"/>
+        android:id="@+id/studentDrawer"
+        layout="@layout/layout_student_drawer"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>

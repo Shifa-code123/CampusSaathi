@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.campussaathi.databinding.ActivityHelpBinding
 import com.example.campussaathi.databinding.ItemEmergencyCardBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 
 class HelpActivity : AppCompatActivity() {
 
@@ -34,6 +36,9 @@ class HelpActivity : AppCompatActivity() {
 
         // Emergency Cards
         setupEmergencyCards()
+
+        //Drawer
+        setupDrawer()
     }
 
     // ---------------- FOOTER ----------------
@@ -135,5 +140,44 @@ class HelpActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$number")
         startActivity(intent)
+
+
+    }
+    //----------Drawer----------
+    private fun setupDrawer() {
+
+        // PROFILE CLICK
+        binding.studentDrawer.menuProfile.setOnClickListener {
+
+            // Drawer close
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+            // Open Profile Activity
+            startActivity(
+                Intent(this, StudentProfileActivity::class.java)
+            )
+        }
+
+        binding.studentDrawer.menuLogout.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog() {
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Log out of your account?")
+            .setPositiveButton("Log Out") { _, _ ->
+
+                FirebaseAuth.getInstance().signOut()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
     <!-- ✅ Permissions yaha aate hai (Application ke bahar) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
+
         <activity
             android:name=".ActivityOwnerNotification"
             android:exported="false" />
@@ -106,7 +107,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -119,22 +120,21 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_GOOGLE_MAPS_KEY" />
-
-        <!-- Student Module Activities -->
-
+            android:value="YOUR_GOOGLE_MAPS_KEY" /> <!-- Student Module Activities -->
         <activity
             android:name=".ExploreActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".HelpActivity"
             android:exported="false" />
-
         <activity
             android:name=".StudentDashboardActivity"
             android:exported="false" />
+        <activity
+            android:name=".StudentProfileActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -142,6 +142,18 @@ class StudentDashboardActivity : AppCompatActivity() {
     // ---------------- DRAWER ----------------
 
     private fun setupDrawer() {
+
+        // PROFILE CLICK
+        binding.studentDrawer.menuProfile.setOnClickListener {
+
+            // Drawer close
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+            // Open Profile Activity
+            startActivity(
+                Intent(this, StudentProfileActivity::class.java)
+            )
+        }
         binding.studentDrawer.menuLogout.setOnClickListener {
             showLogoutDialog()
         }
