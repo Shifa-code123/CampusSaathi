@@ -143,42 +143,23 @@ class StudentDashboardActivity : AppCompatActivity() {
 
     private fun setupDrawer() {
 
-<<<<<<< HEAD
-        // PROFILE CLICK
-        binding.studentDrawer.menuProfile.setOnClickListener {
-
-            // Drawer close
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-            // Open Profile Activity
-            startActivity(
-                Intent(this, StudentProfileActivity::class.java)
-            )
-        }
-=======
-        /*binding.studentDrawer.menuHome.setOnClickListener {
+        binding.studentDrawer.menuHome.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         binding.studentDrawer.menuProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, StudentProfileActivity::class.java))
         }
-
-        binding.studentDrawer.menuSaved.setOnClickListener {
-            startActivity(Intent(this, SavedActivity::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
 
         binding.studentDrawer.menuHelp.setOnClickListener {
-            startActivity(Intent(this, SupportActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, HelpActivity::class.java))
         }
 
->>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
         binding.studentDrawer.menuLogout.setOnClickListener {
-            showLogoutDialog()
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            showLogoutDialog()
         }
     }
 

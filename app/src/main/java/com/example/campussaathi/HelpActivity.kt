@@ -23,27 +23,16 @@ class HelpActivity : AppCompatActivity() {
         binding = ActivityHelpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Header Title
         binding.header.tvHeaderTitle.text = "Help"
 
-        // Drawer Open
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // Footer Setup
         setupFooter("help")
-
         setupDrawer()
-
-        // Emergency Cards
         setupEmergencyCards()
-
-        //Drawer
-        setupDrawer()
     }
-
-
 
     // ---------------- FOOTER ----------------
 
@@ -74,20 +63,12 @@ class HelpActivity : AppCompatActivity() {
             container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
             icon.setColorFilter(selectedColor)
             text.setTextColor(selectedColor)
-
-            container.animate()
-                .scaleX(1.05f)
-                .scaleY(1.05f)
-                .setDuration(120)
-                .withEndAction {
-                    container.animate().scaleX(1f).scaleY(1f).duration = 80
-                }
         }
 
         resetSelection()
 
-        when (selectedTab) {
-            "help" -> selectItem(
+        if (selectedTab == "help") {
+            selectItem(
                 binding.csFooter.csFooterHelpContainer,
                 binding.csFooter.csFooterHelpIcon,
                 binding.csFooter.csFooterHelpText
@@ -101,56 +82,51 @@ class HelpActivity : AppCompatActivity() {
         binding.csFooter.csFooterExploreContainer.setOnClickListener {
             startActivity(Intent(this, ExploreActivity::class.java))
         }
-
-        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
-            startActivity(Intent(this, NearMeActivity::class.java))
-        }*/
-
-        binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            // Already on Help
-        }
     }
+
+    // ---------------- DRAWER ----------------
 
     private fun setupDrawer() {
 
-        /*binding.studentDrawer.menuHome.setOnClickListener {
+        binding.studentDrawer.menuHome.setOnClickListener {
+            startActivity(Intent(this, StudentDashboardActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         binding.studentDrawer.menuProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, StudentProfileActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        binding.studentDrawer.menuSaved.setOnClickListener {
-            startActivity(Intent(this, SavedActivity::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
-
         binding.studentDrawer.menuHelp.setOnClickListener {
-            startActivity(Intent(this, SupportActivity::class.java))
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         binding.studentDrawer.menuLogout.setOnClickListener {
-            showLogoutDialog()
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            showLogoutDialog()
         }
     }
+
+    // ---------------- LOGOUT ----------------
 
     private fun showLogoutDialog() {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-        builder.setMessage("Are you sure you want to logout?")
-        builder.setPositiveButton("Yes") { _, _ ->
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-        builder.setNegativeButton("Cancel", null)
-        builder.show()
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Log out of your account?")
+            .setPositiveButton("Log Out") { _, _ ->
+
+                FirebaseAuth.getInstance().signOut()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
-
-
 
     // ---------------- EMERGENCY CARDS ----------------
 
@@ -185,44 +161,5 @@ class HelpActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$number")
         startActivity(intent)
-
-
-    }
-    //----------Drawer----------
-    private fun setupDrawer() {
-
-        // PROFILE CLICK
-        binding.studentDrawer.menuProfile.setOnClickListener {
-
-            // Drawer close
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-            // Open Profile Activity
-            startActivity(
-                Intent(this, StudentProfileActivity::class.java)
-            )
-        }
-
-        binding.studentDrawer.menuLogout.setOnClickListener {
-            showLogoutDialog()
-        }
-    }
-
-    private fun showLogoutDialog() {
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Log out of your account?")
-            .setPositiveButton("Log Out") { _, _ ->
-
-                FirebaseAuth.getInstance().signOut()
-
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 }
