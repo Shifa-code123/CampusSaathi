@@ -7,12 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main Content -->
+    <!-- MAIN CONTENT -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
 
         <!-- HEADER -->
         <include
@@ -22,52 +21,71 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Title -->
-        <TextView
-            android:id="@+id/txtNeedAssistance"
+        <!-- SEARCH CARD -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/searchCard"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Need Assistance?"
-            android:textSize="@dimen/text_title"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:layout_marginStart="@dimen/padding_medium"
-            android:layout_marginEnd="@dimen/padding_medium"
-            android:layout_marginTop="@dimen/padding_large"
-            app:layout_constraintTop_toBottomOf="@+id/header"
+            android:layout_height="@dimen/search_height"
+            android:layout_margin="@dimen/spacing_large"
+            app:cardCornerRadius="@dimen/corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Police Card -->
-        <include
-            android:id="@+id/cardPolice"
-            layout="@layout/item_emergency_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_large"
-            app:layout_constraintTop_toBottomOf="@id/txtNeedAssistance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/spacing_medium"
+                android:paddingEnd="@dimen/spacing_medium">
 
-        <!-- Medical Card -->
-        <include
-            android:id="@+id/cardMedical"
-            layout="@layout/item_emergency_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintTop_toBottomOf="@id/cardPolice"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                <ImageView
+                    android:id="@+id/ivSearch"
+                    android:layout_width="@dimen/icon_small"
+                    android:layout_height="@dimen/icon_small"
+                    android:src="@drawable/ic_cs_search"
+                    app:tint="?attr/colorOnSurface"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- Ambulance Card -->
-        <include
-            android:id="@+id/cardAmbulance"
-            layout="@layout/item_emergency_card"
+                <EditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/search_services"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOutline"
+                    app:layout_constraintStart_toEndOf="@id/ivSearch"
+                    app:layout_constraintEnd_toStartOf="@id/ivFilter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="@dimen/spacing_small"/>
+
+                <ImageView
+                    android:id="@+id/ivFilter"
+                    android:layout_width="@dimen/icon_small"
+                    android:layout_height="@dimen/icon_small"
+                    android:src="@drawable/ic_cs_filter"
+                    app:tint="?attr/colorOnSurface"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CATEGORY GRID -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCategories"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintTop_toBottomOf="@id/cardMedical"
+            android:layout_height="0dp"
+            android:padding="@dimen/spacing_medium"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toBottomOf="@id/searchCard"
+            app:layout_constraintBottom_toTopOf="@id/cs_footer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -77,21 +95,18 @@
             layout="@layout/layout_cs_footer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Drawer -->
+    <!-- DRAWER -->
     <include
         android:id="@+id/studentDrawer"
         layout="@layout/layout_student_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"/>
-<<<<<<< HEAD
 
-=======
->>>>>>> f62ccce6e24890d0b8ea36d315adcd3f76361f77
 </androidx.drawerlayout.widget.DrawerLayout>
