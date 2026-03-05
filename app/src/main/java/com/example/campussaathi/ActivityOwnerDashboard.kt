@@ -115,6 +115,13 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         val uidDrawer =
             FirebaseAuth.getInstance().currentUser?.uid
 
+        val txtBusinessProfile = findViewById<TextView>(R.id.txtBusinessProfile)
+
+        txtBusinessProfile.setOnClickListener {
+            val intent = Intent(this, ActivityOwnerPublicProfile::class.java)
+            startActivity(intent)
+        }
+
         if (uidDrawer != null) {
 
             FirebaseFirestore.getInstance()

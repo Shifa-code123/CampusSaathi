@@ -80,6 +80,14 @@
                         android:textSize="14sp"
                         android:textColor="#777" />
 
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/txtbio"
+                        android:text="add bio"
+                        android:textSize="14sp"
+                        android:textColor="#777" />
+
 
 
                     <LinearLayout

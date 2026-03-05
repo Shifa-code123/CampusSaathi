@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#2196F3"
+            app:navigationIcon="@drawable/ic_menu">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+
+
+                <!-- Center Title -->
+                <TextView
+                    android:layout_width="193dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Owner Dashboard"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Profile Image Right -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/headerProfile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/default_avatar"
+                    android:scaleType="centerCrop"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#DDDDDD"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="90dp"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <!-- Main Image -->
+                <ImageView
+                    android:id="@+id/imgPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_input"/>
+
+                <!-- Small Camera Icon Bottom Right -->
+                <ImageView
+                    android:id="@+id/btnChangeImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/bg_circle_white"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_add_photo"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/etHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Main Heading"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write a caption..."
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/btnUpload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:layout_marginTop="16dp"/>
+
+        </LinearLayout>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="65dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bottom_nav_bg"
+            app:menu="@menu/owner_bottom_menu"
+            app:itemIconSize="24dp"
+            app:itemIconTint="@color/bottom_nav_selector"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:itemTextAppearanceActive="@style/TextAppearance.AppCompat.Caption"
+            app:itemTextAppearanceInactive="@style/TextAppearance.AppCompat.Caption"
+            app:labelVisibilityMode="labeled"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- DRAWER MENU -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemBackground="@drawable/nav_item_background"
+        app:menu="@menu/owner_menu_drawer"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -287,7 +287,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- BUTTON -->
+         BUTTON
         <Button
             android:id="@+id/btnContinue"
             android:layout_width="match_parent"

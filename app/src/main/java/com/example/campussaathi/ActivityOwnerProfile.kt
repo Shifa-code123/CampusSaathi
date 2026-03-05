@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
+import androidx.appcompat.app.AlertDialog
+
 
 class ActivityOwnerProfile : AppCompatActivity() {
 
@@ -25,6 +27,8 @@ class ActivityOwnerProfile : AppCompatActivity() {
     private lateinit var edtPhone: EditText
     private lateinit var edtAddress: EditText
     private lateinit var layoutVerified: LinearLayout
+
+    private lateinit var txtBio: TextView
     private lateinit var itemEdit: LinearLayout
 
     private val auth = FirebaseAuth.getInstance()
@@ -62,6 +66,8 @@ class ActivityOwnerProfile : AppCompatActivity() {
         val headerName = headerView.findViewById<TextView>(R.id.headerName)
         val headerRole = headerView.findViewById<TextView>(R.id.headerRole)
         val headerProfile = headerView.findViewById<ImageView>(R.id.headerProfile)
+        txtBio = findViewById(R.id.txtbio)
+        itemEdit = findViewById(R.id.itemEdit)
 
         // Make Toolbar act as ActionBar
         setSupportActionBar(toolbar)
@@ -105,9 +111,9 @@ class ActivityOwnerProfile : AppCompatActivity() {
         bindViews()
         loadProfileData()
 
-        itemEdit.setOnClickListener {
-            if (!isEditMode) enableEditMode() else saveProfileChanges()
-        }
+//        itemEdit.setOnClickListener {
+//            if (!isEditMode) enableEditMode() else saveProfileChanges()
+//        }
 
         imgProfile.setOnClickListener {
             imagePicker.launch("image/*")
@@ -150,6 +156,39 @@ class ActivityOwnerProfile : AppCompatActivity() {
         }
 
         // ===== Drawer Setup End =====
+
+
+        itemEdit.setOnClickListener {
+
+            if (!isEditMode) enableEditMode() else saveProfileChanges()
+
+            val input = EditText(this)
+            input.setText(txtBio.text.toString())
+
+            AlertDialog.Builder(this)
+                .setTitle("Edit Bio")
+                .setView(input)
+                .setPositiveButton("Save") { _, _ ->
+
+                    val newBio = input.text.toString()
+
+                    val uid = auth.currentUser?.uid ?: return@setPositiveButton
+
+                    db.collection("users")
+                        .document(uid)
+                        .update("bio", newBio)
+                        .addOnSuccessListener {
+
+                            txtBio.text = newBio
+
+                        }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
+
+
 
 
     }
@@ -281,5 +320,25 @@ class ActivityOwnerProfile : AppCompatActivity() {
             e.printStackTrace()
             Toast.makeText(this, "Image error", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun loadBio() {
+
+        val uid = auth.currentUser?.uid ?: return
+
+        db.collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                val bio = doc.getString("bio")
+
+                if (!bio.isNullOrEmpty()) {
+                    txtBio.text = bio
+                } else {
+                    txtBio.text = "Add bio"
+                }
+
+            }
     }
 }
