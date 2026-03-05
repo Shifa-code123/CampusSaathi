@@ -240,6 +240,14 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                         )
                     )
 
+                R.id.nav_notifications ->
+                    startActivity(
+                        Intent(
+                            this,
+                            ActivityOwnerNotification::class.java
+                        )
+                    )
+
                 R.id.nav_logout ->
                     logoutUser()
 

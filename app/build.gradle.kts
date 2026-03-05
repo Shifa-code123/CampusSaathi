@@ -93,5 +93,6 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
+
 }
 apply(plugin = "com.google.gms.google-services")

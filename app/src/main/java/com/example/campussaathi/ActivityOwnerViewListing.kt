@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.bumptech.glide.Glide
 
 
 class ActivityOwnerViewListing : AppCompatActivity() {
