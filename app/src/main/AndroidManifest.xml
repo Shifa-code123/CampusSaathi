@@ -19,6 +19,9 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddServicesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerChooseTypeService"
             android:exported="false" />
         <activity

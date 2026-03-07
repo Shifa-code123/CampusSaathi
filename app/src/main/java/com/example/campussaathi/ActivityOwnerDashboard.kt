@@ -1,22 +1,19 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
+import android.util.Base64
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import android.widget.TextView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.graphics.BitmapFactory
-import android.util.Base64
-import android.widget.ImageView
 
 class ActivityOwnerDashboard : AppCompatActivity() {
 
@@ -24,7 +21,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
     private lateinit var toggle: ActionBarDrawerToggle
 
-    // ✅ IMPORTANT: class level declare kiya
     private lateinit var headerProfile: ImageView
     private lateinit var profileImage: ImageView
 
@@ -34,11 +30,9 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_dashboard)
 
-        // ✅ initialize kiya
         headerProfile = findViewById(R.id.headerProfile)
         profileImage = findViewById(R.id.profileImage)
 
-        // ✅ profile image load
         loadProfileImage()
 
         headerProfile.setOnClickListener {
@@ -58,15 +52,15 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             db.collection("owner_verifications")
                 .document(uid)
                 .get()
-                .addOnSuccessListener { document ->
+                .addOnSuccessListener { doc ->
 
-                    if (document.exists()) {
+                    if (doc.exists()) {
 
-                        val name = document.getString("fullName") ?: "Owner"
-                        val ownerType = document.getString("ownerType") ?: "Owner"
+                        txtOwnerName.text =
+                            doc.getString("fullName") ?: "Owner"
 
-                        txtOwnerName.text = name
-                        txtOwnerType.text = ownerType
+                        txtOwnerType.text =
+                            doc.getString("ownerType") ?: "Owner"
 
                     } else {
 
@@ -74,12 +68,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                         txtOwnerType.text = "null"
 
                     }
-                }
-                .addOnFailureListener {
-
-                    txtOwnerName.text = "Owner"
-                    txtOwnerType.text = "null"
-
                 }
         }
 
@@ -100,6 +88,19 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        setupDrawerHeader()
+        setupButtons()
+        setupBottomNavigation(bottomNav)
+        setupDrawerNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadProfileImage()
+    }
+
+    private fun setupDrawerHeader() {
+
         val headerView =
             navigationView.inflateHeaderView(R.layout.owner_drawer_header)
 
@@ -112,49 +113,50 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         val headerProfileDrawer =
             headerView.findViewById<ImageView>(R.id.headerProfile)
 
-        val uidDrawer =
-            FirebaseAuth.getInstance().currentUser?.uid
+        val uid =
+            FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        val txtBusinessProfile = findViewById<TextView>(R.id.txtBusinessProfile)
+        db.collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                headerName.text =
+                    doc.getString("fullName") ?: "Owner"
+
+                headerRole.text =
+                    doc.getString("role") ?: "Owner"
+
+                val base64 =
+                    doc.getString("profileImageBase64")
+
+                if (!base64.isNullOrEmpty()) {
+
+                    val bytes =
+                        Base64.decode(base64, Base64.DEFAULT)
+
+                    val bitmap =
+                        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                    headerProfileDrawer.setImageBitmap(bitmap)
+
+                }
+            }
+    }
+
+    private fun setupButtons() {
+
+        val txtBusinessProfile =
+            findViewById<TextView>(R.id.txtBusinessProfile)
 
         txtBusinessProfile.setOnClickListener {
-            val intent = Intent(this, ActivityOwnerPublicProfile::class.java)
-            startActivity(intent)
-        }
 
-        if (uidDrawer != null) {
-
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(uidDrawer)
-                .get()
-                .addOnSuccessListener { doc ->
-
-                    headerName.text =
-                        doc.getString("fullName") ?: "Owner"
-
-                    headerRole.text =
-                        doc.getString("role") ?: "Owner"
-
-                    val base64 =
-                        doc.getString("profileImageBase64")
-
-                    if (!base64.isNullOrEmpty()) {
-
-                        val bytes =
-                            Base64.decode(base64, Base64.DEFAULT)
-
-                        val bitmap =
-                            BitmapFactory.decodeByteArray(
-                                bytes,
-                                0,
-                                bytes.size
-                            )
-
-                        headerProfileDrawer.setImageBitmap(bitmap)
-
-                    }
-                }
+            startActivity(
+                Intent(
+                    this,
+                    ActivityOwnerPublicProfile::class.java
+                )
+            )
         }
 
         val btnViewListing =
@@ -168,7 +170,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     ActivityOwnerViewListing::class.java
                 )
             )
-
         }
 
         val btnEditListing =
@@ -177,8 +178,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         btnEditListing.setOnClickListener {
 
             val uid =
-                FirebaseAuth.getInstance().currentUser?.uid
-                    ?: return@setOnClickListener
+                FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
 
             db.collection("listings")
                 .document(uid)
@@ -194,7 +194,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                         ).show()
 
                         return@addOnSuccessListener
-
                     }
 
                     startActivity(
@@ -203,7 +202,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                             ActivityOwnerEditListing::class.java
                         )
                     )
-
                 }
         }
 
@@ -213,15 +211,68 @@ class ActivityOwnerDashboard : AppCompatActivity() {
         btnAddListing.setOnClickListener {
 
             openOrResumeListing()
-
         }
+    }
+
+    private fun setupBottomNavigation(bottomNav: BottomNavigationView) {
+
+        bottomNav.setOnItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_dashboard -> true
+
+                R.id.nav_services -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            ActivityOwnerViewListing::class.java
+                        )
+                    )
+                    true
+                }
+
+                R.id.nav_add -> {
+
+                    openOrResumeListing()
+                    true
+                }
+
+                R.id.nav_reviews -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            OwnerReviewsActivity::class.java
+                        )
+                    )
+                    true
+                }
+
+                R.id.nav_performance -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            ActivityOwnerPerformance::class.java
+                        )
+                    )
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+    private fun setupDrawerNavigation() {
 
         navigationView.setNavigationItemSelectedListener { item ->
 
             when (item.itemId) {
 
-                R.id.nav_add_listing ->
-                    openOrResumeListing()
+                R.id.nav_add_listing -> openOrResumeListing()
 
                 R.id.nav_submission ->
                     startActivity(
@@ -255,90 +306,28 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                         )
                     )
 
-                R.id.nav_logout ->
-                    logoutUser()
-
+                R.id.nav_logout -> logoutUser()
             }
 
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-
-        bottomNav.setOnItemSelectedListener { item ->
-
-            when (item.itemId) {
-
-                R.id.nav_dashboard -> true
-
-                R.id.nav_services -> {
-
-                    startActivity(
-                        Intent(
-                            this,
-                            ActivityOwnerViewListing::class.java
-                        )
-                    )
-                    true
-
-                }
-
-                R.id.nav_add -> {
-
-                    openOrResumeListing()
-                    true
-
-                }
-
-                R.id.nav_reviews -> {
-
-                    startActivity(
-                        Intent(
-                            this,
-                            OwnerReviewsActivity::class.java
-                        )
-                    )
-                    true
-
-                }
-
-                R.id.nav_performance -> {
-
-                    startActivity(
-                        Intent(
-                            this,
-                            ActivityOwnerPerformance::class.java
-                        )
-                    )
-                    true
-
-                }
-
-                else -> false
-            }
-        }
-    }
-
-    // ✅ IMPORTANT FIX
-    override fun onResume() {
-        super.onResume()
-        loadProfileImage()
     }
 
     private fun loadProfileImage() {
 
         val uid =
-            FirebaseAuth.getInstance().currentUser?.uid
-                ?: return
+            FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("users")
             .document(uid)
             .get()
             .addOnSuccessListener { doc ->
 
-                try {
+                val base64 =
+                    doc.getString("profileImageBase64")
 
-                    val base64 =
-                        doc.getString("profileImageBase64")
+                try {
 
                     if (!base64.isNullOrEmpty()) {
 
@@ -346,37 +335,22 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                             Base64.decode(base64, Base64.DEFAULT)
 
                         val bitmap =
-                            BitmapFactory.decodeByteArray(
-                                bytes,
-                                0,
-                                bytes.size
-                            )
+                            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
                         headerProfile.setImageBitmap(bitmap)
                         profileImage.setImageBitmap(bitmap)
 
                     } else {
 
-                        headerProfile.setImageResource(
-                            R.drawable.default_avatar
-                        )
-
-                        profileImage.setImageResource(
-                            R.drawable.default_avatar
-                        )
+                        headerProfile.setImageResource(R.drawable.default_avatar)
+                        profileImage.setImageResource(R.drawable.default_avatar)
 
                     }
 
                 } catch (e: Exception) {
 
-                    headerProfile.setImageResource(
-                        R.drawable.default_avatar
-                    )
-
-                    profileImage.setImageResource(
-                        R.drawable.default_avatar
-                    )
-
+                    headerProfile.setImageResource(R.drawable.default_avatar)
+                    profileImage.setImageResource(R.drawable.default_avatar)
                 }
             }
     }
@@ -384,19 +358,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
     private fun openOrResumeListing() {
 
         val uid =
-            FirebaseAuth.getInstance().currentUser?.uid
-
-        if (uid == null) {
-
-            Toast.makeText(
-                this,
-                "User not logged in",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            return
-
-        }
+            FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("owner_verifications")
             .document(uid)
@@ -404,20 +366,30 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             .addOnSuccessListener { ownerDoc ->
 
                 val ownerType =
-                    ownerDoc.getString("ownerType")
-                        ?.lowercase()
+                    ownerDoc.getString("ownerType")?.lowercase() ?: return@addOnSuccessListener
 
-                if (ownerType == null) {
+                // NEW SERVICES
+                val singlePageServices = listOf(
+                    "stationary_store",
+                    "medical_store",
+                    "gym",
+                    "street_food",
+                    "college_service"
+                )
 
-                    Toast.makeText(
-                        this,
-                        "Owner type missing",
-                        Toast.LENGTH_SHORT
-                    ).show()
+               if (ownerType in singlePageServices) {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            AddServicesActivity::class.java
+                        ).putExtra("OWNER_TYPE", ownerType)
+                    )
 
                     return@addOnSuccessListener
                 }
 
+                // OLD 6 STEP LISTING
                 db.collection("listings")
                     .document(uid)
                     .get()
@@ -441,11 +413,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                                         Intent(
                                             this,
                                             ActivityOwnerAddNewList1::class.java
-                                        )
-                                            .putExtra(
-                                                "OWNER_TYPE",
-                                                ownerType
-                                            )
+                                        ).putExtra("OWNER_TYPE", ownerType)
                                     )
                                 }
 
@@ -455,12 +423,9 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                                 listingDoc.getString("status")
 
                             val currentStep =
-                                listingDoc.getLong("currentStep")
-                                    ?.toInt() ?: 1
+                                listingDoc.getLong("currentStep")?.toInt() ?: 1
 
-                            if (status == "pending"
-                                || currentStep >= 6
-                            ) {
+                            if (status == "pending" || currentStep >= 6) {
 
                                 startActivity(
                                     Intent(
@@ -474,57 +439,12 @@ class ActivityOwnerDashboard : AppCompatActivity() {
 
                             when (currentStep) {
 
-                                1 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList1::class.java
-                                        )
-                                            .putExtra(
-                                                "OWNER_TYPE",
-                                                ownerType
-                                            )
-                                    )
-
-                                2 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList2::class.java
-                                        )
-                                    )
-
-                                3 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList3::class.java
-                                        )
-                                    )
-
-                                4 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList4::class.java
-                                        )
-                                    )
-
-                                5 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList5::class.java
-                                        )
-                                    )
-
-                                6 ->
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ActivityOwnerAddNewList6::class.java
-                                        )
-                                    )
+                                1 -> startActivity(Intent(this, ActivityOwnerAddNewList1::class.java))
+                                2 -> startActivity(Intent(this, ActivityOwnerAddNewList2::class.java))
+                                3 -> startActivity(Intent(this, ActivityOwnerAddNewList3::class.java))
+                                4 -> startActivity(Intent(this, ActivityOwnerAddNewList4::class.java))
+                                5 -> startActivity(Intent(this, ActivityOwnerAddNewList5::class.java))
+                                6 -> startActivity(Intent(this, ActivityOwnerAddNewList6::class.java))
                             }
                         }
                     }

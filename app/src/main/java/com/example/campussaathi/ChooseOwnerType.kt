@@ -105,7 +105,7 @@ class ChooseOwnerType : AppCompatActivity() {
                             toast("Owner type saved! Verification email sent.")
                         }
 
-                    // 🔥 CONDITION BASED REDIRECT
+                    // CONDITION BASED REDIRECT
                     if (selectedOwnerType == "service") {
 
                         startActivity(
