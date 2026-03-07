@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -186,15 +187,14 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
 
         if (resultCode != Activity.RESULT_OK) return
 
+        var imageUri: Uri? = null
         var bitmap: Bitmap? = null
 
         when (requestCode) {
 
             PICK_IMAGE_REQUEST -> {
 
-                val uri = data?.data
-
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                imageUri = data?.data
 
             }
 
@@ -206,28 +206,26 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
 
         }
 
-        if (bitmap != null) {
+        val intent = Intent(this, ActivityCreatePost::class.java)
 
-            val base64 = bitmapToBase64(bitmap)
+        if (imageUri != null) {
 
-            val intent = Intent(this, ActivityCreatePost::class.java)
+            intent.putExtra("imageUri", imageUri.toString())
 
-            intent.putExtra("imageBase64", base64)
+        } else if (bitmap != null) {
 
-            startActivity(intent)
+            val uri = Uri.parse(MediaStore.Images.Media.insertImage(
+                contentResolver,
+                bitmap,
+                "temp",
+                null
+            ))
 
+            intent.putExtra("imageUri", uri.toString())
         }
 
-    }
-
-    // ================= BITMAP TO BASE64 =================
-    private fun bitmapToBase64(bitmap: Bitmap): String {
-
-        val outputStream = ByteArrayOutputStream()
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
-
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+        startActivity(intent)
 
     }
+
 }

@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ChooseOwnerType : AppCompatActivity() {
+class ActivityOwnerChooseTypeService : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -26,7 +26,7 @@ class ChooseOwnerType : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose_owner_type)
+        setContentView(R.layout.activity_owner_choose_type_service)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -45,33 +45,33 @@ class ChooseOwnerType : AppCompatActivity() {
         // -------- CARD CLICKS --------
 
         cardRoomPg.setOnClickListener {
-            selectedOwnerType = "room_pg"
+            selectedOwnerType = "stationary_store"
             highlight(cardRoomPg)
-            toast("Room / PG selected")
+            toast("Stationary Store selected")
         }
 
         cardMess.setOnClickListener {
-            selectedOwnerType = "mess"
+            selectedOwnerType = "medical_store"
             highlight(cardMess)
-            toast("Mess selected")
+            toast("Medical Store selected")
         }
 
         cardTution.setOnClickListener {
-            selectedOwnerType = "tuition"
+            selectedOwnerType = "gym"
             highlight(cardTution)
-            toast("Tuition selected")
+            toast("Gym selected")
         }
 
         cardService.setOnClickListener {
-            selectedOwnerType = "service"
+            selectedOwnerType = "street_food"
             highlight(cardService)
-            toast("Service selected")
+            toast("Street Food selected")
         }
 
         cardCity.setOnClickListener {
-            selectedOwnerType = "city"
+            selectedOwnerType = "college_service"
             highlight(cardCity)
-            toast("City service selected")
+            toast("College Service selected")
         }
 
         // -------- CONTINUE --------
@@ -105,20 +105,9 @@ class ChooseOwnerType : AppCompatActivity() {
                             toast("Owner type saved! Verification email sent.")
                         }
 
-                    // 🔥 CONDITION BASED REDIRECT
-                    if (selectedOwnerType == "service") {
-
-                        startActivity(
-                            Intent(this, ActivityOwnerChooseTypeService::class.java)
-                        )
-
-                    } else {
-
-                        startActivity(
-                            Intent(this, OwnerVerification::class.java)
-                        )
-                    }
-
+                    startActivity(
+                        Intent(this, OwnerVerification::class.java)
+                    )
                     finish()
                 }
                 .addOnFailureListener {

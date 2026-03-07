@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Room / PG / Hotel"
+                        android:text="Stationary Stores"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
@@ -121,7 +121,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mess / Tiffin Services"
+                        android:text="Medical Stores"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
@@ -171,7 +171,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tution's"
+                        android:text="Gym"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
@@ -221,7 +221,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Near Campus Shop / Service"
+                        android:text="Street Food"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
@@ -270,7 +270,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="City help navigator"
+                        android:text="College Service"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
