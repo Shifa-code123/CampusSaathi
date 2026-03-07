@@ -23,6 +23,7 @@ class StudentDashboardActivity : AppCompatActivity() {
         binding = ActivityStudentDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // Header Title
         binding.header.tvHeaderTitle.text = "Home"
 
@@ -151,6 +152,11 @@ class StudentDashboardActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, StudentProfileActivity::class.java))
         }
+
+        //binding.studentDrawer.menuSaved.setOnClickListener {
+           // binding.drawerLayout.closeDrawer(GravityCompat.START)
+           // startActivity(Intent(this, SavedActivity::class.java))
+        //}
 
         binding.studentDrawer.menuHelp.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)

@@ -16,6 +16,7 @@ class StudentProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStudentProfileBinding
     private var isEditing = false
+    private var selectedImageUri: Uri? = null
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
@@ -24,9 +25,13 @@ class StudentProfileActivity : AppCompatActivity() {
     private val pickImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
-                // show instantly
-                binding.ivProfile.setImageURI(it)
-                // upload to firebase
+
+                android.util.Log.d("IMAGE_TEST", "Image Selected")
+
+                Glide.with(this)
+                    .load(it)
+                    .into(binding.ivProfile)
+
                 uploadProfileImage(it)
             }
         }
@@ -44,8 +49,13 @@ class StudentProfileActivity : AppCompatActivity() {
             finish()
         }
 
-        // Add photo click
+        // ➕ Plus icon click
         binding.ivAddPhoto.setOnClickListener {
+            pickImage.launch("image/*")
+        }
+
+        // Also allow clicking profile image
+        binding.ivProfile.setOnClickListener {
             pickImage.launch("image/*")
         }
 
@@ -72,7 +82,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // 🔹 LOAD PROFILE DATA
+    // LOAD PROFILE DATA
     // ===============================
     private fun loadStudentData() {
 
@@ -105,7 +115,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // 🔹 ENABLE EDIT MODE
+    // ENABLE EDIT MODE
     // ===============================
     private fun enableEditMode() {
 
@@ -124,7 +134,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // 🔹 EXIT EDIT MODE
+    // EXIT EDIT MODE
     // ===============================
     private fun exitEditMode() {
 
@@ -139,7 +149,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // 🔹 SAVE PROFILE CHANGES
+    // SAVE PROFILE CHANGES
     // ===============================
     private fun saveProfileChanges() {
 
@@ -160,7 +170,6 @@ class StudentProfileActivity : AppCompatActivity() {
             .update(updates)
             .addOnSuccessListener {
 
-                // Update top name instantly
                 binding.tvStudentName.text = newName
 
                 exitEditMode()
@@ -168,7 +177,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // 🔹 UPLOAD PROFILE IMAGE
+    // UPLOAD PROFILE IMAGE
     // ===============================
     private fun uploadProfileImage(uri: Uri) {
 
