@@ -26,11 +26,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.io.ByteArrayOutputStream
 
 class ActivityOwnerPublicProfile : AppCompatActivity() {
 
-    // Profile Views
     private lateinit var profileImage: ImageView
     private lateinit var headerProfile: ImageView
     private lateinit var txtPostsCount: TextView
@@ -39,20 +37,15 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     private lateinit var txtBio: TextView
     private lateinit var fabAddPost: FloatingActionButton
 
-
     private lateinit var navigationView: NavigationView
-
     private lateinit var drawerLayout: DrawerLayout
-
     private lateinit var toggle: ActionBarDrawerToggle
 
-    // Tabs
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
 
     private lateinit var btnEditProfile: Button
 
-    // Firebase
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
@@ -74,20 +67,12 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
         }
 
         btnEditProfile.setOnClickListener {
-
-            val intent = Intent(this, ActivityOwnerProfile::class.java)
-            startActivity(intent)
-
-        }
-
-        // drawer and footer code start here
-
-        val headerProfile = findViewById<ImageView>(R.id.headerProfile)
-        headerProfile.setOnClickListener {
             startActivity(Intent(this, ActivityOwnerProfile::class.java))
         }
 
-
+        headerProfile.setOnClickListener {
+            startActivity(Intent(this, ActivityOwnerProfile::class.java))
+        }
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigation_view)
@@ -106,34 +91,11 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        setupDrawerHeader()
+        setupDrawerNavigation()
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.selectedItemId = R.id.nav_services
-
-
-        navigationView.setNavigationItemSelectedListener { item ->
-
-            when (item.itemId) {
-
-                R.id.nav_add_listing -> openOrResumeListing()
-
-                R.id.nav_submission -> {
-                    startActivity(Intent(this, ActivityOwnerEditListing::class.java))
-                }
-
-                R.id.nav_my_listing -> {
-                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
-                }
-
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
-                }
-
-                R.id.nav_logout -> logoutUser()
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
 
         bottomNav.setOnItemSelectedListener { item ->
 
@@ -166,30 +128,91 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
                 else -> false
             }
         }
+    }
 
+    // ================= DRAWER HEADER =================
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+    private fun setupDrawerHeader() {
 
-        if (uid != null) {
-            db.collection("users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener { doc ->
+        val headerView =
+            navigationView.inflateHeaderView(R.layout.owner_drawer_header)
 
-                    val base64 = doc.getString("profileImageBase64")
+        val headerName =
+            headerView.findViewById<TextView>(R.id.headerName)
 
-                    if (!base64.isNullOrEmpty()) {
+        val headerRole =
+            headerView.findViewById<TextView>(R.id.headerRole)
 
-                        val bytes = Base64.decode(base64, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        val headerProfileDrawer =
+            headerView.findViewById<ImageView>(R.id.headerProfile)
 
-                        headerProfile.setImageBitmap(bitmap)
-                    }
+        val uid =
+            FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        db.collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                headerName.text =
+                    doc.getString("fullName") ?: "Owner"
+
+                headerRole.text =
+                    doc.getString("role") ?: "Owner"
+
+                val base64 =
+                    doc.getString("profileImageBase64")
+
+                if (!base64.isNullOrEmpty()) {
+
+                    val bytes =
+                        Base64.decode(base64, Base64.DEFAULT)
+
+                    val bitmap =
+                        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                    headerProfileDrawer.setImageBitmap(bitmap)
+
                 }
+            }
+    }
+
+    // ================= DRAWER NAVIGATION =================
+
+    private fun setupDrawerNavigation() {
+
+        navigationView.setNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_add_listing -> openOrResumeListing()
+
+                R.id.nav_submission ->
+                    startActivity(Intent(this, ActivityOwnerEditListing::class.java))
+
+                R.id.nav_my_listing ->
+                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
+
+                R.id.nav_requests ->
+                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
+
+                R.id.nav_notifications ->
+                    startActivity(Intent(this, ActivityOwnerNotification::class.java))
+
+                R.id.nav_profile ->
+                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
+
+                R.id.nav_logout ->
+                    logoutUser()
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
     }
 
     // ================= INITIALIZE VIEWS =================
+
     private fun initViews() {
 
         profileImage = findViewById(R.id.profileImage)
@@ -206,6 +229,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     }
 
     // ================= SETUP TABS =================
+
     private fun setupTabs() {
 
         val adapter = ProfilePagerAdapter(this)
@@ -216,7 +240,6 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
             when (position) {
 
                 0 -> tab.setIcon(R.drawable.ic_grid)
-
                 1 -> tab.setIcon(R.drawable.ic_services)
 
             }
@@ -225,6 +248,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     }
 
     // ================= LOAD PROFILE DATA =================
+
     private fun loadProfileData() {
 
         val uid = auth.currentUser?.uid ?: return
@@ -254,6 +278,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     }
 
     // ================= LOAD POSTS COUNT =================
+
     private fun loadPostsCount(uid: String) {
 
         db.collection("posts")
@@ -267,6 +292,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     }
 
     // ================= IMAGE SOURCE DIALOG =================
+
     private fun showImageSourceDialog() {
 
         val options = arrayOf("Upload from Gallery", "Open Camera")
@@ -278,7 +304,6 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
                 when (which) {
 
                     0 -> openGallery()
-
                     1 -> openCamera()
 
                 }
@@ -303,6 +328,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
     }
 
     // ================= HANDLE IMAGE RESULT =================
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -315,17 +341,12 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
         when (requestCode) {
 
             PICK_IMAGE_REQUEST -> {
-
                 imageUri = data?.data
-
             }
 
             CAMERA_REQUEST -> {
-
                 bitmap = data?.extras?.get("data") as Bitmap
-
             }
-
         }
 
         val intent = Intent(this, ActivityCreatePost::class.java)
@@ -336,20 +357,22 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
 
         } else if (bitmap != null) {
 
-            val uri = Uri.parse(MediaStore.Images.Media.insertImage(
-                contentResolver,
-                bitmap,
-                "temp",
-                null
-            ))
+            val uri = Uri.parse(
+                MediaStore.Images.Media.insertImage(
+                    contentResolver,
+                    bitmap,
+                    "temp",
+                    null
+                )
+            )
 
             intent.putExtra("imageUri", uri.toString())
         }
 
         startActivity(intent)
-
     }
 
+    // ================= OPEN OR RESUME LISTING =================
 
     private fun openOrResumeListing() {
 
@@ -403,19 +426,12 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
                             val currentStep =
                                 listingDoc.getLong("currentStep")?.toInt() ?: 1
 
-                            // If listing already submitted → open submission screen
-                            if (status == "pending") {
-                                startActivity(
-                                    Intent(this, ActivityOwnerSubmissionList1::class.java)
-                                )
-                                return@addOnSuccessListener
-                            }
+                            if (status == "pending" || currentStep >= 6) {
 
-                            // If all 6 steps completed → open submission screen
-                            if (currentStep >= 6) {
                                 startActivity(
                                     Intent(this, ActivityOwnerSubmissionList1::class.java)
                                 )
+
                                 return@addOnSuccessListener
                             }
 
@@ -427,13 +443,9 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
                                 )
 
                                 2 -> startActivity(Intent(this, ActivityOwnerAddNewList2::class.java))
-
                                 3 -> startActivity(Intent(this, ActivityOwnerAddNewList3::class.java))
-
                                 4 -> startActivity(Intent(this, ActivityOwnerAddNewList4::class.java))
-
                                 5 -> startActivity(Intent(this, ActivityOwnerAddNewList5::class.java))
-
                                 6 -> startActivity(Intent(this, ActivityOwnerAddNewList6::class.java))
                             }
                         }
@@ -441,6 +453,7 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
             }
     }
 
+    // ================= LOGOUT =================
 
     private fun logoutUser() {
 
@@ -453,6 +466,4 @@ class ActivityOwnerPublicProfile : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-
 }

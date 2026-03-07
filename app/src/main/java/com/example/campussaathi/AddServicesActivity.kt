@@ -70,14 +70,13 @@ class AddServicesActivity : AppCompatActivity() {
 
     // Gallery picker
     private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
 
-            uri?.let {
+            uris.forEach { uri ->
 
                 if (imageBitmapList.size >= 5) {
-
                     Toast.makeText(this, "Max 5 photos allowed", Toast.LENGTH_SHORT).show()
-                    return@let
+                    return@forEach
                 }
 
                 val stream = contentResolver.openInputStream(uri)
@@ -156,7 +155,54 @@ class AddServicesActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        // Toolbar profile image
+        val headerProfileToolbar =
+            findViewById<ImageView>(R.id.headerProfile)
 
+// Drawer header
+        val headerView = navigationView.getHeaderView(0)
+
+        val headerProfileDrawer =
+            headerView.findViewById<ImageView>(R.id.headerProfile)
+
+        val headerName =
+            headerView.findViewById<TextView>(R.id.headerName)
+
+        val headerRole =
+            headerView.findViewById<TextView>(R.id.headerRole)
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uid != null) {
+
+            db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { doc ->
+
+                    headerName.text =
+                        doc.getString("fullName") ?: "Owner"
+
+                    headerRole.text =
+                        doc.getString("role") ?: "Service Owner"
+
+                    val base64 =
+                        doc.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+
+                        val bytes =
+                            Base64.decode(base64, Base64.DEFAULT)
+
+                        val bitmap =
+                            BitmapFactory.decodeByteArray(bytes,0,bytes.size)
+
+                        // set both images
+                        headerProfileToolbar.setImageBitmap(bitmap)
+                        headerProfileDrawer.setImageBitmap(bitmap)
+                    }
+                }
+        }
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.selectedItemId = R.id.nav_services
 
@@ -175,12 +221,21 @@ class AddServicesActivity : AppCompatActivity() {
                     startActivity(Intent(this, ActivityOwnerViewListing::class.java))
                 }
 
+                R.id.nav_requests -> {
+                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
+                }
+
+                R.id.nav_notifications -> {
+                    startActivity(Intent(this, ActivityOwnerNotification::class.java))
+                }
+
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ActivityOwnerProfile::class.java))
                 }
 
                 R.id.nav_logout -> logoutUser()
             }
+
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
@@ -218,7 +273,7 @@ class AddServicesActivity : AppCompatActivity() {
         }
 
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
 
         if (uid != null) {
             db.collection("users")

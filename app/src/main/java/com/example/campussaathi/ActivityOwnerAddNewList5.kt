@@ -34,8 +34,17 @@ class ActivityOwnerAddNewList5 : AppCompatActivity() {
     private var uid: String? = null
 
     private val imagePicker =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { convertToBase64(it) }
+        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
+
+            uris.forEach { uri ->
+
+                if (imageBase64List.size >= 10) {
+                    Toast.makeText(this, "Maximum 10 images allowed", Toast.LENGTH_SHORT).show()
+                    return@forEach
+                }
+
+                convertToBase64(uri)
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
