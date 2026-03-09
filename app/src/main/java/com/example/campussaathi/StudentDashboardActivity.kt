@@ -1,21 +1,34 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.campussaathi.databinding.ActivityStudentDashboardBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 
-class StudentDashboardActivity : AppCompatActivity() {
+import com.google.android.gms.maps.model.*
+import java.util.HashMap
+
+class StudentDashboardActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityStudentDashboardBinding
+    private val db = FirebaseFirestore.getInstance()
+
+    private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,119 +36,145 @@ class StudentDashboardActivity : AppCompatActivity() {
         binding = ActivityStudentDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // Header Title
         binding.header.tvHeaderTitle.text = "Home"
 
-        // Drawer Setup
         setupDrawer()
+        setupBottomNav()
 
-        // Footer Setup
-        setupFooter("home")
-
-        // Drawer Open
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // Notification Click (Friend's logic kept)
-        binding.header.ivNotification.setOnClickListener {
-            // Open notification screen
-        }
-
-        // Profile Click (Friend's logic kept)
-        binding.header.ivProfile.setOnClickListener {
-            // Open profile screen
-        }
-
         Log.d("CHECK_ACTIVITY", "StudentDashboardActivity OPENED")
+
+        binding.servicesRecycler.layoutManager = LinearLayoutManager(this)
+
+        loadServices()
+
+        setupMap()
     }
 
-    // ---------------- FOOTER ----------------
+    // ---------------- MAP SETUP ----------------
 
-    private fun setupFooter(selectedTab: String) {
+    private fun setupMap() {
 
-        fun resetSelection() {
-            val defaultColor = getColor(R.color.cs_footer_default)
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
 
-            binding.csFooter.csFooterHomeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterExploreContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterNearmeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterHelpContainer.setBackgroundResource(0)
+        mapFragment.getMapAsync(this)
+    }
 
-            binding.csFooter.csFooterHomeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterExploreIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterNearmeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterHelpIcon.setColorFilter(defaultColor)
+    override fun onMapReady(googleMap: GoogleMap) {
 
-            binding.csFooter.csFooterHomeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterExploreText.setTextColor(defaultColor)
-            binding.csFooter.csFooterNearmeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterHelpText.setTextColor(defaultColor)
+        mMap = googleMap
+
+        val khamgaon = LatLng(20.706344, 76.572811)
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(khamgaon, 14f))
+
+        loadNearbyPlaces()
+
+        mMap.setOnMarkerClickListener { marker ->
+
+            val tag = marker.tag as HashMap<String, String>
+
+            binding.placeName.text = tag["name"]
+            binding.placeAddress.text = tag["address"]
+
+            binding.placeCard.visibility = View.VISIBLE
+
+            false
         }
+    }
 
-        fun selectItem(container: View, icon: ImageView, text: TextView) {
-            val selectedColor = getColor(R.color.cs_footer_selected_icon)
+    private fun loadNearbyPlaces() {
 
-            container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
-            icon.setColorFilter(selectedColor)
-            text.setTextColor(selectedColor)
+        db.collection("nearby_places")
+            .get()
+            .addOnSuccessListener { documents ->
 
-            container.animate()
-                .scaleX(1.05f)
-                .scaleY(1.05f)
-                .setDuration(120)
-                .withEndAction {
-                    container.animate().scaleX(1f).scaleY(1f).duration = 80
+                for (doc in documents) {
+
+                    val lat = doc.getDouble("latitude")
+                    val lng = doc.getDouble("longitude")
+                    val name = doc.getString("name")
+                    val address = doc.getString("address")
+
+                    if (lat != null && lng != null) {
+
+                        val location = LatLng(lat, lng)
+
+                        val marker = mMap.addMarker(
+                            MarkerOptions()
+                                .position(location)
+                                .title(name)
+                        )
+
+                        val data = HashMap<String, String>()
+
+                        data["name"] = name ?: ""
+                        data["address"] = address ?: ""
+
+                        marker?.tag = data
+                    }
                 }
-        }
-
-        // Default selection
-        when (selectedTab) {
-            "home" -> selectItem(
-                binding.csFooter.csFooterHomeContainer,
-                binding.csFooter.csFooterHomeIcon,
-                binding.csFooter.csFooterHomeText
-            )
-            "explore" -> selectItem(
-                binding.csFooter.csFooterExploreContainer,
-                binding.csFooter.csFooterExploreIcon,
-                binding.csFooter.csFooterExploreText
-            )
-            "near" -> selectItem(
-                binding.csFooter.csFooterNearmeContainer,
-                binding.csFooter.csFooterNearmeIcon,
-                binding.csFooter.csFooterNearmeText
-            )
-            "help" -> selectItem(
-                binding.csFooter.csFooterHelpContainer,
-                binding.csFooter.csFooterHelpIcon,
-                binding.csFooter.csFooterHelpText
-            )
-        }
-
-        // Click listeners
-        binding.csFooter.csFooterHomeContainer.setOnClickListener {
-            if (selectedTab != "home") {
-                startActivity(Intent(this, StudentDashboardActivity::class.java))
             }
-        }
+    }
 
-        binding.csFooter.csFooterExploreContainer.setOnClickListener {
-            if (selectedTab != "explore") {
-                startActivity(Intent(this, ExploreActivity::class.java))
+    // ---------------- SERVICES ----------------
+
+    private fun loadServices() {
+
+        db.collection("services")
+            .get()
+            .addOnSuccessListener { docs ->
+
+                val servicesList = ArrayList<Service>()
+
+                for (doc in docs) {
+
+                    val ownerId = doc.getString("ownerId") ?: ""
+
+                    val photos = doc.get("photos") as? List<String> ?: ArrayList()
+
+                    servicesList.add(Service(ownerId, photos))
+                }
+
+                binding.servicesRecycler.adapter = ServicesAdapter(servicesList)
             }
-        }
+    }
 
-        binding.csFooter.csFooterNearmeContainer.setOnClickListener {
-            if (selectedTab != "near") {
-                startActivity(Intent(this, NearbyActivity::class.java))
-            }
-        }
+    // ---------------- BOTTOM NAV ----------------
 
-        binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            if (selectedTab != "help") {
-                startActivity(Intent(this, HelpActivity::class.java))
+    private fun setupBottomNav() {
+
+        binding.studentBottomNav.selectedItemId = R.id.nav_home
+
+        binding.studentBottomNav.setOnItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_home -> true
+
+                R.id.nav_explore -> {
+                    startActivity(Intent(this, ExploreActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
+
+                R.id.nav_nearby -> {
+                    startActivity(Intent(this, NearbyActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
+
+                R.id.nav_help -> {
+                    startActivity(Intent(this, HelpActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
+
+                else -> false
             }
         }
     }
@@ -149,22 +188,14 @@ class StudentDashboardActivity : AppCompatActivity() {
         }
 
         binding.studentDrawer.menuProfile.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, StudentProfileActivity::class.java))
         }
 
-        //binding.studentDrawer.menuSaved.setOnClickListener {
-           // binding.drawerLayout.closeDrawer(GravityCompat.START)
-           // startActivity(Intent(this, SavedActivity::class.java))
-        //}
-
         binding.studentDrawer.menuHelp.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, HelpActivity::class.java))
         }
 
         binding.studentDrawer.menuLogout.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
             showLogoutDialog()
         }
     }

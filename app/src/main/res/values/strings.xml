@@ -89,6 +89,7 @@
     <string name="call">Call</string>
 
     <string name="search_services">Search Services</string>
+    <string name="sample_name">Owner Name</string>
 
 
 </resources>

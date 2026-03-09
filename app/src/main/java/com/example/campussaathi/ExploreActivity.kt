@@ -45,7 +45,7 @@ class ExploreActivity : AppCompatActivity() {
 
         setupRecycler()
         setupSearch()
-        setupFooter("explore")
+        setupBottomNav()
         setupDrawer()
     }
 
@@ -132,51 +132,38 @@ class ExploreActivity : AppCompatActivity() {
 
     // ---------------- FOOTER ----------------
 
-    private fun setupFooter(selectedTab: String) {
+    private fun setupBottomNav() {
 
-        fun resetSelection() {
-            val defaultColor = getColor(R.color.cs_footer_default)
+        binding.studentBottomNav.selectedItemId = R.id.nav_explore
 
-            binding.csFooter.csFooterHomeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterExploreContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterNearmeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterHelpContainer.setBackgroundResource(0)
+        binding.studentBottomNav.setOnItemSelectedListener {
 
-            binding.csFooter.csFooterHomeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterExploreIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterNearmeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterHelpIcon.setColorFilter(defaultColor)
+            when (it.itemId) {
 
-            binding.csFooter.csFooterHomeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterExploreText.setTextColor(defaultColor)
-            binding.csFooter.csFooterNearmeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterHelpText.setTextColor(defaultColor)
-        }
+                R.id.nav_home -> {
+                    startActivity(Intent(this, StudentDashboardActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
 
-        fun selectItem(container: View, icon: ImageView, text: TextView) {
-            val selectedColor = getColor(R.color.cs_footer_selected_icon)
+                R.id.nav_explore -> {
+                    true
+                }
 
-            container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
-            icon.setColorFilter(selectedColor)
-            text.setTextColor(selectedColor)
-        }
+                R.id.nav_nearby -> {
+                    startActivity(Intent(this, NearbyActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
 
-        resetSelection()
+                R.id.nav_help -> {
+                    startActivity(Intent(this, HelpActivity::class.java))
+                    overridePendingTransition(0,0)
+                    true
+                }
 
-        when (selectedTab) {
-            "explore" -> selectItem(
-                binding.csFooter.csFooterExploreContainer,
-                binding.csFooter.csFooterExploreIcon,
-                binding.csFooter.csFooterExploreText
-            )
-        }
-
-        binding.csFooter.csFooterHomeContainer.setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
-        }
-
-        binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            startActivity(Intent(this, HelpActivity::class.java))
+                else -> false
+            }
         }
     }
 }

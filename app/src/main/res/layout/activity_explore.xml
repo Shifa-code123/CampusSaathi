@@ -84,21 +84,33 @@
             android:layout_height="0dp"
             android:padding="@dimen/spacing_medium"
             android:clipToPadding="false"
+            android:paddingBottom="90dp"
             app:layout_constraintTop_toBottomOf="@id/searchCard"
-            app:layout_constraintBottom_toTopOf="@id/cs_footer"
+            app:layout_constraintBottom_toTopOf="@id/studentBottomNav"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- FOOTER -->
-        <include
-            android:id="@+id/cs_footer"
-            layout="@layout/layout_cs_footer"
+        <!-- BOTTOM NAV -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/studentBottomNav"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:background="@color/cs_white"
+            android:elevation="10dp"
+
+            app:itemIconTint="@color/cs_footer_selector"
+            app:itemTextColor="@color/cs_footer_selector"
+            app:itemIconSize="24dp"
+
+            app:labelVisibilityMode="labeled"
+            app:itemHorizontalTranslationEnabled="false"
+
+            app:menu="@menu/student_bottom_menu"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- DRAWER -->

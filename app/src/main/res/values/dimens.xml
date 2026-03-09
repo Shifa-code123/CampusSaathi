@@ -53,6 +53,11 @@
     <dimen name="cs_text_section">18sp</dimen>
     <dimen name="cs_text_body">14sp</dimen>
 
+    <dimen name="map_height">180dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="profile_image_size">40dp</dimen>
+    <dimen name="service_photo_height">180dp</dimen>
+
 
 
 
