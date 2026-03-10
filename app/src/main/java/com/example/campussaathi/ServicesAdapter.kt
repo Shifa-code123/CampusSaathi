@@ -1,5 +1,6 @@
 package com.example.campussaathi
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class ServicesAdapter(
         val pager: ViewPager2 = view.findViewById(R.id.photosPager)
         val counter: TextView = view.findViewById(R.id.txtPhotoCounter)
         val followBtn: Button = view.findViewById(R.id.btnFollow)
+        val btnViewDetails: Button = view.findViewById(R.id.btnViewDetails)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
@@ -47,7 +49,6 @@ class ServicesAdapter(
             .document(service.ownerId)
             .get()
             .addOnSuccessListener { doc ->
-
                 holder.name.text = doc.getString("fullName") ?: "Owner"
             }
 
@@ -57,9 +58,9 @@ class ServicesAdapter(
             .get()
             .addOnSuccessListener { docs ->
 
-                if (!docs.isEmpty) {
+                for (doc in docs) {
 
-                    val url = docs.documents[0].getString("business_pic")
+                    val url = doc.getString("business_pic")
 
                     if (!url.isNullOrEmpty()) {
 
@@ -67,6 +68,8 @@ class ServicesAdapter(
                             .load(url)
                             .circleCrop()
                             .into(holder.profile)
+
+                        break
                     }
                 }
             }
@@ -81,7 +84,6 @@ class ServicesAdapter(
             ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
-
                 holder.counter.text = "${position + 1}/$total"
             }
         })
@@ -91,6 +93,39 @@ class ServicesAdapter(
 
             holder.followBtn.text = "Following"
             holder.followBtn.isEnabled = false
+        }
+
+        // VIEW DETAILS BUTTON
+        holder.btnViewDetails.setOnClickListener {
+
+            val context = holder.itemView.context
+
+            val intent = Intent(context, DetailsActivity::class.java)
+
+            intent.putStringArrayListExtra("PHOTOS", ArrayList(service.photos))
+            intent.putExtra("OWNER_ID", service.ownerId)
+            intent.putExtra("SERVICE_NAME", service.serviceName)
+
+            context.startActivity(intent)
+        }
+
+        //passing details
+        holder.btnViewDetails.setOnClickListener {
+
+            val context = holder.itemView.context
+
+            val intent = Intent(context, DetailsActivity::class.java)
+
+            intent.putStringArrayListExtra("PHOTOS", ArrayList(service.photos))
+            intent.putExtra("OWNER_ID", service.ownerId)
+            intent.putExtra("SERVICE_NAME", service.serviceName)
+
+            intent.putExtra("LAT", service.latitude)
+            intent.putExtra("LNG", service.longitude)
+            intent.putExtra("PHONE", service.phone)
+            intent.putExtra("DESCRIPTION", service.description)
+
+            context.startActivity(intent)
         }
     }
 }

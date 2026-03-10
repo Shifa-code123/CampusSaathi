@@ -1,12 +1,9 @@
 package com.example.campussaathi
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +16,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-
 import com.google.android.gms.maps.model.*
 import java.util.HashMap
 
@@ -134,10 +130,25 @@ class StudentDashboardActivity : AppCompatActivity(), OnMapReadyCallback {
                 for (doc in docs) {
 
                     val ownerId = doc.getString("ownerId") ?: ""
-
                     val photos = doc.get("photos") as? List<String> ?: ArrayList()
+                    val serviceName = doc.getString("serviceName") ?: ""
 
-                    servicesList.add(Service(ownerId, photos))
+                    val latitude = doc.getDouble("latitude") ?: 0.0
+                    val longitude = doc.getDouble("longitude") ?: 0.0
+                    val phone = doc.get("contact")?.toString() ?: ""
+                    val description = doc.getString("description") ?: ""
+
+                    servicesList.add(
+                        Service(
+                            ownerId,
+                            photos,
+                            serviceName,
+                            latitude,
+                            longitude,
+                            phone,
+                            description
+                        )
+                    )
                 }
 
                 binding.servicesRecycler.adapter = ServicesAdapter(servicesList)

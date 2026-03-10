@@ -58,6 +58,8 @@
     <dimen name="profile_image_size">40dp</dimen>
     <dimen name="service_photo_height">180dp</dimen>
 
+    <dimen name="text_large">18sp</dimen>
+    <dimen name="text_small">14sp</dimen>
 
 
 

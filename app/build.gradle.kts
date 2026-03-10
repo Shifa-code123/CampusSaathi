@@ -96,5 +96,7 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
 }
 apply(plugin = "com.google.gms.google-services")

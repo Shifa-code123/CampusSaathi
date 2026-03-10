@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -20,71 +19,150 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".DetailsActivity"
+            android:exported="false" />
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE"/>
+            android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE" />
 
-        <activity android:name=".AddServicesActivity" android:exported="false"/>
-        <activity android:name=".ActivityOwnerChooseTypeService" android:exported="false"/>
-        <activity android:name=".SupportActivity" android:exported="false"/>
-        <activity android:name=".NearbyDetailActivity" android:exported="false"/>
-        <activity android:name=".NearbyActivity" android:exported="false"/>
-        <activity android:name=".ActivityOwnerNotification" android:exported="false"/>
-        <activity android:name=".ActivityCreatePost" android:exported="false"/>
-        <activity android:name=".ActivityOwnerPerformance" android:exported="false"/>
-        <activity android:name=".ActivityOwnerPublicProfile" android:exported="false"/>
-        <activity android:name=".OwnerInsightsActivity" android:exported="false"/>
-        <activity android:name=".OwnerReviewsActivity" android:exported="false"/>
-        <activity android:name=".ownerAddServiceActivity" android:exported="false"/>
-        <activity android:name=".OwnerServiceActivity" android:exported="false"/>
-        <activity android:name=".ActivityOwnerViewListing" android:exported="false"/>
-        <activity android:name=".ActivityOwnerEditListing" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList6" android:exported="false"/>
-        <activity android:name=".OwnerVerification" android:exported="false"/>
-        <activity android:name=".AdminDashboardActivity" android:exported="false"/>
-        <activity android:name=".AdminReviewActivity" android:exported="false"/>
-        <activity android:name=".ActivityOwnerDashboard" android:exported="false"/>
-        <activity android:name=".ActivityOwnerMenuDrawer" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList1" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList2" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList3" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList4" android:exported="false"/>
-        <activity android:name=".ActivityOwnerAddNewList5" android:exported="false"/>
-        <activity android:name=".ActivityOwnerProfile" android:exported="false"/>
-        <activity android:name=".ActivityOwnerMyList" android:exported="false"/>
-        <activity android:name=".ActivityOwnerVerificationInProgress" android:exported="false"/>
-        <activity android:name=".ActivityOwnerVerificationFailed" android:exported="false"/>
-        <activity android:name=".OwnerVerificationStatus" android:exported="false"/>
-        <activity android:name=".LoginActivity" android:exported="false"/>
-        <activity android:name=".SignupActivity" android:exported="false"/>
-        <activity android:name=".RoleSelectionActivity" android:exported="false"/>
-        <activity android:name=".ChooseOwnerType" android:exported="false"/>
-        <activity android:name=".ActivityOwnerSubmissionList1" android:exported="false"/>
-
-        <!-- Splash Activity (Launcher) -->
+        <activity
+            android:name=".AddServicesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerChooseTypeService"
+            android:exported="false" />
+        <activity
+            android:name=".SupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerNotification"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityCreatePost"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerPerformance"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerPublicProfile"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerInsightsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ownerAddServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerViewListing"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerEditListing"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList6"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerification"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerMenuDrawer"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList1"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList2"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList3"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList4"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerAddNewList5"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerProfile"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerMyList"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerVerificationInProgress"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerVerificationFailed"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerificationStatus"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RoleSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChooseOwnerType"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerSubmissionList1"
+            android:exported="false" /> <!-- Splash Activity (Launcher) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity" android:exported="false"/>
-
-        <!-- Student Module -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" /> <!-- Student Module -->
         <activity
             android:name=".ExploreActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".HelpActivity" android:exported="false"/>
-        <activity android:name=".StudentDashboardActivity" android:exported="false"/>
-        <activity android:name=".StudentProfileActivity" android:exported="false"/>
-        <activity android:name=".StudentOwnerProfileActivity" android:exported="false"/>
-
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentOwnerProfileActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
