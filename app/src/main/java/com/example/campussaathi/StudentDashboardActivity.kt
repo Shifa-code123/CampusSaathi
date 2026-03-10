@@ -173,11 +173,11 @@ class StudentDashboardActivity : AppCompatActivity(), OnMapReadyCallback {
                     true
                 }
 
-                R.id.nav_nearby -> {
-                    startActivity(Intent(this, NearbyActivity::class.java))
-                    overridePendingTransition(0,0)
-                    true
-                }
+               // R.id.nav_nearby -> {
+                   // startActivity(Intent(this, NearbyActivity::class.java))
+                    //overridePendingTransition(0,0)
+                    //true
+                //}
 
                 R.id.nav_help -> {
                     startActivity(Intent(this, HelpActivity::class.java))

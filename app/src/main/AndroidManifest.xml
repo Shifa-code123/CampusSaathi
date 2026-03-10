@@ -37,12 +37,6 @@
             android:name=".SupportActivity"
             android:exported="false" />
         <activity
-            android:name=".NearbyDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NearbyActivity"
-            android:exported="false" />
-        <activity
             android:name=".ActivityOwnerNotification"
             android:exported="false" />
         <activity
