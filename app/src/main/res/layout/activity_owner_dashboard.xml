@@ -489,11 +489,11 @@
                             android:layout_margin="5dp"/>
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnManageListing"
+                            android:id="@+id/btnCityHelp"
                             android:layout_width="0dp"
                             android:layout_height="48dp"
                             android:layout_weight="1"
-                            android:text="Manage listing"
+                            android:text="Add City Help"
                             android:textColor="#ffffff"
                             android:background="@drawable/purple_button"
                             app:backgroundTint="@null"

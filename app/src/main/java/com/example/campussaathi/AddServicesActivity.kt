@@ -496,7 +496,10 @@ class AddServicesActivity : AppCompatActivity() {
                     "latitude" to selectedLatLng?.latitude,
                     "longitude" to selectedLatLng?.longitude,
                     "distanceFromCampus" to distanceKm,
-                    "timestamp" to System.currentTimeMillis()
+                    "timestamp" to System.currentTimeMillis(),
+
+                    // NEW FIELD
+                    "status" to "pending"
                 )
 
                 db.collection("services")

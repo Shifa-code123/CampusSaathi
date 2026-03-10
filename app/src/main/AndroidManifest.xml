@@ -20,6 +20,7 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
         <activity
+<<<<<<< Updated upstream
             android:name=".DetailsActivity"
             android:exported="false" />
         <!-- Google Maps API Key -->
@@ -27,6 +28,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE" />
 
+=======
+            android:name=".ActivityCityHelp"
+            android:exported="false" />
+        <activity
+            android:name=".EditServicesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewServicesActivity"
+            android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".AddServicesActivity"
             android:exported="false" />

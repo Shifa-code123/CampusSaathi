@@ -104,15 +104,11 @@
                         android:textColor="#666666"
                         android:background="#E0E0E0" />
                 </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="contact CampusSaathi - 9859237451"/>
 
-                <!-- BUTTON -->
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="Re-submit Documents"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#2196F3" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

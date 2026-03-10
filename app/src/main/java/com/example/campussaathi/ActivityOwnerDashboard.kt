@@ -26,12 +26,31 @@ class ActivityOwnerDashboard : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
 
+    // SAME SERVICES LIST USED FOR ADD / EDIT / VIEW
+    private val singlePageServices = listOf(
+        "stationary_store",
+        "medical_store",
+        "gym",
+        "street_food",
+        "college_service"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_dashboard)
 
         headerProfile = findViewById(R.id.headerProfile)
         profileImage = findViewById(R.id.profileImage)
+
+        val btnCityHelp = findViewById<Button>(R.id.btnCityHelp)
+
+        btnCityHelp.setOnClickListener {
+
+            startActivity(
+                Intent(this, ActivityCityHelp::class.java)
+            )
+
+        }
 
         loadProfileImage()
 
@@ -164,12 +183,36 @@ class ActivityOwnerDashboard : AppCompatActivity() {
 
         btnViewListing.setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    ActivityOwnerViewListing::class.java
-                )
-            )
+            val uid =
+                FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+
+            db.collection("owner_verifications")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { ownerDoc ->
+
+                    val ownerType =
+                        ownerDoc.getString("ownerType")?.lowercase()
+
+                    if (ownerType in singlePageServices) {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                ViewServicesActivity::class.java
+                            ).putExtra("OWNER_TYPE", ownerType)
+                        )
+
+                    } else {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                ActivityOwnerViewListing::class.java
+                            )
+                        )
+                    }
+                }
         }
 
         val btnEditListing =
@@ -180,28 +223,49 @@ class ActivityOwnerDashboard : AppCompatActivity() {
             val uid =
                 FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
 
-            db.collection("listings")
+            db.collection("owner_verifications")
                 .document(uid)
                 .get()
-                .addOnSuccessListener { doc ->
+                .addOnSuccessListener { ownerDoc ->
 
-                    if (!doc.exists()) {
+                    val ownerType =
+                        ownerDoc.getString("ownerType")?.lowercase()
 
-                        Toast.makeText(
-                            this,
-                            "No listing found",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    if (ownerType in singlePageServices) {
 
-                        return@addOnSuccessListener
-                    }
-
-                    startActivity(
-                        Intent(
-                            this,
-                            ActivityOwnerEditListing::class.java
+                        startActivity(
+                            Intent(
+                                this,
+                                EditServicesActivity::class.java
+                            ).putExtra("OWNER_TYPE", ownerType)
                         )
-                    )
+
+                    } else {
+
+                        db.collection("listings")
+                            .document(uid)
+                            .get()
+                            .addOnSuccessListener { doc ->
+
+                                if (!doc.exists()) {
+
+                                    Toast.makeText(
+                                        this,
+                                        "No listing found",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    return@addOnSuccessListener
+                                }
+
+                                startActivity(
+                                    Intent(
+                                        this,
+                                        ActivityOwnerEditListing::class.java
+                                    )
+                                )
+                            }
+                    }
                 }
         }
 
@@ -368,7 +432,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                 val ownerType =
                     ownerDoc.getString("ownerType")?.lowercase() ?: return@addOnSuccessListener
 
-                // NEW SERVICES
                 val singlePageServices = listOf(
                     "stationary_store",
                     "medical_store",
@@ -377,7 +440,7 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     "college_service"
                 )
 
-               if (ownerType in singlePageServices) {
+                if (ownerType in singlePageServices) {
 
                     startActivity(
                         Intent(
@@ -389,7 +452,6 @@ class ActivityOwnerDashboard : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                // OLD 6 STEP LISTING
                 db.collection("listings")
                     .document(uid)
                     .get()

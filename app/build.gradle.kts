@@ -96,7 +96,11 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
+<<<<<<< Updated upstream
     implementation("com.google.android.gms:play-services-location:21.0.1")
+=======
+    implementation("com.squareup.picasso:picasso:2.8")
+>>>>>>> Stashed changes
 
 }
 apply(plugin = "com.google.gms.google-services")
