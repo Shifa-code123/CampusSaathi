@@ -1,14 +1,13 @@
 package com.example.campussaathi
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.campussaathi.databinding.ActivityStudentOwnerProfileBinding
+import com.example.campussaathi.utils.DrawerManager
 import com.google.firebase.firestore.FirebaseFirestore
 
 class StudentOwnerProfileActivity : AppCompatActivity() {
@@ -22,51 +21,49 @@ class StudentOwnerProfileActivity : AppCompatActivity() {
         binding = ActivityStudentOwnerProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ===== HEADER TITLE =====
-        binding.header.tvHeaderTitle.text = "OwnerProfile"
+        // Drawer setup
+        DrawerManager.setupDrawer(
+            this,
+            binding.drawerLayout,
+            binding.studentDrawer.root
+        )
 
-        // ===== DRAWER OPEN =====
+        binding.header.tvHeaderTitle.text = "Owner Profile"
+
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // ===== FOOTER SETUP =====
         setupFooter()
 
-        val ownerId = intent.getStringExtra("OWNER_ID") ?: return
+        val ownerId = intent.getStringExtra("ownerId") ?: return
 
         loadOwnerInfo(ownerId)
         loadOwnerPosts(ownerId)
     }
 
-    // ===== LOAD OWNER INFO =====
+    // ---------------- OWNER NAME ----------------
 
     private fun loadOwnerInfo(ownerId: String) {
 
         db.collection("owner_verifications")
-            .document(ownerId)
+            .whereEqualTo("uid", ownerId)
+            .limit(1)
             .get()
-            .addOnSuccessListener { doc ->
+            .addOnSuccessListener { docs ->
 
-                binding.txtOwnerName.text =
-                    doc.getString("fullName") ?: "Owner"
+                if (!docs.isEmpty) {
 
-                val followers = doc.getLong("followers") ?: 0
-                binding.txtFollowersCount.text = followers.toString()
+                    val doc = docs.documents[0]
 
-                val base64 = doc.getString("proofImageBase64")
-
-                if (!base64.isNullOrEmpty()) {
-
-                    val bytes = Base64.decode(base64, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.size)
-
-                    binding.profileImage.setImageBitmap(bitmap)
+                    binding.txtOwnerName.text =
+                        doc.getString("fullName") ?: "Owner"
                 }
             }
     }
 
-    // ===== LOAD POSTS =====
+
+    // ---------------- POSTS ----------------
 
     private fun loadOwnerPosts(ownerId: String) {
 
@@ -83,6 +80,22 @@ class StudentOwnerProfileActivity : AppCompatActivity() {
 
                     val post = doc.toObject(Post::class.java)
                     postList.add(post)
+
+                    var url = doc.getString("business_pic")
+
+                    if (url.isNullOrEmpty()) {
+                        url = doc.getString("img")
+                    }
+
+                    if (!url.isNullOrEmpty()) {
+
+                        Glide.with(binding.profileImage)
+                            .load(url)
+                            .circleCrop()
+                            .into(binding.profileImage)
+
+                        break   // first image only
+                    }
                 }
 
                 binding.recyclerPosts.layoutManager =
@@ -93,24 +106,36 @@ class StudentOwnerProfileActivity : AppCompatActivity() {
             }
     }
 
-    // ===== FOOTER NAVIGATION =====
+    // ---------------- FOOTER ----------------
 
     private fun setupFooter() {
 
         binding.csFooter.csFooterHomeContainer.setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
+
+            val intent = Intent(this, StudentActivity::class.java)
+            intent.putExtra("OPEN_TAB","HOME")
+            startActivity(intent)
         }
 
         binding.csFooter.csFooterExploreContainer.setOnClickListener {
-            startActivity(Intent(this, ExploreActivity::class.java))
+
+            val intent = Intent(this, StudentActivity::class.java)
+            intent.putExtra("OPEN_TAB","EXPLORE")
+            startActivity(intent)
         }
 
         binding.csFooter.csFooterNearmeContainer.setOnClickListener {
-            startActivity(Intent(this, NearbyActivity::class.java))
+
+            val intent = Intent(this, StudentActivity::class.java)
+            intent.putExtra("OPEN_TAB","NEARBY")
+            startActivity(intent)
         }
 
         binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            startActivity(Intent(this, HelpActivity::class.java))
+
+            val intent = Intent(this, StudentActivity::class.java)
+            intent.putExtra("OPEN_TAB","HELP")
+            startActivity(intent)
         }
     }
 }

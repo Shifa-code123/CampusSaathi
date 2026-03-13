@@ -1,67 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/headerRoot"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:background="@color/cs_header_blue"
-    android:elevation="4dp"
-    android:paddingStart="@dimen/spacing_medium"
-    android:paddingEnd="@dimen/spacing_medium">
+    android:layout_height="56dp"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="40dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="#E9E6F2">
 
-    <!-- Menu Icon -->
-    <ImageView
-        android:id="@+id/ivMenu"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_menu"
-        app:tint="@color/cs_icon_tint"
-        android:contentDescription="@string/menu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tvHeaderTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/header_title"
-        android:textColor="@color/cs_white"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/ivMenu"
-        app:layout_constraintEnd_toStartOf="@id/ivNotification"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginEnd="@dimen/spacing_medium"/>
+        <!-- MENU BUTTON -->
 
-    <!-- Notification Icon -->
-    <ImageView
-        android:id="@+id/ivNotification"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_notification"
-        app:tint="@color/cs_icon_tint"
-        android:contentDescription="@string/notification"
-        app:layout_constraintEnd_toStartOf="@id/ivProfile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="@dimen/spacing_medium"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/menuContainer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#F3F3F7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    <!-- Profile Icon -->
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivProfile"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/ic_profile"
-        app:tint="@color/cs_white"
-        app:shapeAppearanceOverlay="@style/CircleImage"
-        android:contentDescription="@string/profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                android:id="@+id/ivMenu"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_menu"
+                app:tint="#333333"/>
+        </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- TITLE -->
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/menuContainer"
+            app:layout_constraintEnd_toStartOf="@id/notificationContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+
+        <!-- NOTIFICATION BUTTON -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/notificationContainer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#F3F3F7"
+            app:layout_constraintEnd_toStartOf="@id/profileContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:id="@+id/ivNotification"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_notification"
+                app:tint="#333333"/>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <!-- PROFILE BUTTON -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profileContainer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#F3F3F7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_profile"
+                app:tint="#333333"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

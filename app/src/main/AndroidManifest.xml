@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,16 +20,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
+
+        <!-- Map & Details -->
         <activity
-<<<<<<< Updated upstream
             android:name=".DetailsActivity"
             android:exported="false" />
+        <activity
+            android:name=".FullMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentActivity"
+            android:exported="false" />
+
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE" />
 
-=======
+        <!-- Services -->
+        <activity
             android:name=".ActivityCityHelp"
             android:exported="false" />
         <activity
@@ -37,13 +47,14 @@
         <activity
             android:name=".ViewServicesActivity"
             android:exported="false" />
->>>>>>> Stashed changes
         <activity
             android:name=".AddServicesActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerChooseTypeService"
             android:exported="false" />
+
+        <!-- Owner Section -->
         <activity
             android:name=".SupportActivity"
             android:exported="false" />
@@ -78,24 +89,6 @@
             android:name=".ActivityOwnerEditListing"
             android:exported="false" />
         <activity
-            android:name=".ActivityOwnerAddNewList6"
-            android:exported="false" />
-        <activity
-            android:name=".OwnerVerification"
-            android:exported="false" />
-        <activity
-            android:name=".AdminDashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AdminReviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerDashboard"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityOwnerMenuDrawer"
-            android:exported="false" />
-        <activity
             android:name=".ActivityOwnerAddNewList1"
             android:exported="false" />
         <activity
@@ -111,10 +104,27 @@
             android:name=".ActivityOwnerAddNewList5"
             android:exported="false" />
         <activity
+            android:name=".ActivityOwnerAddNewList6"
+            android:exported="false" />
+        <activity
             android:name=".ActivityOwnerProfile"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerMyList"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOwnerMenuDrawer"
+            android:exported="false" />
+
+        <!-- Verification -->
+        <activity
+            android:name=".OwnerVerification"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerVerificationStatus"
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerVerificationInProgress"
@@ -122,9 +132,16 @@
         <activity
             android:name=".ActivityOwnerVerificationFailed"
             android:exported="false" />
+
+        <!-- Admin -->
         <activity
-            android:name=".OwnerVerificationStatus"
+            android:name=".AdminDashboardActivity"
             android:exported="false" />
+        <activity
+            android:name=".AdminReviewActivity"
+            android:exported="false" />
+
+        <!-- Authentication -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -139,35 +156,31 @@
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerSubmissionList1"
-            android:exported="false" /> <!-- Splash Activity (Launcher) -->
+            android:exported="false" />
+
+        <!-- Splash (Launcher) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- Student Module -->
-        <activity
-            android:name=".ExploreActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".HelpActivity"
             android:exported="false" />
-        <activity
-            android:name=".StudentDashboardActivity"
-            android:exported="false" />
+
+        <!-- Student Module -->
         <activity
             android:name=".StudentProfileActivity"
             android:exported="false" />
         <activity
             android:name=".StudentOwnerProfileActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

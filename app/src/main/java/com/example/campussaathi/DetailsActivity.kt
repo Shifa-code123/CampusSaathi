@@ -3,17 +3,17 @@ package com.example.campussaathi
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.ViewPager2
-import com.example.campussaathi.databinding.ActivityDetailsBinding
-import android.widget.ImageView
-import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import com.example.campussaathi.databinding.ActivityDetailsBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-
+import android.net.Uri
+import com.example.campussaathi.utils.DrawerManager
+import com.google.firebase.auth.FirebaseAuth
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -24,10 +24,9 @@ class DetailsActivity : AppCompatActivity() {
     private var longitude: Double = 0.0
     private var phone: String = ""
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private lateinit var ownerId: String
     private lateinit var serviceName: String
+    private lateinit var serviceId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +34,69 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        //drawer navigation logic
+        DrawerManager.setupDrawer(
+            this,
+            binding.drawerLayout,
+            binding.studentDrawer.root
+        )
 
-        // photos
+        binding.header.tvHeaderTitle.text = "Details"
+
+        // menu button
+        binding.header.ivMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
         photos = intent.getStringArrayListExtra("PHOTOS") ?: ArrayList()
-        binding.imageSlider.adapter = PhotosAdapter(photos)
+        serviceName = intent.getStringExtra("SERVICE_NAME") ?: ""
+        ownerId = intent.getStringExtra("OWNER_ID") ?: ""
+        serviceId = intent.getStringExtra("SERVICE_ID") ?: ""
+        latitude = intent.getDoubleExtra("LAT",0.0)
+        longitude = intent.getDoubleExtra("LNG",0.0)
+        phone = intent.getStringExtra("PHONE") ?: ""
+        val description = intent.getStringExtra("DESCRIPTION") ?: ""
 
+        binding.txtServiceName.text = serviceName
+        binding.txtDescription.text = description
+
+        val db = FirebaseFirestore.getInstance()
+
+        // Owner name
+        db.collection("owner_verifications")
+            .document(ownerId)
+            .get()
+            .addOnSuccessListener { doc ->
+                binding.txtOwnerName.text = doc.getString("fullName") ?: "Owner"
+            }
+
+        // Owner profile image
+        db.collection("posts")
+            .whereEqualTo("ownerId", ownerId)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { docs ->
+
+                if (!docs.isEmpty && !isDestroyed) {
+
+                    var url = docs.documents[0].getString("business_pic")
+
+                    if (url.isNullOrEmpty()) {
+                        url = docs.documents[0].getString("img")
+                    }
+
+                    if (!url.isNullOrEmpty()) {
+
+                        Glide.with(binding.imgOwnerProfile)
+                            .load(url)
+                            .circleCrop()
+                            .into(binding.imgOwnerProfile)
+                    }
+                }
+            }
+
+        // Image slider
+        binding.imageSlider.adapter = PhotosAdapter(photos)
         setupDots(photos.size)
 
         binding.imageSlider.registerOnPageChangeCallback(
@@ -51,128 +107,56 @@ class DetailsActivity : AppCompatActivity() {
             }
         )
 
-        // receive intent data
-        serviceName = intent.getStringExtra("SERVICE_NAME") ?: ""
-        ownerId = intent.getStringExtra("OWNER_ID") ?: ""
-
-        Log.d("DETAIL_OWNER_ID", ownerId)
-
-        binding.txtServiceName.text = serviceName
-
-        val db = FirebaseFirestore.getInstance()
-
-        // OWNER NAME
-        db.collection("owner_verifications")
-            .document(ownerId)
-            .get()
-            .addOnSuccessListener { doc ->
-                binding.txtOwnerName.text = doc.getString("fullName") ?: "Owner"
-            }
-
-        // PROFILE IMAGE
-        db.collection("posts")
-            .whereEqualTo("ownerId", ownerId)
-            .get()
-            .addOnSuccessListener { docs ->
-
-                for (doc in docs) {
-
-                    val url = doc.getString("business_pic")
-
-                    if (!url.isNullOrEmpty()) {
-
-                        Glide.with(binding.imgOwnerProfile)
-                            .load(url)
-                            .circleCrop()
-                            .into(binding.imgOwnerProfile)
-
-                        break
-                    }
-                }
-            }
-
-        // header
-        binding.header.tvHeaderTitle.text = "Details"
-
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        //direction and call
-         latitude = intent.getDoubleExtra("LAT",0.0)
-         longitude = intent.getDoubleExtra("LNG",0.0)
-         phone = intent.getStringExtra("PHONE") ?: ""
-        Log.d("PHONE_DEBUG", phone)
-
+        // Direction
         binding.btnDirection.setOnClickListener {
 
             val uri = "https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude"
 
-            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uri))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
             intent.setPackage("com.google.android.apps.maps")
 
             startActivity(intent)
         }
+
+        // Call
         binding.btnCall.setOnClickListener {
 
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = android.net.Uri.parse("tel:$phone")
+            intent.data = Uri.parse("tel:$phone")
 
             startActivity(intent)
         }
-        //description
-        val description = intent.getStringExtra("DESCRIPTION") ?: ""
 
-        binding.txtDescription.text = description
+        // Rating click
+        var lastRating = 0f
 
+        binding.ratingBar.setOnTouchListener { v, event ->
 
-        // rating bar logic
-        var lastRating = 0
+            val ratingBar = v as android.widget.RatingBar
 
-        binding.ratingBar.setOnTouchListener { view, event ->
+            val newRating = ((event.x / ratingBar.width) * ratingBar.numStars).toInt() + 1
 
-            val ratingBar = view as android.widget.RatingBar
-
-            val width = ratingBar.width
-            val stars = ratingBar.numStars
-
-            val touchedRating = (event.x / width * stars).toInt() + 1
-
-            if (touchedRating == lastRating) {
+            if (newRating.toFloat() == lastRating) {
 
                 ratingBar.rating = 0f
-                lastRating = 0
+                lastRating = 0f
+                saveRating(0f)
 
             } else {
 
-                ratingBar.rating = touchedRating.toFloat()
-                lastRating = touchedRating
+                ratingBar.rating = newRating.toFloat()
+                lastRating = newRating.toFloat()
+                saveRating(lastRating)
             }
 
             true
         }
 
-
-        setupDrawer()
+        loadAverageRating()
 
     }
 
-    private fun setupDrawer() {
 
-        binding.studentDrawer.menuHome.setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
-        }
-
-        binding.studentDrawer.menuProfile.setOnClickListener {
-            startActivity(Intent(this, StudentProfileActivity::class.java))
-        }
-
-        binding.studentDrawer.menuHelp.setOnClickListener {
-            startActivity(Intent(this, HelpActivity::class.java))
-        }
-    }
-
-    // IMAGE SLIDER DOTS
     private fun setupDots(total: Int) {
 
         binding.dotsLayout.removeAllViews()
@@ -194,7 +178,6 @@ class DetailsActivity : AppCompatActivity() {
         setActiveDot(0)
     }
 
-    // ACTIVE DOT
     private fun setActiveDot(position: Int) {
 
         for (i in 0 until binding.dotsLayout.childCount) {
@@ -207,5 +190,58 @@ class DetailsActivity : AppCompatActivity() {
                 dot.setImageResource(R.drawable.inactive_dot)
             }
         }
+    }
+
+    // Save rating
+    private fun saveRating(rating: Float) {
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        val data = hashMapOf(
+            "serviceId" to serviceId,
+            "studentId" to userId,
+            "rating" to rating
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection("ratings")
+            .document(serviceId + "_" + userId)
+            .set(data)
+            .addOnSuccessListener {
+
+                loadAverageRating()
+            }
+    }
+
+    // Load average rating
+    private fun loadAverageRating() {
+
+        FirebaseFirestore.getInstance()
+            .collection("ratings")
+            .whereEqualTo("serviceId", serviceId)
+            .get()
+            .addOnSuccessListener { docs ->
+
+                var total = 0f
+                var count = 0
+
+                for (doc in docs) {
+                    total += doc.getDouble("rating")?.toFloat() ?: 0f
+                    count++
+                }
+
+                if (count > 0) {
+
+                    val avg = total / count
+
+                    binding.ratingBar.rating = avg
+                    binding.txtRatingValue.text = String.format("%.1f", avg)
+
+                } else {
+
+                    binding.ratingBar.rating = 0f
+                    binding.txtRatingValue.text = "0.0"
+                }
+            }
     }
 }

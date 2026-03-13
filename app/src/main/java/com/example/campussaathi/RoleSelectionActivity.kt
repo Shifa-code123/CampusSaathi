@@ -61,7 +61,7 @@ class RoleSelectionActivity : AppCompatActivity() {
 
                     if (selectedRole == "student") {
                         startActivity(
-                            Intent(this, StudentDashboardActivity::class.java)
+                            Intent(this, StudentActivity::class.java)
                         )
                     } else {
                         startActivity(

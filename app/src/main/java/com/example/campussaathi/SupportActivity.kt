@@ -3,197 +3,95 @@ package com.example.campussaathi
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import android.view.View
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
-import com.example.campussaathi.databinding.ActivitySupportBinding
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.button.MaterialButton
 
 class SupportActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySupportBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_support)
 
-        binding = ActivitySupportBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val faq1 = findViewById<LinearLayout>(R.id.faq1)
+        val faq2 = findViewById<LinearLayout>(R.id.faq2)
+        val faq3 = findViewById<LinearLayout>(R.id.faq3)
+        val faq4 = findViewById<LinearLayout>(R.id.faq4)
 
-        setupHeader()
-        setupDrawer()
-        setupFooter("help")
-        setupActions()
-    }
+        val ans1 = findViewById<MaterialCardView>(R.id.ans1)
+        val ans2 = findViewById<MaterialCardView>(R.id.ans2)
+        val ans3 = findViewById<MaterialCardView>(R.id.ans3)
+        val ans4 = findViewById<MaterialCardView>(R.id.ans4)
 
-    // ---------------- HEADER ----------------
+        faq1.setOnClickListener { toggle(ans1) }
+        faq2.setOnClickListener { toggle(ans2) }
+        faq3.setOnClickListener { toggle(ans3) }
+        faq4.setOnClickListener { toggle(ans4) }
 
-    private fun setupHeader() {
-        binding.header.tvHeaderTitle.text = "Help & Support"
+        val report = findViewById<MaterialButton>(R.id.btnReport)
+        val email = findViewById<MaterialButton>(R.id.btnEmail)
+        val whatsapp = findViewById<MaterialButton>(R.id.btnWhatsapp)
+        val website = findViewById<MaterialButton>(R.id.btnWebsite)
 
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-    }
 
-    // ---------------- DRAWER ----------------
+        report.setOnClickListener {
 
-    private fun setupDrawer() {
+            AlertDialog.Builder(this)
+                .setTitle("Report Problem")
+                .setMessage("You can report issues directly to our support team.")
+                .setPositiveButton("Email Report") { _, _ ->
 
-        val drawerView = binding.drawerLayout.getChildAt(1)
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.data = Uri.parse("mailto:support@campussaathi.com")
+                    startActivity(intent)
 
-        drawerView.findViewById<View>(R.id.menuHome).setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
-        /*drawerView.findViewById<View>(R.id.menuProfile).setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
-        drawerView.findViewById<View>(R.id.menuSaved).setOnClickListener {
-            startActivity(Intent(this, SavedActivity::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }*/
-
-        drawerView.findViewById<View>(R.id.menuHelp).setOnClickListener {
-            // Already here
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
-        drawerView.findViewById<View>(R.id.menuLogout).setOnClickListener {
-            // logout logic
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-    }
-
-    // ---------------- FOOTER ----------------
-
-    private fun setupFooter(selectedTab: String) {
-
-        val defaultColor = ContextCompat.getColor(this, R.color.cs_footer_default)
-        val selectedColor = ContextCompat.getColor(this, R.color.cs_footer_selected_icon)
-
-        fun resetSelection() {
-            binding.csFooter.csFooterHomeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterExploreContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterNearmeContainer.setBackgroundResource(0)
-            binding.csFooter.csFooterHelpContainer.setBackgroundResource(0)
-
-            binding.csFooter.csFooterHomeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterExploreIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterNearmeIcon.setColorFilter(defaultColor)
-            binding.csFooter.csFooterHelpIcon.setColorFilter(defaultColor)
-
-            binding.csFooter.csFooterHomeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterExploreText.setTextColor(defaultColor)
-            binding.csFooter.csFooterNearmeText.setTextColor(defaultColor)
-            binding.csFooter.csFooterHelpText.setTextColor(defaultColor)
-        }
-
-        fun selectItem(container: View, icon: ImageView, text: TextView) {
-            container.setBackgroundResource(R.drawable.cs_footer_bg_selected)
-            icon.setColorFilter(selectedColor)
-            text.setTextColor(selectedColor)
-        }
-
-        resetSelection()
-
-        if (selectedTab == "help") {
-            selectItem(
-                binding.csFooter.csFooterHelpContainer,
-                binding.csFooter.csFooterHelpIcon,
-                binding.csFooter.csFooterHelpText
-            )
-        }
-
-        binding.csFooter.csFooterHomeContainer.setOnClickListener {
-            startActivity(Intent(this, StudentDashboardActivity::class.java))
-        }
-
-        binding.csFooter.csFooterExploreContainer.setOnClickListener {
-            startActivity(Intent(this, ExploreActivity::class.java))
-        }
-
-        /*binding.csFooter.csFooterNearmeContainer.setOnClickListener {
-            startActivity(Intent(this, NearMeActivity::class.java))
-        }*/
-
-        binding.csFooter.csFooterHelpContainer.setOnClickListener {
-            // Already here
-        }
-    }
-
-    // ---------------- BUTTON ACTIONS ----------------
-
-    private fun setupActions() {
-
-        // ---------------- SUBMIT BUTTON INITIAL STATE ----------------
-
-        binding.btnSubmit.isEnabled = false
-        binding.btnSubmit.alpha = 0.5f
-
-        // Enable only when user types
-        binding.etIssue.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val text = s?.toString()?.trim()
-
-                if (!text.isNullOrEmpty()) {
-                    binding.btnSubmit.isEnabled = true
-                    binding.btnSubmit.alpha = 1f
-                } else {
-                    binding.btnSubmit.isEnabled = false
-                    binding.btnSubmit.alpha = 0.5f
                 }
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        // ---------------- SUBMIT CLICK ----------------
-
-        binding.btnSubmit.setOnClickListener {
-
-            val issueText = binding.etIssue.text.toString().trim()
-
-            if (issueText.isNotEmpty()) {
-
-                binding.etIssue.text?.clear()
-                binding.btnSubmit.isEnabled = false
-                binding.btnSubmit.alpha = 0.5f
-
-                // ✅ Toast Message
-                android.widget.Toast.makeText(
-                    this,
-                    "Issue submitted successfully",
-                    android.widget.Toast.LENGTH_SHORT
-                ).show()
-            }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
 
+        email.setOnClickListener {
 
-        // ---------------- CALL BUTTON ----------------
+            AlertDialog.Builder(this)
+                .setTitle("Email Support")
+                .setMessage("support@campussaathi.com")
+                .setPositiveButton("Send Email") { _, _ ->
 
-        binding.btnCall.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:9876543210")
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.data = Uri.parse("mailto:support@campussaathi.com")
+                    startActivity(intent)
+
+                }
+                .show()
+        }
+
+        whatsapp.setOnClickListener {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://wa.me/919999999999")
             startActivity(intent)
+
         }
 
-        // ---------------- WHATSAPP ----------------
+        website.setOnClickListener {
 
-        binding.btnMessage.setOnClickListener {
-            val phoneNumber = "919876543210"
-            val url = "https://wa.me/$phoneNumber"
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://campussaathi.com")
+            startActivity(intent)
+
         }
+    }
+
+    private fun toggle(card: MaterialCardView) {
+
+        if (card.visibility == View.GONE) {
+            card.visibility = View.VISIBLE
+        } else {
+            card.visibility = View.GONE
+        }
+
     }
 }

@@ -5,12 +5,14 @@ import android.view.View
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
 import com.example.campussaathi.databinding.ActivityStudentProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.bumptech.glide.Glide
+import com.example.campussaathi.utils.DrawerManager
 
 class StudentProfileActivity : AppCompatActivity() {
 
@@ -42,11 +44,19 @@ class StudentProfileActivity : AppCompatActivity() {
         binding = ActivityStudentProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //drawer navigation logic
+        DrawerManager.setupDrawer(
+            this,
+            binding.drawerLayout,
+            binding.studentDrawer.root
+        )
+
+
         binding.header.tvHeaderTitle.text = "Profile"
 
-        // Back button
+        // menu button
         binding.header.ivMenu.setOnClickListener {
-            finish()
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
         // ➕ Plus icon click

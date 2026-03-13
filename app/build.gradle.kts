@@ -98,9 +98,13 @@ dependencies {
 
 <<<<<<< Updated upstream
     implementation("com.google.android.gms:play-services-location:21.0.1")
+<<<<<<< HEAD
 =======
     implementation("com.squareup.picasso:picasso:2.8")
 >>>>>>> Stashed changes
+=======
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+>>>>>>> f388d85 (new fragment feature added)
 
 }
 apply(plugin = "com.google.gms.google-services")

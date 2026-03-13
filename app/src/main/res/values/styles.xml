@@ -2,13 +2,13 @@
 <resources>
 
     <style name="DrawerItemStyle">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingStart">@dimen/spacing_large</item>
-        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:drawablePadding">@dimen/drawer_icon_text_spacing</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:drawablePadding">20dp</item>
     </style>
 
 </resources>

@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
 
                     "admin" -> open(AdminDashboardActivity::class.java)
 
-                    "student" -> open(StudentDashboardActivity::class.java)
+                    "student" -> open(StudentActivity::class.java)
 
                     "owner" -> {
 
