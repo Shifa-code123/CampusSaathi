@@ -21,6 +21,11 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
 
+        <activity
+            android:name=".ServiceDetailActivity"
+            android:exported="false" />
+
+
         <!-- Map & Details -->
         <activity
             android:name=".DetailsActivity"
@@ -31,6 +36,12 @@
         <activity
             android:name=".StudentActivity"
             android:exported="false" />
+
+        <!-- Near Me Feature -->
+        <activity
+            android:name=".CategoryListActivity"
+            android:exported="false" />
+
 
         <!-- Google Maps API Key -->
         <meta-data

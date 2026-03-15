@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main Content -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="28dp"
-        android:fitsSystemWindows="true">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <!-- HEADER -->
 
@@ -22,63 +21,24 @@
             layout="@layout/layout_cs_header"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-           />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Title -->
-
-        <TextView
-            android:id="@+id/txtNeedAssistance"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoryRecycler"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Need Assistance?"
-            android:textSize="@dimen/text_title"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:layout_marginStart="@dimen/padding_medium"
-            android:layout_marginEnd="@dimen/padding_medium"
-            android:layout_marginTop="@dimen/padding_large"
+            android:layout_height="0dp"
+            android:padding="@dimen/padding_medium"
+            android:clipToPadding="false"
+
             app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Police -->
 
-        <include
-            android:id="@+id/cardPolice"
-            layout="@layout/item_emergency_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_large"
-            app:layout_constraintTop_toBottomOf="@id/txtNeedAssistance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Medical -->
 
-        <include
-            android:id="@+id/cardMedical"
-            layout="@layout/item_emergency_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintTop_toBottomOf="@id/cardPolice"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <!-- Ambulance -->
-
-        <include
-            android:id="@+id/cardAmbulance"
-            layout="@layout/item_emergency_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintTop_toBottomOf="@id/cardMedical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Drawer -->
 

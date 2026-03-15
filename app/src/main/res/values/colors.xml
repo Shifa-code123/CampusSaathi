@@ -49,6 +49,7 @@
     <color name="cs_overlay_black">#80000000</color>
 
     <color name="cs_light_grey">#E6E6E6</color>
+    <color name="purple_500">#6200EE</color>
 
 
     <color name="cs_background">#F5F7FA</color>
@@ -66,6 +67,10 @@
 
     <color name="yellow_star">#FFC107</color>
     <color name="transparent_blue">#662196F3</color>
+    <color name="textPrimary">#212121</color>
+    <color name="nearmeCardBg">#F1F3F6</color>
+    <color name="nearmeText">#1F2937</color>
+    <color name="nearmeIconColor">#2563EB</color>
 
 
 

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/serviceImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_round"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/serviceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="City Hospital"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+
+            app:layout_constraintStart_toEndOf="@id/serviceImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/arrow"
+
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/serviceDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="NH6 Khamgaon"
+            android:textSize="13sp"
+            android:textColor="#6B7280"
+
+            app:layout_constraintStart_toStartOf="@id/serviceName"
+            app:layout_constraintTop_toBottomOf="@id/serviceName"
+            app:layout_constraintEnd_toStartOf="@id/arrow"/>
+
+        <!-- DISTANCE TEXT -->
+
+        <TextView
+            android:id="@+id/serviceDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="2.2 km away"
+            android:textSize="12sp"
+            android:textColor="#6B7280"
+
+            app:layout_constraintStart_toStartOf="@id/serviceName"
+            app:layout_constraintTop_toBottomOf="@id/serviceDesc"/>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_arrow"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
