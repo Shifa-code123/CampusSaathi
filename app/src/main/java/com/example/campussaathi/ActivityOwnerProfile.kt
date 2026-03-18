@@ -132,9 +132,9 @@ class ActivityOwnerProfile : AppCompatActivity() {
                     startActivity(Intent(this, ActivityOwnerSubmissionList1::class.java))
                 }
 
-                R.id.nav_my_listing -> {
-                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
-                }
+//                R.id.nav_my_listing -> {
+//                    startActivity(Intent(this, ActivityOwnerMyList::class.java))
+//                }
 
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ActivityOwnerProfile::class.java))

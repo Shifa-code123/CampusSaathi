@@ -1,4 +1,5 @@
 package com.example.campussaathi
 
-class NavigationHandler {
+interface NavigationHandler {
+    fun navigateTo(tabId: Int)
 }

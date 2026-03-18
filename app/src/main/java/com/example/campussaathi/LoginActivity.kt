@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
 
                 when (role) {
 
-                    "admin" -> open(AdminDashboardActivity::class.java)
+
 
                     "student" -> open(StudentActivity::class.java)
 
@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                                         open(ActivityOwnerVerificationInProgress::class.java)
 
                                     "approved" ->
-                                        open(ActivityOwnerDashboard::class.java)
+                                        open(OwnerMainActivity::class.java)
 
                                     "rejected" ->
                                         open(OwnerVerification::class.java)

@@ -118,7 +118,7 @@ class ActivityOwnerViewListing : AppCompatActivity() {
             when (item.itemId) {
 
                 R.id.nav_dashboard -> {
-                    startActivity(Intent(this, ActivityOwnerDashboard::class.java))
+//                    startActivity(Intent(this, ActivityOwnerDashboard::class.java))
                     true
                 }
 
@@ -132,13 +132,10 @@ class ActivityOwnerViewListing : AppCompatActivity() {
                     true
                 }
 
-                R.id.nav_reviews -> {
-                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
-                    true
-                }
+
 
                 R.id.nav_performance -> {
-                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
+//                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
                     true
                 }
 
@@ -332,7 +329,7 @@ class ActivityOwnerViewListing : AppCompatActivity() {
                 Toast.makeText(this, "Listing deleted", Toast.LENGTH_SHORT).show()
 
                 // Navigate back to dashboard after delete
-                startActivity(Intent(this, ActivityOwnerDashboard::class.java))
+//                startActivity(Intent(this, ActivityOwnerDashboard::class.java))
                 finish()
             }
             .addOnFailureListener {

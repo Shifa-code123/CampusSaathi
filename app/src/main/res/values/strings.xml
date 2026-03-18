@@ -29,6 +29,25 @@
         <item>Last 1 Year</item>
     </string-array>
 
+    <string-array name="first_dropdown">
+        <item>Select Services</item>
+        <item>police Station</item>
+        <item>Hospitals</item>
+        <item>Bus Station</item>
+        <item>Railways Station</item>
+        <item>Restaurants</item>
+        <item>Grocery Stores</item>
+    </string-array>
+
+    <string-array name="second_dropdown">
+        <item>Select Service</item>
+        <item>Stationary Store</item>
+        <item>Medical Store</item>
+        <item>Gym</item>
+        <item>Street Food</item>
+        <item>College Services</item>
+    </string-array>
+
     <string-array name="filter_services">
         <item>All Services</item>
         <item>Room / PG</item>

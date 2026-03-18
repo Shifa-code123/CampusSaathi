@@ -9,8 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class PostGridAdapter(private val postList: ArrayList<Post>) :
-    RecyclerView.Adapter<PostGridAdapter.PostViewHolder>() {
+class PostGridAdapter(
+    private var postList: ArrayList<Post>
+) : RecyclerView.Adapter<PostGridAdapter.PostViewHolder>() {
 
     class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtHeading: TextView = view.findViewById(R.id.txtHeading)
@@ -33,31 +34,49 @@ class PostGridAdapter(private val postList: ArrayList<Post>) :
         holder.txtHeading.text = post.heading
         holder.txtCaption.text = post.caption
 
-        // Load Cloudinary image
-        if (post.img.isNotEmpty()) {
-
+        // 🔥 Image load (safe)
+        if (!post.img.isNullOrEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(post.img)
+                .placeholder(R.drawable.default_avatar)
                 .into(holder.imgPost)
+        } else {
+            holder.imgPost.setImageResource(R.drawable.default_avatar)
         }
 
-        // Like button
+        // ❤️ Like button (toggle)
+        var isLiked = false
+
         holder.btnLike.setOnClickListener {
-            holder.btnLike.setImageResource(R.drawable.ic_like)
+            isLiked = !isLiked
+
+            if (isLiked) {
+                holder.btnLike.setImageResource(R.drawable.ic_like)
+            } else {
+                holder.btnLike.setImageResource(R.drawable.ic_like)
+            }
         }
 
-        // Share button
+        // 📤 Share button
         holder.btnShare.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, post.caption)
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, "${post.heading}\n${post.caption}")
+            }
 
-            holder.itemView.context.startActivity(intent)
+            holder.itemView.context.startActivity(
+                Intent.createChooser(intent, "Share via")
+            )
         }
     }
 
-    override fun getItemCount(): Int {
-        return postList.size
+    override fun getItemCount(): Int = postList.size
+
+    // 🔥 IMPORTANT: Fragment se data update karne ke liye
+    fun updateData(newList: ArrayList<Post>) {
+        postList.clear()
+        postList.addAll(newList)
+        notifyDataSetChanged()
     }
 }

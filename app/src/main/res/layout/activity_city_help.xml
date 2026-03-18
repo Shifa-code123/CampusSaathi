@@ -71,6 +71,27 @@
                     android:padding="20dp">
 
                     <!-- Title -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerCategory"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_bg"
+                            android:entries="@array/first_dropdown"/>
+
+                        <Space
+                            android:layout_width="12dp"
+                            android:layout_height="wrap_content"/>
+
+
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"

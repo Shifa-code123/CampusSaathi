@@ -24,7 +24,7 @@ class ActivityOwnerVerificationInProgress : AppCompatActivity() {
                 val status = doc.getString("status") ?: "pending"
 
                 if (status == "approved") {
-                    startActivity(Intent(this, ActivityOwnerDashboard::class.java))
+                    startActivity(Intent(this, OwnerMainActivity::class.java))
                     finish()
                 }
             }

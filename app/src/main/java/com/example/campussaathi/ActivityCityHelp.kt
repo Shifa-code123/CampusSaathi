@@ -7,8 +7,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
+import androidx.core.view.GravityCompat
+import android.view.MenuItem
 import android.os.Bundle
 import android.widget.*
+import android.util.Base64
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -16,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -31,7 +33,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import android.util.Base64
 
 class ActivityCityHelp : AppCompatActivity() {
 
@@ -43,6 +44,8 @@ class ActivityCityHelp : AppCompatActivity() {
     private lateinit var txtDistance: TextView
     private lateinit var btnAddPhoto: Button
     private lateinit var imgPreviewContainer: LinearLayout
+    private lateinit var spinnerCategory: Spinner
+
 
     private val imageBitmapList = mutableListOf<Bitmap>()
     private val imageUrlList = mutableListOf<String>()
@@ -109,6 +112,9 @@ class ActivityCityHelp : AppCompatActivity() {
         etContact = findViewById(R.id.etContact)
         etDescription = findViewById(R.id.etDescription)
 
+        spinnerCategory = findViewById(R.id.spinnerCategory)
+
+
         btnSubmit = findViewById(R.id.btnSubmitService)
         btnGps = findViewById(R.id.btnGps)
         txtDistance = findViewById(R.id.txtDistance)
@@ -123,7 +129,7 @@ class ActivityCityHelp : AppCompatActivity() {
         setupDrawerAndFooter()
     }
 
-    // ---------------- IMAGE SOURCE ----------------
+    // IMAGE SOURCE
 
     private fun showImageSourceDialog() {
 
@@ -160,7 +166,7 @@ class ActivityCityHelp : AppCompatActivity() {
         imgPreviewContainer.addView(img)
     }
 
-    // ---------------- LOCATION ----------------
+    // LOCATION
 
     private fun getCurrentLocation() {
 
@@ -188,16 +194,20 @@ class ActivityCityHelp : AppCompatActivity() {
                     val lng = location.longitude
 
                     val latLng = LatLng(lat, lng)
-
                     selectedLatLng = latLng
 
                     calculateDistance(latLng)
 
                     Toast.makeText(this, "Location detected", Toast.LENGTH_SHORT).show()
+
+                    // 🔥 OPEN GOOGLE MAP
+                    val uri = Uri.parse("geo:$lat,$lng?q=$lat,$lng(Service Location)")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    intent.setPackage("com.google.android.apps.maps")
+                    startActivity(intent)
                 }
             }
     }
-
     private fun calculateDistance(dest: LatLng) {
 
         val result = FloatArray(1)
@@ -215,7 +225,7 @@ class ActivityCityHelp : AppCompatActivity() {
         txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
     }
 
-    // ---------------- CLOUDINARY ----------------
+    // CLOUDINARY
 
     private fun uploadImage(bitmap: Bitmap, onComplete: () -> Unit) {
 
@@ -260,13 +270,16 @@ class ActivityCityHelp : AppCompatActivity() {
         })
     }
 
-    // ---------------- SUBMIT ----------------
+    // SUBMIT
 
     private fun submitCityHelp() {
 
         val name = etServiceName.text.toString()
         val contact = etContact.text.toString()
         val desc = etDescription.text.toString()
+
+        val selectedCategory = spinnerCategory.selectedItem.toString()
+
 
         val uid = auth.currentUser?.uid ?: return
 
@@ -290,6 +303,7 @@ class ActivityCityHelp : AppCompatActivity() {
 
                     "ownerId" to uid,
                     "serviceName" to name,
+                    "category" to selectedCategory,
                     "contact" to contact,
                     "description" to desc,
                     "photos" to imageUrlList,
@@ -311,8 +325,6 @@ class ActivityCityHelp : AppCompatActivity() {
         }
     }
 
-    // ---------------- HEADER + FOOTER (UNCHANGED) ----------------
-
     private fun setupDrawerAndFooter() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -331,37 +343,102 @@ class ActivityCityHelp : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        navigationView.setNavigationItemSelectedListener { item ->
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+            when (item.itemId) {
 
-        bottomNav.setOnItemSelectedListener {
-
-            when (it.itemId) {
-
-                R.id.nav_dashboard -> {
-                    startActivity(Intent(this, ActivityOwnerDashboard::class.java))
-                    true
-                }
-
-                R.id.nav_services -> true
-
-                R.id.nav_add -> {
+                R.id.nav_add_listing -> {
                     startActivity(Intent(this, ActivityOwnerAddNewList1::class.java))
-                    true
                 }
 
-                R.id.nav_reviews -> {
-                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
-                    true
+                R.id.nav_submission -> {
+                    startActivity(Intent(this, ActivityOwnerEditListing::class.java))
                 }
 
-                R.id.nav_performance -> {
-                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
-                    true
+                R.id.nav_my_listing -> {
+                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
                 }
 
-                else -> false
+                R.id.nav_requests -> {
+//                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
+                }
+
+                R.id.nav_notifications -> {
+                    startActivity(Intent(this, ActivityOwnerNotification::class.java))
+                }
+
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
+                }
+
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
             }
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
+        // Toolbar profile image
+        val headerProfileToolbar =
+            findViewById<ImageView>(R.id.headerProfile)
+
+        // Drawer header
+        val headerView = navigationView.getHeaderView(0)
+
+        val headerProfileDrawer =
+            headerView.findViewById<ImageView>(R.id.headerProfile)
+
+        val headerName =
+            headerView.findViewById<TextView>(R.id.headerName)
+
+        val headerRole =
+            headerView.findViewById<TextView>(R.id.headerRole)
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uid != null) {
+
+            db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { doc ->
+
+                    headerName.text =
+                        doc.getString("fullName") ?: "Owner"
+
+                    headerRole.text =
+                        doc.getString("role") ?: "Service Owner"
+
+                    val base64 =
+                        doc.getString("profileImageBase64")
+
+                    if (!base64.isNullOrEmpty()) {
+
+                        val bytes =
+                            Base64.decode(base64, Base64.DEFAULT)
+
+                        val bitmap =
+                            BitmapFactory.decodeByteArray(bytes,0,bytes.size)
+
+                        // set both images
+                        headerProfileToolbar.setImageBitmap(bitmap)
+                        headerProfileDrawer.setImageBitmap(bitmap)
+                    }
+                }
+        }
+
+
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

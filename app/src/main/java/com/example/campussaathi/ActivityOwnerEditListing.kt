@@ -133,15 +133,7 @@ class ActivityOwnerEditListing : AppCompatActivity() {
                     true
                 }
 
-                R.id.nav_reviews -> {
-                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
-                    true
-                }
 
-                R.id.nav_performance -> {
-                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
-                    true
-                }
 
                 else -> false
             }
