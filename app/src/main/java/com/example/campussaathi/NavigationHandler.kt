@@ -1,4 +1,4 @@
 package com.example.campussaathi
 
-class ActivityOwnerDashboard {
+class NavigationHandler {
 }
