@@ -74,6 +74,30 @@
 
     <dimen name="card_radius">12dp</dimen>
 
+    <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="bottom_nav_height">60dp</dimen>
+    <dimen name="banner_height">180dp</dimen>
+
+
+    <dimen name="text_heading">20sp</dimen>
+    <dimen name="text_heading_small">16sp</dimen>
+
+    <dimen name="text_body_bold">15sp</dimen>
+
+
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+
+
+
+    <dimen name="icon_size">20dp</dimen>
+    <dimen name="profile_size">32dp</dimen>
+    <dimen name="icon_box">40dp</dimen>
+
+
+    <dimen name="corner_large">12dp</dimen>
+
 
 
 

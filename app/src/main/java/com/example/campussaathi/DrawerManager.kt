@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
+import com.example.campussaathi.AboutActivity
 import com.example.campussaathi.LoginActivity
 import com.example.campussaathi.R
 import com.example.campussaathi.SavedActivity
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.jvm.java
 import com.example.campussaathi.SupportActivity
+import com.example.campussaathi.VolunteerActivity
 
 object DrawerManager {
 
@@ -98,6 +100,26 @@ object DrawerManager {
 
             activity.startActivity(
                 Intent(activity, SupportActivity::class.java)
+            )
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        // 🔹 VOLUNTEER PROGRAM
+        drawerView.findViewById<View>(R.id.menuVolunteer).setOnClickListener {
+
+            activity.startActivity(
+                Intent(activity, VolunteerActivity::class.java)
+            )
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        // 🔹 ABOUT CAMPUSSAATHI
+        drawerView.findViewById<View>(R.id.menuAbout).setOnClickListener {
+
+            activity.startActivity(
+                Intent(activity, AboutActivity::class.java)
             )
 
             drawerLayout.closeDrawer(GravityCompat.START)
