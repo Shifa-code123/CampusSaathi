@@ -112,5 +112,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="volunteer_title">Become a CampusSaathi Volunteer</string>
+    <string name="volunteer_subtitle">Help your campus community by contributing valuable information and assisting fellow students.</string>
+    <string name="apply_volunteer">Apply as Volunteer</string>
+    <string name="volunteer_responsibility">Volunteer Responsibilities</string>
+    <string name="point1">• Suggest new and accurate places</string>
+    <string name="point2">• Moderate and verify information</string>
+    <string name="point3">• Respond to student queries</string>
+    <string name="volunteer_banner">Volunteer banner</string>
+    <string name="back">Back</string>
+    <string name="waiting">Waiting illustration</string>
+
 
 </resources>

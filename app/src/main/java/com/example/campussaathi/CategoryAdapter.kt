@@ -3,34 +3,47 @@ package com.example.campussaathi
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.campussaathi.databinding.ItemCategoryBinding
+import com.bumptech.glide.Glide
+import com.example.campussaathi.databinding.ItemServiceBinding
 
 class CategoryAdapter(
-    private var categoryList: List<CategoryModel>
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+    private val list: List<Service>
+) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    inner class CategoryViewHolder(val binding: ItemCategoryBinding)
+    inner class ViewHolder(val binding: ItemServiceBinding)
         : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val binding = ItemCategoryBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemServiceBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return CategoryViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = categoryList[position]
-        holder.binding.tvCategoryName.text = category.name
-        holder.binding.ivCategory.setImageResource(category.imageRes)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val service = list[position]
+
+        // 🔹 Name
+        holder.binding.tvServiceName.text = service.serviceName
+
+        // 🔹 Description
+        holder.binding.tvDescription.text = service.description
+
+        // 🔹 Image (Cloudinary)
+        if (service.photos.isNotEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(service.photos[0])
+                .into(holder.binding.ivService)
+        }
+
+        // 🔹 Button click (optional)
+        holder.binding.btnViewDetails.setOnClickListener {
+            // TODO: open details page
+        }
     }
 
-    override fun getItemCount(): Int = categoryList.size
-
-    fun updateList(newList: List<CategoryModel>) {
-        categoryList = newList
-        notifyDataSetChanged()
-    }
+    override fun getItemCount(): Int = list.size
 }

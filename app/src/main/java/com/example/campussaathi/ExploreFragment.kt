@@ -9,16 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.campussaathi.databinding.FragmentExploreBinding
 import com.example.campussaathi.utils.DrawerManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
-import kotlin.jvm.java
 
 class ExploreFragment : Fragment() {
 
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var categoryAdapter: CategoryGridAdapter
     private lateinit var originalList: List<CategoryModel>
 
     override fun onCreateView(
@@ -26,13 +23,11 @@ class ExploreFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         DrawerManager.setupDrawer(
@@ -41,15 +36,13 @@ class ExploreFragment : Fragment() {
             binding.studentDrawer.root
         )
 
-        // Header Title
+        // Header
         binding.header.tvHeaderTitle.text = "Explore"
 
-        // Drawer Open
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // Profile Click
         binding.header.ivProfile.setOnClickListener {
             startActivity(Intent(requireContext(), StudentProfileActivity::class.java))
         }
@@ -58,8 +51,7 @@ class ExploreFragment : Fragment() {
         setupSearch()
     }
 
-    // ---------------- RECYCLER ----------------
-
+    // 🔥 CATEGORY GRID
     private fun setupRecycler() {
 
         originalList = listOf(
@@ -70,17 +62,16 @@ class ExploreFragment : Fragment() {
             CategoryModel("Medical", R.drawable.img_cat_medical),
             CategoryModel("Stationery", R.drawable.img_cat_stationary),
             CategoryModel("Fitness", R.drawable.img_cat_fitness),
-            CategoryModel("College Services", R.drawable.img_cat_collegeservices)
+            CategoryModel("Other", R.drawable.img_cat_collegeservices)
         )
 
         binding.rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        categoryAdapter = CategoryAdapter(originalList)
+        categoryAdapter = CategoryGridAdapter(originalList)
         binding.rvCategories.adapter = categoryAdapter
     }
 
-    // ---------------- SEARCH ----------------
-
+    // 🔍 SEARCH
     private fun setupSearch() {
 
         binding.edtSearch.addTextChangedListener { editable ->
@@ -93,28 +84,6 @@ class ExploreFragment : Fragment() {
 
             categoryAdapter.updateList(filteredList)
         }
-    }
-
-
-    // ---------------- LOGOUT ----------------
-
-    private fun showLogoutDialog() {
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Log out of your account?")
-            .setPositiveButton("Log Out") { _, _ ->
-
-                FirebaseAuth.getInstance().signOut()
-
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 
     override fun onDestroyView() {

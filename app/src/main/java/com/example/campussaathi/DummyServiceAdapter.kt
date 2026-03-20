@@ -16,7 +16,7 @@ class DummyServiceAdapter : RecyclerView.Adapter<DummyServiceAdapter.ViewHolder>
     )
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val text: TextView = itemView.findViewById(R.id.txtService)
+//        val text: TextView = itemView.findViewById(R.id.txtService)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,6 +28,6 @@ class DummyServiceAdapter : RecyclerView.Adapter<DummyServiceAdapter.ViewHolder>
     override fun getItemCount(): Int = services.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.text.text = services[position]
+//        holder.text.text = services[position]
     }
 }

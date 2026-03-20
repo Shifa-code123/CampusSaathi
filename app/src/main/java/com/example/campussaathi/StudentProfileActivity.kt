@@ -1,8 +1,8 @@
 package com.example.campussaathi
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
@@ -17,9 +17,8 @@ import com.example.campussaathi.utils.DrawerManager
 class StudentProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStudentProfileBinding
-    private var isEditing = false
-    private var selectedImageUri: Uri? = null
 
+    private var isEditing = false
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
@@ -28,11 +27,10 @@ class StudentProfileActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
 
-                android.util.Log.d("IMAGE_TEST", "Image Selected")
-
                 Glide.with(this)
                     .load(it)
-                    .into(binding.ivProfile)
+                    .circleCrop()
+                    .into(binding.profileImage)
 
                 uploadProfileImage(it)
             }
@@ -44,28 +42,25 @@ class StudentProfileActivity : AppCompatActivity() {
         binding = ActivityStudentProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //drawer navigation logic
+        // Drawer setup
         DrawerManager.setupDrawer(
             this,
             binding.drawerLayout,
             binding.studentDrawer.root
         )
 
-
         binding.header.tvHeaderTitle.text = "Profile"
 
-        // menu button
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // ➕ Plus icon click
+        // ➕ Select profile image
         binding.ivAddPhoto.setOnClickListener {
             pickImage.launch("image/*")
         }
 
-        // Also allow clicking profile image
-        binding.ivProfile.setOnClickListener {
+        binding.profileImage.setOnClickListener {
             pickImage.launch("image/*")
         }
 
@@ -94,6 +89,7 @@ class StudentProfileActivity : AppCompatActivity() {
     // ===============================
     // LOAD PROFILE DATA
     // ===============================
+
     private fun loadStudentData() {
 
         val uid = auth.currentUser?.uid ?: return
@@ -116,9 +112,17 @@ class StudentProfileActivity : AppCompatActivity() {
                     binding.edtPhone.setText(phone)
 
                     if (!imageUrl.isNullOrEmpty()) {
+
                         Glide.with(this)
                             .load(imageUrl)
-                            .into(binding.ivProfile)
+                            .circleCrop()
+                            .into(binding.profileImage)
+
+                        // Header profile image
+                        Glide.with(this)
+                            .load(imageUrl)
+                            .circleCrop()
+                            .into(binding.header.ivProfile)
                     }
                 }
             }
@@ -127,6 +131,7 @@ class StudentProfileActivity : AppCompatActivity() {
     // ===============================
     // ENABLE EDIT MODE
     // ===============================
+
     private fun enableEditMode() {
 
         isEditing = true
@@ -146,6 +151,7 @@ class StudentProfileActivity : AppCompatActivity() {
     // ===============================
     // EXIT EDIT MODE
     // ===============================
+
     private fun exitEditMode() {
 
         isEditing = false
@@ -161,6 +167,7 @@ class StudentProfileActivity : AppCompatActivity() {
     // ===============================
     // SAVE PROFILE CHANGES
     // ===============================
+
     private fun saveProfileChanges() {
 
         val uid = auth.currentUser?.uid ?: return
@@ -189,6 +196,7 @@ class StudentProfileActivity : AppCompatActivity() {
     // ===============================
     // UPLOAD PROFILE IMAGE
     // ===============================
+
     private fun uploadProfileImage(uri: Uri) {
 
         val uid = auth.currentUser?.uid ?: return
@@ -201,13 +209,21 @@ class StudentProfileActivity : AppCompatActivity() {
 
                 storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
 
+                    val imageUrl = downloadUrl.toString()
+
                     db.collection("users")
                         .document(uid)
-                        .update("profileImage", downloadUrl.toString())
+                        .update("profileImage", imageUrl)
 
                     Glide.with(this)
-                        .load(downloadUrl)
-                        .into(binding.ivProfile)
+                        .load(imageUrl)
+                        .circleCrop()
+                        .into(binding.profileImage)
+
+                    Glide.with(this)
+                        .load(imageUrl)
+                        .circleCrop()
+                        .into(binding.header.ivProfile)
                 }
             }
     }
