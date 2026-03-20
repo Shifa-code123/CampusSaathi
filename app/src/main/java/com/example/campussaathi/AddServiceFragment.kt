@@ -14,9 +14,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -61,17 +59,13 @@ class AddServiceFragment : Fragment() {
     // 🔥 Gallery
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-
             uris.forEach { uri ->
-
                 if (imageBitmapList.size >= 5) {
                     Toast.makeText(requireContext(), "Max 5 photos allowed", Toast.LENGTH_SHORT).show()
                     return@forEach
                 }
-
                 val stream = requireContext().contentResolver.openInputStream(uri)
                 val bitmap = BitmapFactory.decodeStream(stream)
-
                 imageBitmapList.add(bitmap)
                 addPreview(bitmap)
             }
@@ -80,14 +74,11 @@ class AddServiceFragment : Fragment() {
     // 🔥 Camera
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-
             bitmap?.let {
-
                 if (imageBitmapList.size >= 5) {
                     Toast.makeText(requireContext(), "Max 5 photos allowed", Toast.LENGTH_SHORT).show()
                     return@let
                 }
-
                 imageBitmapList.add(it)
                 addPreview(it)
             }
@@ -102,7 +93,6 @@ class AddServiceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         // 🔥 INIT
         etServiceName = view.findViewById(R.id.etServiceName)
         etContact = view.findViewById(R.id.etContact)
@@ -114,28 +104,6 @@ class AddServiceFragment : Fragment() {
         btnAddPhoto = view.findViewById(R.id.btnAddPhoto)
         imgPreviewContainer = view.findViewById(R.id.imgPreviewContainer)
 
-        // 🔥 DRAWER (NEW)
-        val drawerLayout = view.findViewById<DrawerLayout>(R.id.drawerLayout)
-        val drawerView = view.findViewById<View>(R.id.customDrawer)
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-
-        toolbar.setNavigationOnClickListener {
-            drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
-        }
-
-        val drawerHelper = OwnerCustomDrawerHelper(
-            requireActivity(),
-            drawerLayout,
-            drawerView
-        )
-        drawerHelper.setup()
-
-        // 🔥 HEADER PROFILE
-        val headerProfile = view.findViewById<ImageView>(R.id.headerProfile)
-        headerProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), ActivityOwnerProfile::class.java))
-        }
-
         // 🔥 BUTTONS
         btnAddPhoto.setOnClickListener { showImageSourceDialog() }
         btnGps.setOnClickListener { getCurrentLocation() }
@@ -145,7 +113,6 @@ class AddServiceFragment : Fragment() {
     // 🔥 IMAGE SOURCE
     private fun showImageSourceDialog() {
         val options = arrayOf("Upload from Gallery", "Open Camera")
-
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setTitle("Select Option")
             .setItems(options) { _, which ->
@@ -165,13 +132,11 @@ class AddServiceFragment : Fragment() {
 
     // 🔥 LOCATION
     private fun getCurrentLocation() {
-
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -182,16 +147,11 @@ class AddServiceFragment : Fragment() {
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-
                 location?.let {
-
                     val latLng = LatLng(it.latitude, it.longitude)
                     selectedLatLng = latLng
-
                     calculateDistance(latLng)
-
                     Toast.makeText(requireContext(), "Location detected", Toast.LENGTH_SHORT).show()
-
                     val uri = Uri.parse("geo:${it.latitude},${it.longitude}")
                     startActivity(Intent(Intent.ACTION_VIEW, uri))
                 }
@@ -199,9 +159,7 @@ class AddServiceFragment : Fragment() {
     }
 
     private fun calculateDistance(dest: LatLng) {
-
         val result = FloatArray(1)
-
         Location.distanceBetween(
             campusLatLng.latitude,
             campusLatLng.longitude,
@@ -209,17 +167,14 @@ class AddServiceFragment : Fragment() {
             dest.longitude,
             result
         )
-
         distanceKm = result[0] / 1000.0
         txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
     }
 
     // 🔥 CLOUDINARY UPLOAD
     private fun uploadImage(bitmap: Bitmap, onComplete: () -> Unit) {
-
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-
         val byteArray = stream.toByteArray()
 
         val requestBody = MultipartBody.Builder()
@@ -235,18 +190,12 @@ class AddServiceFragment : Fragment() {
             .build()
 
         OkHttpClient().newCall(request).enqueue(object : Callback {
-
             override fun onFailure(call: Call, e: IOException) {}
-
             override fun onResponse(call: Call, response: Response) {
-
                 val body = response.body?.string()
-
                 if (body != null) {
-
                     val url = JSONObject(body).getString("secure_url")
                     imageUrlList.add(url)
-
                     if (imageUrlList.size == imageBitmapList.size) {
                         activity?.runOnUiThread { onComplete() }
                     }
@@ -257,7 +206,6 @@ class AddServiceFragment : Fragment() {
 
     // 🔥 SUBMIT
     private fun submitService() {
-
         val name = etServiceName.text.toString()
         val contact = etContact.text.toString()
         val desc = etDescription.text.toString()
@@ -276,9 +224,7 @@ class AddServiceFragment : Fragment() {
         }
 
         imageBitmapList.forEach {
-
             uploadImage(it) {
-
                 val data = hashMapOf(
                     "ownerId" to uid,
                     "serviceName" to name,

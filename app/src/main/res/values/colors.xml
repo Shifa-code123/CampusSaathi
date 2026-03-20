@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+<!--    owner header colors-->
+    <color name="primaryPurple">#5A4FCF</color>
+    <color name="headerText">#2B2B2B</color>
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 

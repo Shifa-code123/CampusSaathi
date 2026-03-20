@@ -4,19 +4,12 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:text="My Service"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/txtStatus"
         android:text="Pending"
-        android:layout_marginTop="8dp"
         android:padding="6dp"
         android:background="@drawable/status_pending"
         android:layout_width="wrap_content"

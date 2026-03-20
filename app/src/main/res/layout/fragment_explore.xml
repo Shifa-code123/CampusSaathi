@@ -9,21 +9,23 @@
 
     <!-- MAIN CONTENT -->
 
+    <!-- DRAWER -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
-        android:paddingTop="28dp"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:paddingTop="28dp">
 
         <!-- HEADER -->
 
         <include
             android:id="@+id/header"
             layout="@layout/layout_cs_header"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- SEARCH -->
 
@@ -34,9 +36,9 @@
             android:layout_margin="@dimen/spacing_large"
             app:cardCornerRadius="@dimen/corner_radius"
             app:cardElevation="@dimen/card_elevation"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/header">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -49,30 +51,30 @@
                     android:layout_width="@dimen/icon_small"
                     android:layout_height="@dimen/icon_small"
                     android:src="@drawable/ic_cs_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/edtSearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
                     android:background="@null"
                     android:hint="@string/search_services"
-                    app:layout_constraintStart_toEndOf="@id/ivSearch"
-                    app:layout_constraintEnd_toStartOf="@id/ivFilter"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="@dimen/spacing_small"/>
+                    app:layout_constraintEnd_toStartOf="@id/ivFilter"
+                    app:layout_constraintStart_toEndOf="@id/ivSearch"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/ivFilter"
                     android:layout_width="@dimen/icon_small"
                     android:layout_height="@dimen/icon_small"
                     android:src="@drawable/ic_cs_filter"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,17 +86,15 @@
             android:id="@+id/rvCategories"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="@dimen/spacing_medium"
             android:clipToPadding="false"
+            android:padding="@dimen/spacing_medium"
             android:paddingBottom="20dp"
-            app:layout_constraintTop_toBottomOf="@id/searchCard"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/searchCard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- DRAWER -->
 
     <include
         android:id="@+id/studentDrawer"
