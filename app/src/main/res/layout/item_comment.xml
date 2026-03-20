@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/cs_spacing_medium">
+
+    <!-- Profile -->
+    <ImageView
+        android:id="@+id/profileimage"
+        android:layout_width="@dimen/profile_image_size"
+        android:layout_height="@dimen/profile_image_size"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Name -->
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cs_text_primary"
+        android:textSize="@dimen/cs_text_body"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/cs_spacing_small"
+        app:layout_constraintStart_toEndOf="@id/profileimage"
+        app:layout_constraintTop_toTopOf="@id/profileimage"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Comment -->
+    <TextView
+        android:id="@+id/tvComment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cs_text_secondary"
+        android:textSize="@dimen/cs_text_body"
+        android:layout_marginTop="@dimen/cs_spacing_small"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

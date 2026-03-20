@@ -72,6 +72,8 @@
     <color name="nearmeText">#1F2937</color>
     <color name="nearmeIconColor">#2563EB</color>
 
+    <color name="background">#F5F7FA</color>
+
 
 
 </resources>

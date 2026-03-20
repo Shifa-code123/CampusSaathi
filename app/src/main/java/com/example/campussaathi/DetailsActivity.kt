@@ -34,6 +34,12 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 🔹 Back button instead of menu
+        binding.header.ivMenu.setImageResource(R.drawable.ic_back)
+        binding.header.ivMenu.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         //drawer navigation logic
         DrawerManager.setupDrawer(
             this,

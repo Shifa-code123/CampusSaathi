@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.example.campussaathi.LoginActivity
 import com.example.campussaathi.R
+import com.example.campussaathi.SavedActivity
 import com.example.campussaathi.StudentProfileActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -124,6 +125,16 @@ object DrawerManager {
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
+        }
+
+        //saved services
+        drawerView.findViewById<View>(R.id.menuSaved).setOnClickListener {
+
+            activity.startActivity(
+                Intent(activity, SavedActivity::class.java)
+            )
+
+            drawerLayout.closeDrawer(GravityCompat.START)
         }
     }
 }
