@@ -72,13 +72,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-<!--                    <Button-->
-<!--                        android:id="@+id/btnEditListing"-->
-<!--                        android:text="Edit Listing"-->
-<!--                        android:backgroundTint="#2979FF"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"/>-->
+                    <Button
+                        android:id="@+id/addanotherservice"
+                        android:text="Add another service"
+                        android:backgroundTint="#2979FF"
+                        android:layout_marginStart="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <TextView

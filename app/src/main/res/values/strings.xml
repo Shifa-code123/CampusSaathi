@@ -41,11 +41,14 @@
 
     <string-array name="second_dropdown">
         <item>Select Service</item>
+        <item>Mess</item>
+        <item>Room/Pg</item>
+        <item>Tuition</item>
         <item>Stationary Store</item>
         <item>Medical Store</item>
         <item>Gym</item>
         <item>Street Food</item>
-        <item>College Services</item>
+        <item>Others</item>
     </string-array>
 
     <string-array name="filter_services">

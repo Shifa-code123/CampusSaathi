@@ -172,15 +172,18 @@ class AddServiceFragment : Fragment() {
     }
 
     // 🔥 CLOUDINARY UPLOAD
-    private fun uploadImage(bitmap: Bitmap, onComplete: () -> Unit) {
+    private fun uploadImage(bitmap: Bitmap, onSuccess: (String) -> Unit) {
+
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         val byteArray = stream.toByteArray()
 
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("file", "image.jpg",
-                byteArray.toRequestBody("image/*".toMediaType()))
+            .addFormDataPart(
+                "file", "image.jpg",
+                byteArray.toRequestBody("image/*".toMediaType())
+            )
             .addFormDataPart("upload_preset", "campussaathi_upload")
             .build()
 
@@ -190,14 +193,17 @@ class AddServiceFragment : Fragment() {
             .build()
 
         OkHttpClient().newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {}
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 if (body != null) {
                     val url = JSONObject(body).getString("secure_url")
-                    imageUrlList.add(url)
-                    if (imageUrlList.size == imageBitmapList.size) {
-                        activity?.runOnUiThread { onComplete() }
+
+                    activity?.runOnUiThread {
+                        onSuccess(url) // 🔥 return URL
                     }
                 }
             }
@@ -223,27 +229,44 @@ class AddServiceFragment : Fragment() {
             return
         }
 
-        imageBitmapList.forEach {
-            uploadImage(it) {
-                val data = hashMapOf(
-                    "ownerId" to uid,
-                    "serviceName" to name,
-                    "contact" to contact,
-                    "description" to desc,
-                    "category" to selectedType,
-                    "photos" to imageUrlList,
-                    "latitude" to selectedLatLng?.latitude,
-                    "longitude" to selectedLatLng?.longitude,
-                    "distanceFromCampus" to distanceKm,
-                    "timestamp" to System.currentTimeMillis(),
-                    "status" to "pending"
-                )
+        imageUrlList.clear() // 🔥 important
 
-                db.collection("services")
-                    .add(data)
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Service added", Toast.LENGTH_SHORT).show()
-                    }
+        var uploadedCount = 0
+
+        imageBitmapList.forEach { bitmap ->
+            uploadImage(bitmap) {
+
+                uploadedCount++
+
+                // 🔥 jab sab images upload ho jaye tabhi Firestore call
+                if (uploadedCount == imageBitmapList.size) {
+
+                    val data = hashMapOf(
+                        "ownerId" to uid,
+                        "serviceName" to name,
+                        "contact" to contact,
+                        "description" to desc,
+                        "category" to selectedType,
+                        "photos" to imageUrlList,
+                        "latitude" to selectedLatLng?.latitude,
+                        "longitude" to selectedLatLng?.longitude,
+                        "distanceFromCampus" to distanceKm,
+                        "timestamp" to System.currentTimeMillis(),
+                        "status" to "pending"
+                    )
+
+                    db.collection("services")
+                        .add(data)
+                        .addOnSuccessListener {
+
+                            Toast.makeText(requireContext(), "Service submitted for approval", Toast.LENGTH_SHORT).show()
+
+                            // 🔥 FORCE NAVIGATION
+                            val intent = Intent(requireContext(), ActivityOwnerSubmissionList1::class.java)
+                            startActivity(intent)
+                            requireActivity().finish() // 🔥 back se wapas na aaye
+                        }
+                }
             }
         }
     }

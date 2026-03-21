@@ -57,7 +57,7 @@
     <!-- Spacing -->
     <dimen name="padding_screen">16dp</dimen>
 
-        <dimen name="icon_size">24dp</dimen>
+<!--        <dimen name="icon_size">24dp</dimen>-->
 
 
 

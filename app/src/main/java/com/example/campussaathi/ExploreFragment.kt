@@ -51,7 +51,6 @@ class ExploreFragment : Fragment() {
         setupSearch()
     }
 
-    // 🔥 CATEGORY GRID
     private fun setupRecycler() {
 
         originalList = listOf(
@@ -62,16 +61,25 @@ class ExploreFragment : Fragment() {
             CategoryModel("Medical", R.drawable.img_cat_medical),
             CategoryModel("Stationery", R.drawable.img_cat_stationary),
             CategoryModel("Fitness", R.drawable.img_cat_fitness),
-            CategoryModel("Other", R.drawable.img_cat_collegeservices)
+            CategoryModel("Others", R.drawable.img_cat_collegeservices)
         )
 
         binding.rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        categoryAdapter = CategoryGridAdapter(originalList)
+        categoryAdapter = CategoryGridAdapter(originalList) { category: CategoryModel ->
+            val fragment = Student_ServiceListFragment().apply {
+                arguments = Bundle().apply {
+                    putString("category", category.name)
+                }
+            }
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         binding.rvCategories.adapter = categoryAdapter
     }
 
-    // 🔍 SEARCH
     private fun setupSearch() {
 
         binding.edtSearch.addTextChangedListener { editable ->

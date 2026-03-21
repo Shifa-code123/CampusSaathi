@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.campussaathi.databinding.ItemCategoryBinding
 
 class CategoryGridAdapter(
-    private var list: List<CategoryModel>
+    private var list: List<CategoryModel>,
+    private val onCategoryClick: ((CategoryModel) -> Unit)? = null
 ) : RecyclerView.Adapter<CategoryGridAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemCategoryBinding)
@@ -29,12 +30,15 @@ class CategoryGridAdapter(
         holder.binding.tvCategoryName.text = category.name
         holder.binding.ivCategory.setImageResource(category.imageRes)
 
-        // 🔥 CLICK → OPEN SERVICES PAGE
         holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, CategoryServicesActivity::class.java)
-            intent.putExtra("categoryName", category.name)
-            context.startActivity(intent)
+            if (onCategoryClick != null) {
+                onCategoryClick.invoke(category)
+            } else {
+                val context = holder.itemView.context
+                val intent = Intent(context, CategoryServicesActivity::class.java)
+                intent.putExtra("categoryName", category.name)
+                context.startActivity(intent)
+            }
         }
     }
 

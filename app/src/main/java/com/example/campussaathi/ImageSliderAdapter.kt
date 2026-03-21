@@ -28,7 +28,7 @@ class ImageSliderAdapter(
 
         Glide.with(holder.itemView.context)
             .load(images[position])
-            .into(holder.binding.imageView)   // ⚠️ IMPORTANT
+            .into(holder.binding.ivSliderImage)
     }
 
     override fun getItemCount(): Int = images.size

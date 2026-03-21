@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="service_categories">
+        <item>Select Category</item>
+        <item>Mess</item>
+        <item>Room/Pg</item>
+        <item>Tuition</item>
+        <item>Stationary Store</item>
+        <item>Medical Store</item>
+        <item>Gym</item>
+        <item>Street Food</item>
+        <item>Others</item>
+    </string-array>
+</resources>

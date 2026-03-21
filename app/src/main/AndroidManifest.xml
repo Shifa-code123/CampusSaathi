@@ -21,10 +21,14 @@
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
 
+
+
         <activity
             android:name=".AboutActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".EditServiceFormActivity"
+            android:exported="false" />
 
 
         <activity

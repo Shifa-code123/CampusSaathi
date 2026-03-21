@@ -79,6 +79,15 @@ class OwnerMainActivity : AppCompatActivity(), NavigationHandler {
 
         // Set initial state
         updateHeaderTitle(0)
+
+        // 🔥 Handle navigation from other screens (like submission screen)
+        val pageIndex = intent.getIntExtra("openPage", -1)
+
+        if (pageIndex != -1) {
+            viewPager.post {
+                viewPager.setCurrentItem(pageIndex, false)
+            }
+        }
     }
 
     private fun updateHeaderTitle(position: Int) {

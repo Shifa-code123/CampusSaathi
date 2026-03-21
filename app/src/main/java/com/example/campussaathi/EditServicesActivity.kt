@@ -1,126 +1,62 @@
 package com.example.campussaathi
 
-import android.graphics.BitmapFactory
+import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.squareup.picasso.Picasso
 
 class EditServicesActivity : AppCompatActivity() {
 
-    private lateinit var etServiceName: EditText
-    private lateinit var etDescription: EditText
-    private lateinit var etContact: EditText
-    private lateinit var photoContainer: LinearLayout
-    private lateinit var btnUpdate: Button
-    private lateinit var btnChangePhotos: Button
-
+    private lateinit var rvEditServices: RecyclerView
+    private val serviceList = mutableListOf<Student_ServiceModel>()
+    private lateinit var adapter: EditServiceListAdapter
     private val db = FirebaseFirestore.getInstance()
-    private val uid = FirebaseAuth.getInstance().currentUser?.uid
-
-    private var serviceDocId: String? = null
-    private var photoUrls = mutableListOf<String>()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_services)
 
-        etServiceName = findViewById(R.id.etServiceName)
-        etDescription = findViewById(R.id.etDescription)
-        etContact = findViewById(R.id.etContact)
-        photoContainer = findViewById(R.id.photoContainer)
-        btnUpdate = findViewById(R.id.btnUpdateService)
-        btnChangePhotos = findViewById(R.id.btnChangePhotos)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { finish() }
 
-        loadService()
+        rvEditServices = findViewById(R.id.rvEditServices)
+        rvEditServices.layoutManager = LinearLayoutManager(this)
+        adapter = EditServiceListAdapter(serviceList)
+        rvEditServices.adapter = adapter
 
-        btnUpdate.setOnClickListener {
-            updateService()
-        }
-
-        btnChangePhotos.setOnClickListener {
-            Toast.makeText(this,"Implement your Cloudinary photo picker here",Toast.LENGTH_SHORT).show()
-        }
+        fetchUserServices()
     }
 
-    private fun loadService() {
-
-        if (uid == null) return
+    private fun fetchUserServices() {
+        val uid = auth.currentUser?.uid ?: return
 
         db.collection("services")
             .whereEqualTo("ownerId", uid)
             .get()
             .addOnSuccessListener { query ->
-
-                if (!query.isEmpty) {
-
-                    val doc = query.documents[0]
-
-                    serviceDocId = doc.id
-
-                    etServiceName.setText(doc.getString("serviceName"))
-                    etDescription.setText(doc.getString("description"))
-                    etContact.setText(doc.getString("contact"))
-
-                    val photos = doc.get("photos") as? List<String>
-
-                    photos?.let {
-
-                        photoUrls.clear()
-                        photoUrls.addAll(it)
-
-                        displayPhotos()
-                    }
+                serviceList.clear()
+                for (doc in query) {
+                    val service = Student_ServiceModel(
+                        id = doc.id,
+                        serviceName = doc.getString("serviceName") ?: "",
+                        category = doc.getString("category") ?: "",
+                        description = doc.getString("description") ?: "",
+                        status = doc.getString("status") ?: "pending"
+                    )
+                    serviceList.add(service)
                 }
+                adapter.notifyDataSetChanged()
             }
-    }
-
-    private fun displayPhotos() {
-
-        photoContainer.removeAllViews()
-
-        for (url in photoUrls) {
-
-            val imageView = ImageView(this)
-
-            val params = LinearLayout.LayoutParams(250,250)
-            params.setMargins(10,0,10,0)
-
-            imageView.layoutParams = params
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-
-            Picasso.get()
-                .load(url)
-                .into(imageView)
-
-            photoContainer.addView(imageView)
-        }
-    }
-
-    private fun updateService() {
-
-        val name = etServiceName.text.toString()
-        val description = etDescription.text.toString()
-        val contact = etContact.text.toString()
-
-        if (serviceDocId == null) return
-
-        val data = hashMapOf(
-            "serviceName" to name,
-            "description" to description,
-            "contact" to contact,
-            "photos" to photoUrls
-        )
-
-        db.collection("services")
-            .document(serviceDocId!!)
-            .update(data as Map<String, Any>)
-            .addOnSuccessListener {
-
-                Toast.makeText(this,"Service Updated",Toast.LENGTH_SHORT).show()
-                finish()
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load services", Toast.LENGTH_SHORT).show()
             }
     }
 }
