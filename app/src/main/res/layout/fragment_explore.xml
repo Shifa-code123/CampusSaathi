@@ -12,18 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
-        android:paddingTop="28dp"
-        android:fitsSystemWindows="true">
+        android:background="?attr/colorSurface">
 
         <!-- HEADER -->
 
         <include
             android:id="@+id/header"
             layout="@layout/layout_cs_header"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <!-- SEARCH -->
 
@@ -101,6 +97,7 @@
         layout="@layout/layout_student_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        android:elevation="16dp"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
