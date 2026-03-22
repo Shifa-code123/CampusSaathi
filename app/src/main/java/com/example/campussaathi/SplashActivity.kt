@@ -7,7 +7,6 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import android.util.Log
 
 class SplashActivity : AppCompatActivity() {
 
@@ -23,20 +22,30 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
+            // ✅ STEP 1: Onboarding check
+            val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+            val isFirstTime = sharedPref.getBoolean("isFirstTime", true)
+
+            if (isFirstTime) {
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                finish()
+                return@postDelayed
+            }
+
+            // 🔹 EXISTING LOGIC (unchanged)
             val currentUser = auth.currentUser
 
-            // 🔹 If user NOT logged in → go to Login
+            // If user NOT logged in → Login
             if (currentUser == null) {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 return@postDelayed
             }
 
-            // 🔹 If user IS logged in → check role from Firestore
+            // If logged in → check role
             val uid = currentUser.uid
 
-
-           db.collection("users").document(uid).get()
+            db.collection("users").document(uid).get()
                 .addOnSuccessListener { doc ->
 
                     val role = doc.getString("role")
@@ -46,14 +55,11 @@ class SplashActivity : AppCompatActivity() {
 
                     when (role) {
 
-
-
                         "student" -> {
                             startActivity(
                                 Intent(this, StudentActivity::class.java)
                             )
                         }
-
 
                         "owner" -> {
                             when {
@@ -89,6 +95,7 @@ class SplashActivity : AppCompatActivity() {
 
                     finish()
                 }
-        }, 2000) // 2 second splash
+
+        }, 2000)
     }
 }

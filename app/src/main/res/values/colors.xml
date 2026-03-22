@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="primary_blue">#1E88E5</color>
 <!--    owner header colors-->
     <color name="primaryPurple">#5A4FCF</color>
     <color name="headerText">#2B2B2B</color>

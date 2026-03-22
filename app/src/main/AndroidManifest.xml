@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false" />
         <activity
             android:name=".AboutActivity"
             android:exported="false" />
