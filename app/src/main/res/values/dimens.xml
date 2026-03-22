@@ -89,9 +89,6 @@
     <dimen name="margin_medium">12dp</dimen>
     <dimen name="margin_large">16dp</dimen>
 
-
-
-    <dimen name="icon_size">20dp</dimen>
     <dimen name="profile_size">32dp</dimen>
     <dimen name="icon_box">40dp</dimen>
 

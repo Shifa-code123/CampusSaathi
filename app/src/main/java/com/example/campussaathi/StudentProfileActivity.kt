@@ -27,6 +27,7 @@ class StudentProfileActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
 
+                // show instantly
                 Glide.with(this)
                     .load(it)
                     .circleCrop()
@@ -42,7 +43,6 @@ class StudentProfileActivity : AppCompatActivity() {
         binding = ActivityStudentProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Drawer setup
         DrawerManager.setupDrawer(
             this,
             binding.drawerLayout,
@@ -55,7 +55,6 @@ class StudentProfileActivity : AppCompatActivity() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // ➕ Select profile image
         binding.ivAddPhoto.setOnClickListener {
             pickImage.launch("image/*")
         }
@@ -64,14 +63,11 @@ class StudentProfileActivity : AppCompatActivity() {
             pickImage.launch("image/*")
         }
 
-        // Edit button
         binding.btnEditProfile.setOnClickListener {
             enableEditMode()
         }
 
-        // Save button
         binding.btnSaveProfile.setOnClickListener {
-
             MaterialAlertDialogBuilder(this)
                 .setTitle("Do you want to save changes?")
                 .setPositiveButton("Yes") { _, _ ->
@@ -86,8 +82,14 @@ class StudentProfileActivity : AppCompatActivity() {
         loadStudentData()
     }
 
+    // 🔥 IMPORTANT FIX
+    override fun onResume() {
+        super.onResume()
+        loadStudentData()
+    }
+
     // ===============================
-    // LOAD PROFILE DATA
+    // LOAD DATA
     // ===============================
 
     private fun loadStudentData() {
@@ -116,12 +118,14 @@ class StudentProfileActivity : AppCompatActivity() {
                         Glide.with(this)
                             .load(imageUrl)
                             .circleCrop()
+                            .placeholder(R.drawable.ic_default_profile)
+                            .skipMemoryCache(true) // 🔥 fix
                             .into(binding.profileImage)
 
-                        // Header profile image
                         Glide.with(this)
                             .load(imageUrl)
                             .circleCrop()
+                            .skipMemoryCache(true)
                             .into(binding.header.ivProfile)
                     }
                 }
@@ -129,7 +133,7 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // ENABLE EDIT MODE
+    // EDIT MODE
     // ===============================
 
     private fun enableEditMode() {
@@ -140,17 +144,11 @@ class StudentProfileActivity : AppCompatActivity() {
         binding.edtEmail.isEnabled = true
         binding.edtPhone.isEnabled = true
 
-        binding.edtName.isFocusable = true
-        binding.edtName.isFocusableInTouchMode = true
         binding.edtName.requestFocus()
 
         binding.btnEditProfile.visibility = View.GONE
         binding.btnSaveProfile.visibility = View.VISIBLE
     }
-
-    // ===============================
-    // EXIT EDIT MODE
-    // ===============================
 
     private fun exitEditMode() {
 
@@ -165,36 +163,30 @@ class StudentProfileActivity : AppCompatActivity() {
     }
 
     // ===============================
-    // SAVE PROFILE CHANGES
+    // SAVE DATA
     // ===============================
 
     private fun saveProfileChanges() {
 
         val uid = auth.currentUser?.uid ?: return
 
-        val newName = binding.edtName.text.toString()
-        val newEmail = binding.edtEmail.text.toString()
-        val newPhone = binding.edtPhone.text.toString()
-
         val updates = mapOf(
-            "fullName" to newName,
-            "email" to newEmail,
-            "phone" to newPhone
+            "fullName" to binding.edtName.text.toString(),
+            "email" to binding.edtEmail.text.toString(),
+            "phone" to binding.edtPhone.text.toString()
         )
 
         db.collection("users")
             .document(uid)
             .update(updates)
             .addOnSuccessListener {
-
-                binding.tvStudentName.text = newName
-
+                binding.tvStudentName.text = binding.edtName.text.toString()
                 exitEditMode()
             }
     }
 
     // ===============================
-    // UPLOAD PROFILE IMAGE
+    // UPLOAD IMAGE
     // ===============================
 
     private fun uploadProfileImage(uri: Uri) {
@@ -211,19 +203,25 @@ class StudentProfileActivity : AppCompatActivity() {
 
                     val imageUrl = downloadUrl.toString()
 
+                    // ✅ FIXED SAVE
                     db.collection("users")
                         .document(uid)
-                        .update("profileImage", imageUrl)
+                        .set(
+                            mapOf("profileImage" to imageUrl),
+                            com.google.firebase.firestore.SetOptions.merge()
+                        )
+                        .addOnSuccessListener {
 
-                    Glide.with(this)
-                        .load(imageUrl)
-                        .circleCrop()
-                        .into(binding.profileImage)
+                            Glide.with(this)
+                                .load(imageUrl)
+                                .circleCrop()
+                                .into(binding.profileImage)
 
-                    Glide.with(this)
-                        .load(imageUrl)
-                        .circleCrop()
-                        .into(binding.header.ivProfile)
+                            Glide.with(this)
+                                .load(imageUrl)
+                                .circleCrop()
+                                .into(binding.header.ivProfile)
+                        }
                 }
             }
     }
