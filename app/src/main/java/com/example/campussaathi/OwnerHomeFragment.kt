@@ -13,6 +13,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 class OwnerHomeFragment : Fragment() {
 
     private lateinit var profileImage: ImageView
+
+    // 🔥 NEW
+    private lateinit var tvTotalServices: TextView
+    private lateinit var tvRating: TextView
+    private lateinit var tvTotalReviews: TextView
+
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -23,13 +29,13 @@ class OwnerHomeFragment : Fragment() {
 
         profileImage = view.findViewById(R.id.profileImage)
 
-//        val btnCityHelp = view.findViewById<Button>(R.id.btnCityHelp)
         val txtOwnerName = view.findViewById<TextView>(R.id.txtOwnerName)
         val txtOwnerType = view.findViewById<TextView>(R.id.txtOwnerType)
 
-//        btnCityHelp.setOnClickListener {
-//            startActivity(Intent(requireContext(), ActivityCityHelp::class.java))
-//        }
+        // 🔥 NEW bindings
+        tvTotalServices = view.findViewById(R.id.tvTotalServices)
+        tvRating = view.findViewById(R.id.tvRating)
+        tvTotalReviews = view.findViewById(R.id.tvTotalReviews)
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -43,12 +49,103 @@ class OwnerHomeFragment : Fragment() {
 
         loadProfileImage()
         setupButtons(view)
+
+        // 🔥 NEW
+        loadDashboardData()
+        setupCardClicks(view)
     }
+
+    // =========================
+    // 🔥 DASHBOARD LOGIC
+    // =========================
+
+    private fun loadDashboardData() {
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        db.collection("services")
+            .whereEqualTo("ownerId", uid)
+            .get()
+            .addOnSuccessListener { serviceDocs ->
+
+                val serviceCount = serviceDocs.size()
+                tvTotalServices.text = serviceCount.toString()
+
+                val serviceIds = serviceDocs.map { it.id }
+
+                if (serviceIds.isNotEmpty()) {
+                    loadRatings(serviceIds)
+                } else {
+                    tvRating.text = "0.0"
+                    tvTotalReviews.text = "(0 Reviews)"
+                }
+            }
+    }
+
+    private fun loadRatings(serviceIds: List<String>) {
+
+        db.collection("ratings")
+            .get()
+            .addOnSuccessListener { ratingDocs ->
+
+                var total = 0
+                var sum = 0f
+
+                for (doc in ratingDocs) {
+
+                    val serviceId = doc.getString("serviceId") ?: continue
+
+                    if (serviceIds.contains(serviceId)) {
+
+                        val rating = doc.getLong("rating")?.toInt() ?: 0
+
+                        if (rating in 1..5) {
+                            sum += rating
+                            total++
+                        }
+                    }
+                }
+
+                if (total == 0) {
+                    tvRating.text = "0.0"
+                    tvTotalReviews.text = "(0 Reviews)"
+                } else {
+                    val avg = sum / total
+                    tvRating.text = String.format("%.1f", avg)
+                    tvTotalReviews.text = "($total Reviews)"
+                }
+            }
+    }
+
+    // =========================
+    // 🔥 CARD CLICKS
+    // =========================
+
+    private fun setupCardClicks(view: View) {
+
+        val nav = activity as? NavigationHandler
+
+        val cardServices = view.findViewById<View>(R.id.cardTotalServices)
+        val cardRating = view.findViewById<View>(R.id.cardRating)
+
+        cardServices.setOnClickListener {
+            nav?.navigateTo(R.id.nav_services) // Tab 2
+        }
+
+        cardRating.setOnClickListener {
+            nav?.navigateTo(R.id.nav_review) // Tab 4
+        }
+    }
+
+    // =========================
+    // EXISTING CODE (UNCHANGED)
+    // =========================
 
     private fun setupButtons(view: View) {
         val nav = activity as? NavigationHandler
 
-        view.findViewById<TextView>(R.id.txtBusinessProfile).setOnClickListener {
+        // Changed from TextView to View because R.id.txtBusinessProfile is a RelativeLayout in XML
+        view.findViewById<View>(R.id.txtBusinessProfile).setOnClickListener {
             nav?.navigateTo(R.id.nav_profile)
         }
 

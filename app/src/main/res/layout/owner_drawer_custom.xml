@@ -79,6 +79,11 @@
         app:layout_constraintTop_toBottomOf="@id/profileSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="6dp"/>
 
         <!-- My Services -->
         <TextView
@@ -88,14 +93,12 @@
             android:drawableStart="@drawable/ic_services"/>
 
         <!-- Verification -->
-        <TextView
-            android:id="@+id/menuVerification"
-            style="@style/DrawerItemStyle"
-            android:text="Verification Status"
-            android:drawableStart="@drawable/ic_verify"/>
+
 
         <!-- Subscription -->
         <TextView
+            android:drawableTint="@color/black"
+            android:drawableStart="@drawable/ic_sub"
             android:id="@+id/menuSubscription"
             style="@style/DrawerItemStyle"
             android:text="Subscription (Coming Soon)"
@@ -111,13 +114,15 @@
 
         <!-- Help -->
         <TextView
+            android:drawableTint="@color/black"
             android:id="@+id/menuHelp"
             style="@style/DrawerItemStyle"
             android:text="Help and Support"
-            android:drawableStart="@drawable/ic_help"/>
+            android:drawableStart="@drawable/ic_support"/>
 
         <!-- About -->
         <TextView
+            android:drawableTint="@color/black"
             android:id="@+id/menuAbout"
             style="@style/DrawerItemStyle"
             android:text="About CampusSaathi"
@@ -125,9 +130,11 @@
 
         <!-- Dark Mode -->
         <TextView
+            android:drawableStart="@drawable/ic_toggle_off"
             android:id="@+id/menuDarkMode"
             style="@style/DrawerItemStyle"
             android:text="Light / Dark Mode"
+            android:drawableTint="@color/black"
             />
 <!--        android:drawableStart="@drawable/ic_dark_mode"-->
 

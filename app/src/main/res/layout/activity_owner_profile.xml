@@ -17,14 +17,12 @@
 
 
         <!-- ===== TOOLBAR ===== -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="#2196F3"
-            app:title="Profile"
-            app:titleTextColor="#FFFFFF"
-            app:navigationIcon="@drawable/ic_menu" />
+        <include
+            android:id="@+id/ownerHeaderInclude"
+            layout="@layout/layout_owner_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
 
 
 

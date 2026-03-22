@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -20,40 +19,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
-
-
-
+        <activity
+            android:name=".OwnerPublicProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".AboutActivity"
             android:exported="false" />
         <activity
             android:name=".EditServiceFormActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".WaitingActivity"
             android:exported="false" />
-
         <activity
             android:name=".VolunteerFormActivity"
             android:exported="false" />
-
         <activity
             android:name=".VolunteerDashboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".VolunteerActivity"
             android:exported="false" />
-
         <activity
             android:name=".CategoryServicesActivity"
             android:exported="false" />
         <activity
             android:name=".SavedActivity"
             android:exported="false" />
-
         <activity
             android:name=".ServiceDetailActivity"
             android:exported="false" />
@@ -71,14 +63,10 @@
             android:exported="false" />
         <activity
             android:name=".CategoryListActivity"
-            android:exported="false" />
-
-        <!-- Google Maps API Key -->
+            android:exported="false" /> <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE" />
-
-        <!-- Services -->
+            android:value="AIzaSyDVZqNu4HUZpbuVRqx_X2ooYbmCmLRa_eE" /> <!-- Services -->
         <activity
             android:name=".ActivityCityHelp"
             android:exported="false" />
@@ -93,9 +81,7 @@
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerChooseTypeService"
-            android:exported="false" />
-
-        <!-- Owner Section -->
+            android:exported="false" /> <!-- Owner Section -->
         <activity
             android:name=".SupportActivity"
             android:exported="false" />
@@ -131,10 +117,7 @@
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerProfile"
-            android:exported="false" />
-
-
-        <!-- Verification -->
+            android:exported="false" /> <!-- Verification -->
         <activity
             android:name=".OwnerVerification"
             android:exported="false" />
@@ -146,9 +129,7 @@
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerVerificationFailed"
-            android:exported="false" />
-
-        <!-- Authentication -->
+            android:exported="false" /> <!-- Authentication -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -163,31 +144,25 @@
             android:exported="false" />
         <activity
             android:name=".ActivityOwnerSubmissionList1"
-            android:exported="false" />
-
-        <!-- Splash (Launcher) -->
+            android:exported="false" /> <!-- Splash (Launcher) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Main -->
+        </activity> <!-- Main -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
-        <!-- Student Module -->
+            android:exported="false" /> <!-- Student Module -->
         <activity
             android:name=".StudentProfileActivity"
             android:exported="false" />
         <activity
             android:name=".StudentOwnerProfileActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

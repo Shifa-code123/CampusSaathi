@@ -71,7 +71,7 @@ class SupportActivity : AppCompatActivity() {
         whatsapp.setOnClickListener {
 
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://wa.me/919999999999")
+            intent.data = Uri.parse("https://wa.me/919307467613")
             startActivity(intent)
 
         }

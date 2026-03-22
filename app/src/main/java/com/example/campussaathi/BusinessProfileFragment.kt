@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -35,7 +36,6 @@ class BusinessProfileFragment : Fragment() {
     private lateinit var txtBio: TextView
     private lateinit var fabAddPost: FloatingActionButton
     private lateinit var btnEditProfile: Button
-
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
 
@@ -44,15 +44,13 @@ class BusinessProfileFragment : Fragment() {
 
     private val PICK_IMAGE_REQUEST = 1001
     private val CAMERA_REQUEST = 1002
+    private var isProfileImage = false
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_business_profile, container, false)
-
         initViews(view)
         setupTabs()
         loadProfileData()
@@ -61,8 +59,15 @@ class BusinessProfileFragment : Fragment() {
             startActivity(Intent(requireContext(), ActivityOwnerProfile::class.java))
         }
 
-        profileImage.setOnClickListener { showImageSourceDialog() }
-        fabAddPost.setOnClickListener { showImageSourceDialog() }
+        profileImage.setOnClickListener {
+            isProfileImage = true
+            showImageSourceDialog()
+        }
+
+        fabAddPost.setOnClickListener {
+            isProfileImage = false
+            showImageSourceDialog()
+        }
 
         return view
     }
@@ -79,11 +84,20 @@ class BusinessProfileFragment : Fragment() {
         viewPager = view.findViewById(R.id.viewPager)
     }
 
+    private fun setupTabs() {
+        val adapter = ProfilePagerAdapter(this)
+        viewPager.adapter = adapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.setIcon(R.drawable.ic_grid)
+                1 -> tab.setIcon(R.drawable.ic_services)
+            }
+        }.attach()
+    }
+
     private fun loadProfileData() {
         val uid = auth.currentUser?.uid ?: return
-        db.collection("users")
-            .document(uid)
-            .get()
+        db.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 txtOwnerName.text = doc.getString("fullName") ?: "Owner"
                 txtBio.text = doc.getString("bio") ?: "Add your bio..."
@@ -93,48 +107,43 @@ class BusinessProfileFragment : Fragment() {
     }
 
     private fun loadBusinessProfileImage(uid: String) {
-        db.collection("posts")
-            .document(uid)
-            .get()
+        db.collection("posts").document(uid).get()
             .addOnSuccessListener { doc ->
-                val url = doc.getString("business_pic")
-                if (!url.isNullOrEmpty()) {
-                    Thread {
-                        try {
-                            val bitmap = BitmapFactory.decodeStream(URL(url).openStream())
-                            activity?.runOnUiThread {
-                                profileImage.setImageBitmap(bitmap)
+                if (doc.exists()) {
+                    val url = doc.getString("business_pic")
+                    if (!url.isNullOrEmpty()) {
+                        Thread {
+                            try {
+                                val bitmap = BitmapFactory.decodeStream(URL(url).openStream())
+                                activity?.runOnUiThread {
+                                    profileImage.setImageBitmap(bitmap)
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }.start()
+                        }.start()
+                    }
                 }
             }
     }
 
     private fun loadPostsCount(uid: String) {
-        db.collection("posts")
-            .whereEqualTo("ownerId", uid)
-            .get()
-            .addOnSuccessListener {
-                txtPostsCount.text = it.size().toString()
-            }
+        db.collection("posts").whereEqualTo("ownerId", uid).get()
+            .addOnSuccessListener { txtPostsCount.text = it.size().toString() }
     }
 
     private fun showImageSourceDialog() {
         val options = arrayOf("Upload from Gallery", "Open Camera")
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle("Select Option")
             .setItems(options) { _, which ->
-                if (which == 0) openGallery() else openCamera()
-            }
-            .show()
+                if (which == 0) openGallery()
+                else openCamera()
+            }.show()
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
@@ -146,20 +155,40 @@ class BusinessProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
+
         var bitmap: Bitmap? = null
         when (requestCode) {
             PICK_IMAGE_REQUEST -> {
-                val uri = data?.data
-                val stream = requireContext().contentResolver.openInputStream(uri!!)
-                bitmap = BitmapFactory.decodeStream(stream)
+                data?.data?.let { uri ->
+                    val inputStream = requireContext().contentResolver.openInputStream(uri)
+                    bitmap = BitmapFactory.decodeStream(inputStream)
+                }
             }
             CAMERA_REQUEST -> {
-                bitmap = data?.extras?.get("data") as Bitmap
+                bitmap = data?.extras?.get("data") as? Bitmap
             }
         }
+
         bitmap?.let {
-            profileImage.setImageBitmap(it)
-            uploadImageToCloudinary(it)
+            if (isProfileImage) {
+                profileImage.setImageBitmap(it)
+                uploadImageToCloudinary(it)
+            } else {
+                val stream = ByteArrayOutputStream()
+                it.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+                val byteArray = stream.toByteArray()
+                
+                val fragment = CreatePostFragment().apply {
+                    arguments = Bundle().apply {
+                        putByteArray("image_data", byteArray)
+                    }
+                }
+                
+                parentFragmentManager.beginTransaction()
+                    .replace(android.R.id.content, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
     }
 
@@ -170,11 +199,7 @@ class BusinessProfileFragment : Fragment() {
 
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart(
-                "file",
-                "image.jpg",
-                byteArray.toRequestBody("image/*".toMediaType())
-            )
+            .addFormDataPart("file", "image.jpg", byteArray.toRequestBody("image/*".toMediaType()))
             .addFormDataPart("upload_preset", "campussaathi_upload")
             .build()
 
@@ -195,32 +220,16 @@ class BusinessProfileFragment : Fragment() {
 
     private fun saveBusinessPic(url: String) {
         val uid = auth.currentUser?.uid ?: return
-        val data = hashMapOf(
-            "ownerId" to uid,
-            "business_pic" to url
-        )
-        db.collection("posts")
-            .document(uid)
-            .set(data)
+        val data = hashMapOf("ownerId" to uid, "business_pic" to url)
+        db.collection("posts").document(uid).set(data)
             .addOnSuccessListener {
                 activity?.runOnUiThread {
-                    Toast.makeText(
-                        requireContext(),
-                        "Profile picture updated",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Profile picture updated", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun setupTabs() {
-        val adapter = ProfilePagerAdapter(this)
-        viewPager.adapter = adapter
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.setIcon(R.drawable.ic_grid)
-                1 -> tab.setIcon(R.drawable.ic_services)
-            }
-        }.attach()
+    fun openServicesTab() {
+        viewPager.currentItem = 1
     }
 }

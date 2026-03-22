@@ -21,8 +21,11 @@ class ActivityOwnerChooseTypeService : AppCompatActivity() {
     private lateinit var cardRoomPg: CardView
     private lateinit var cardMess: CardView
     private lateinit var cardTution: CardView
-    private lateinit var cardService: CardView
-    private lateinit var cardCity: CardView
+    private lateinit var cardStationary: CardView
+    private lateinit var cardMedical: CardView
+    private lateinit var cardgym: CardView
+    private lateinit var cardStreet: CardView
+    private lateinit var cardOther: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +38,11 @@ class ActivityOwnerChooseTypeService : AppCompatActivity() {
         cardRoomPg = findViewById(R.id.cardRoomPg)
         cardMess = findViewById(R.id.cardMess)
         cardTution = findViewById(R.id.cardTution)
-        cardService = findViewById(R.id.cardService)
-        cardCity = findViewById(R.id.cardCity)
+        cardStationary = findViewById(R.id.cardStationary)
+        cardMedical = findViewById(R.id.cardMedical)
+        cardStreet = findViewById(R.id.cardStreet)
+        cardgym = findViewById(R.id.cardgym)
+        cardOther = findViewById(R.id.cardOther)
 
         val btnContinue = findViewById<Button>(R.id.btnContinue)
 
@@ -45,32 +51,50 @@ class ActivityOwnerChooseTypeService : AppCompatActivity() {
         // -------- CARD CLICKS --------
 
         cardRoomPg.setOnClickListener {
+            selectedOwnerType = "room_pg"
+            highlight(cardRoomPg)
+            toast("Room / PG selected")
+        }
+
+        cardMess.setOnClickListener {
+            selectedOwnerType = "mess"
+            highlight(cardMess)
+            toast("Mess selected")
+        }
+
+        cardTution.setOnClickListener {
+            selectedOwnerType = "tuition"
+            highlight(cardTution)
+            toast("Tuition selected")
+        }
+
+        cardStationary.setOnClickListener {
             selectedOwnerType = "stationary_store"
             highlight(cardRoomPg)
             toast("Stationary Store selected")
         }
 
-        cardMess.setOnClickListener {
+        cardMedical.setOnClickListener {
             selectedOwnerType = "medical_store"
-            highlight(cardMess)
+            highlight(cardMedical)
             toast("Medical Store selected")
         }
 
-        cardTution.setOnClickListener {
+        cardgym.setOnClickListener {
             selectedOwnerType = "gym"
-            highlight(cardTution)
+            highlight(cardgym)
             toast("Gym selected")
         }
 
-        cardService.setOnClickListener {
+        cardStreet.setOnClickListener {
             selectedOwnerType = "street_food"
-            highlight(cardService)
+            highlight(cardStreet)
             toast("Street Food selected")
         }
 
-        cardCity.setOnClickListener {
+        cardOther.setOnClickListener {
             selectedOwnerType = "college_service"
-            highlight(cardCity)
+            highlight(cardOther)
             toast("College Service selected")
         }
 
@@ -122,8 +146,11 @@ class ActivityOwnerChooseTypeService : AppCompatActivity() {
         cardRoomPg.setBackgroundResource(R.drawable.bg_role_unselected)
         cardMess.setBackgroundResource(R.drawable.bg_role_unselected)
         cardTution.setBackgroundResource(R.drawable.bg_role_unselected)
-        cardService.setBackgroundResource(R.drawable.bg_role_unselected)
-        cardCity.setBackgroundResource(R.drawable.bg_role_unselected)
+        cardStreet.setBackgroundResource(R.drawable.bg_role_unselected)
+        cardStationary.setBackgroundResource(R.drawable.bg_role_unselected)
+        cardMedical.setBackgroundResource(R.drawable.bg_role_unselected)
+        cardgym.setBackgroundResource(R.drawable.bg_role_unselected)
+        cardOther.setBackgroundResource(R.drawable.bg_role_unselected)
     }
 
     private fun highlight(selected: CardView) {

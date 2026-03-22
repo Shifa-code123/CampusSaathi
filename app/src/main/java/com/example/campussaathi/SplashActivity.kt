@@ -59,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
                             when {
                                 !ownerSetupDone -> {
                                     startActivity(
-                                        Intent(this, ChooseOwnerType::class.java)
+                                        Intent(this, ActivityOwnerChooseTypeService::class.java)
                                     )
                                 }
                                 !verificationSubmitted -> {

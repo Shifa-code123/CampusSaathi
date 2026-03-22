@@ -65,7 +65,7 @@ class RoleSelectionActivity : AppCompatActivity() {
                         )
                     } else {
                         startActivity(
-                            Intent(this, ChooseOwnerType::class.java)
+                            Intent(this, ActivityOwnerChooseTypeService::class.java)
                         )
                     }
                     finish()

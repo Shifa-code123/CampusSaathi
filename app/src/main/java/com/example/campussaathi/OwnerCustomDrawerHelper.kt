@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class OwnerCustomDrawerHelper(
     private val activity: Activity,
     private val drawerLayout: DrawerLayout,
-    private val drawerView: View   // 👈 include wala layout
+    private val drawerView: View   //  include wala layout
 ) {
 
     private val db = FirebaseFirestore.getInstance()
@@ -59,7 +59,7 @@ class OwnerCustomDrawerHelper(
     private fun setupClicks() {
 
         val menuMyServices = drawerView.findViewById<TextView>(R.id.menuMyServices)
-        val menuVerification = drawerView.findViewById<TextView>(R.id.menuVerification)
+        val menuProfile = drawerView.findViewById<View>(R.id.profileSection)
         val menuSubscription = drawerView.findViewById<TextView>(R.id.menuSubscription)
         val menuHelp = drawerView.findViewById<TextView>(R.id.menuHelp)
         val menuAbout = drawerView.findViewById<TextView>(R.id.menuAbout)
@@ -73,7 +73,7 @@ class OwnerCustomDrawerHelper(
         }
 
         // 👉 Verification
-        menuVerification.setOnClickListener {
+        menuProfile.setOnClickListener {
             activity.startActivity(Intent(activity, ActivityOwnerProfile::class.java))
             drawerLayout.closeDrawer(GravityCompat.START)
         }
@@ -84,25 +84,25 @@ class OwnerCustomDrawerHelper(
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        // 👉 Help
+        //  Help
         menuHelp.setOnClickListener {
-            activity.startActivity(Intent(activity, ActivityOwnerNotification::class.java))
+            activity.startActivity(Intent(activity, SupportActivity::class.java))
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        // 👉 About
+
         menuAbout.setOnClickListener {
-            activity.startActivity(Intent(activity, ActivityCityHelp::class.java))
+            activity.startActivity(Intent(activity, AboutActivity::class.java))
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        // 👉 Dark Mode (basic toggle)
+        //  Dark Mode (basic toggle)
         menuDarkMode.setOnClickListener {
             // Tu baad me implement karega (AppCompatDelegate)
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        // 👉 Logout
+        //  Logout
         menuLogout.setOnClickListener {
 
             FirebaseAuth.getInstance().signOut()

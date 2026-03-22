@@ -1,36 +1,36 @@
-package com.example.campussaathi
-
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.net.URL
-
+//package com.example.campussaathi
+//
+//import android.app.Activity
+//import android.content.Intent
+//import android.graphics.Bitmap
+//import android.graphics.BitmapFactory
+//import android.net.Uri
+//import android.os.Bundle
+//import android.provider.MediaStore
+//import android.widget.*
+//import androidx.appcompat.app.ActionBarDrawerToggle
+//import androidx.appcompat.app.AlertDialog
+//import androidx.appcompat.app.AppCompatActivity
+//import androidx.appcompat.widget.Toolbar
+//import androidx.core.view.GravityCompat
+//import androidx.drawerlayout.widget.DrawerLayout
+//import androidx.viewpager2.widget.ViewPager2
+//import com.google.android.material.bottomnavigation.BottomNavigationView
+//import com.google.android.material.floatingactionbutton.FloatingActionButton
+//import com.google.android.material.navigation.NavigationView
+//import com.google.android.material.tabs.TabLayout
+//import com.google.android.material.tabs.TabLayoutMediator
+//import com.google.firebase.auth.FirebaseAuth
+//import com.google.firebase.firestore.FirebaseFirestore
+//import okhttp3.*
+//import okhttp3.MediaType.Companion.toMediaType
+//import okhttp3.MultipartBody
+//import okhttp3.RequestBody.Companion.toRequestBody
+//import org.json.JSONObject
+//import java.io.ByteArrayOutputStream
+//import java.io.IOException
+//import java.net.URL
+//
 //class ActivityOwnerPublicProfile : AppCompatActivity() {
 //
 //    private lateinit var profileImage: ImageView
@@ -97,38 +97,8 @@ import java.net.URL
 //        drawerLayout.addDrawerListener(toggle)
 //        toggle.syncState()
 //
-//        setupDrawerNavigation()
 //
-//        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 //
-//        bottomNav.setOnItemSelectedListener {
-//
-//            when (it.itemId) {
-//
-//                R.id.nav_dashboard -> {
-//                    startActivity(Intent(this, ActivityOwnerDashboard::class.java))
-//                    true
-//                }
-//
-//                R.id.nav_services -> true
-//
-//                R.id.nav_add -> {
-//                    openOrResumeListing()
-//                    true
-//                }
-//
-//                R.id.nav_reviews -> {
-//                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
-//                    true
-//                }
-//
-//                R.id.nav_performance -> {
-//                    startActivity(Intent(this, ActivityOwnerPerformance::class.java))
-//                    true
-//                }
-//
-//                else -> false
-//            }
 //        }
 //    }
 //
@@ -383,61 +353,4 @@ import java.net.URL
 //        }.attach()
 //    }
 //
-//    // ================= DRAWER =================
-//
-//    private fun setupDrawerNavigation() {
-//
-//        navigationView.setNavigationItemSelectedListener { item ->
-//
-//            when (item.itemId) {
-//
-//                R.id.nav_add_listing -> openOrResumeListing()
-//
-//                R.id.nav_submission ->
-//                    startActivity(Intent(this, ActivityOwnerEditListing::class.java))
-//
-//                R.id.nav_my_listing ->
-//                    startActivity(Intent(this, ActivityOwnerViewListing::class.java))
-//
-//                R.id.nav_requests ->
-//                    startActivity(Intent(this, OwnerReviewsActivity::class.java))
-//
-//                R.id.nav_notifications ->
-//                    startActivity(Intent(this, ActivityOwnerNotification::class.java))
-//
-//                R.id.nav_profile ->
-//                    startActivity(Intent(this, ActivityOwnerProfile::class.java))
-//
-//                R.id.nav_logout ->
-//                    logoutUser()
-//            }
-//
-//            drawerLayout.closeDrawer(GravityCompat.START)
-//
-//            true
-//        }
-//    }
-//
-//    // ================= LISTING =================
-//
-//    private fun openOrResumeListing() {
-//
-//        startActivity(Intent(this, ActivityOwnerAddNewList1::class.java))
-//    }
-//
-//    // ================= LOGOUT =================
-//
-//    private fun logoutUser() {
-//
-//        FirebaseAuth.getInstance().signOut()
-//
-//        val intent = Intent(this, LoginActivity::class.java)
-//
-//        intent.flags =
-//            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//
-//        startActivity(intent)
-//
-//        finish()
-//    }
 //}

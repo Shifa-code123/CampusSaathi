@@ -10,13 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Header -->
-<!--        <include-->
-<!--            android:id="@+id/ownerHeaderInclude"-->
-<!--            layout="@layout/layout_owner_header"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <include
             android:id="@+id/ownerHeaderInclude"
             layout="@layout/layout_owner_header"
