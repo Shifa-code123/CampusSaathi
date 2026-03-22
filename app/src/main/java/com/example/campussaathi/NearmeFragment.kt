@@ -10,6 +10,8 @@ import com.example.campussaathi.databinding.FragmentNearmeBinding
 import com.example.campussaathi.utils.DrawerManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
+import android.widget.ImageView
+import com.example.campussaathi.utils.ProfileImageLoader
 
 class NearmeFragment : Fragment() {
 
@@ -39,12 +41,20 @@ class NearmeFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+
+
         // Drawer setup (same as HelpFragment)
         DrawerManager.setupDrawer(
             requireActivity(),
             binding.drawerLayout,
             binding.studentDrawer.root
         )
+        // Drawer image
+        val drawerImage = binding.studentDrawer.root
+            .findViewById<ImageView>(R.id.profileImage)
+
+        ProfileImageLoader.loadProfile(drawerImage)
 
         // Header title
         binding.header.tvHeaderTitle.text = "Near Me"

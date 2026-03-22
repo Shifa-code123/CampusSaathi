@@ -35,12 +35,9 @@ class ServicesAdapter(
         val commentIcon: ImageView = view.findViewById(R.id.iconComment)
 
         val btnSave: ImageView = view.findViewById(R.id.btnSave)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
-
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_service_card, parent, false)
 
@@ -57,15 +54,13 @@ class ServicesAdapter(
         val service = services[position]
         val context = holder.itemView.context
 
-        // ---------------- SAVE FEATURE ----------------
-
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val saveRef = db.collection("saved")
             .document(userId)
             .collection("services")
             .document(service.serviceId)
 
-        // auto sync icon
+        // Save icon sync
         saveRef.addSnapshotListener { doc, _ ->
             if (doc != null && doc.exists()) {
                 holder.btnSave.setImageResource(R.drawable.ic_saved)
@@ -74,11 +69,8 @@ class ServicesAdapter(
             }
         }
 
-        // click save
         holder.btnSave.setOnClickListener {
-
             saveRef.get().addOnSuccessListener { doc ->
-
                 if (doc.exists()) {
                     saveRef.delete()
                 } else {
@@ -106,7 +98,6 @@ class ServicesAdapter(
 
         // Owner name
         if (service.ownerId.isNotBlank()) {
-
             db.collection("owner_verifications")
                 .document(service.ownerId)
                 .get()
@@ -119,7 +110,6 @@ class ServicesAdapter(
 
         // Owner image
         if (service.ownerId.isNotBlank()) {
-
             db.collection("posts")
                 .whereEqualTo("ownerId", service.ownerId)
                 .limit(1)
@@ -135,7 +125,6 @@ class ServicesAdapter(
                         }
 
                         if (!url.isNullOrEmpty()) {
-
                             Glide.with(holder.itemView.context)
                                 .load(url)
                                 .placeholder(R.drawable.ic_profile)
@@ -160,7 +149,45 @@ class ServicesAdapter(
             }
         })
 
-        // ❌ REMOVED VIEWPAGER TOUCH BLOCK (CRASH FIX)
+        // 🔥🔥🔥 MAIN FIX HERE 🔥🔥🔥
+        holder.pager.isUserInputEnabled = true
+        holder.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        var startX = 0f
+        var startY = 0f
+
+        holder.pager.getChildAt(0).setOnTouchListener { v, event ->
+
+            when (event.action) {
+
+                MotionEvent.ACTION_DOWN -> {
+                    startX = event.x
+                    startY = event.y
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+
+                    val dx = Math.abs(event.x - startX)
+                    val dy = Math.abs(event.y - startY)
+
+                    if (dy > dx) {
+                        // 🔥 vertical swipe → parent handle karega
+                        v.parent.requestDisallowInterceptTouchEvent(false)
+                    } else {
+                        // horizontal swipe → pager handle karega
+                        v.parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                }
+
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL -> {
+                    v.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+
+            false
+        }
 
         // ---------------- FOLLOW ----------------
 
@@ -177,7 +204,7 @@ class ServicesAdapter(
             sheet.show(activity.supportFragmentManager, "comments")
         }
 
-        // ---------------- DETAILS CLICK ----------------
+        // ---------------- DETAILS ----------------
 
         holder.btnViewDetails.setOnClickListener {
 
@@ -195,32 +222,39 @@ class ServicesAdapter(
             val ctx = holder.itemView.context
             ctx.startActivity(intent)
 
-            // 🔥 ADD THIS (animation)
             if (ctx is android.app.Activity) {
                 ctx.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
 
-        // ---------------- RATING ----------------
+        // ---------------- ⭐ RATING ----------------
 
         db.collection("ratings")
-            .whereEqualTo("ownerId", service.ownerId)
-            .get()
-            .addOnSuccessListener { docs ->
+            .whereEqualTo("serviceId", service.serviceId)
+            .addSnapshotListener { docs, _ ->
 
-                var total = 0f
-                var count = 0
+                if (docs != null) {
 
-                for (doc in docs) {
-                    total += doc.getDouble("rating")?.toFloat() ?: 0f
-                    count++
+                    var total = 0f
+                    var count = 0
+
+                    for (doc in docs) {
+
+                        val rating = doc.getDouble("rating")
+
+                        if (rating != null) {
+                            total += rating.toFloat()
+                            count++
+                        }
+                    }
+
+                    val avg = if (count > 0) total / count else 0f
+
+                    holder.ratingText.text = String.format("%.1f", avg)
                 }
-
-                holder.ratingText.text =
-                    if (count > 0) String.format("%.1f", total / count) else "0.0"
             }
 
-        // ---------------- COMMENT COUNT ----------------
+        // ---------------- COMMENTS COUNT ----------------
 
         db.collection("comments")
             .whereEqualTo("serviceId", service.serviceId)
@@ -229,23 +263,6 @@ class ServicesAdapter(
                     holder.commentText.text = value.size().toString()
                 }
             }
-
-           //slider
-           holder.pager.isUserInputEnabled = true
-           holder.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-           holder.pager.getChildAt(0).setOnTouchListener { v, event ->
-
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.parent.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.parent.requestDisallowInterceptTouchEvent(false)
-                }
-            }
-
-            false
-        }
     }
 
     // ---------------- DOTS ----------------

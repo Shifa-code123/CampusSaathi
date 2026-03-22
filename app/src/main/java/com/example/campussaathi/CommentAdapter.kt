@@ -1,5 +1,7 @@
 package com.example.campussaathi.adapter
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,24 +10,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campussaathi.R
 import com.example.campussaathi.CommentModel
-import com.bumptech.glide.Glide
-import com.google.firebase.firestore.FirebaseFirestore
 
 class CommentAdapter(
     private val list: ArrayList<CommentModel>,
     private val onLongPress: (CommentModel) -> Unit
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-    private val db = FirebaseFirestore.getInstance()
-
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         val userName: TextView = itemView.findViewById(R.id.tvName)
         val comment: TextView = itemView.findViewById(R.id.tvComment)
         val profile: ImageView = itemView.findViewById(R.id.profileimage)
-
-        // ❌ REMOVE THIS (not in XML)
-        // val time: TextView = itemView.findViewById(R.id.txtTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -38,28 +32,23 @@ class CommentAdapter(
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
 
-        val commentData = list[position]
+        val data = list[position]
 
-        holder.userName.text = commentData.userName
-        holder.comment.text = commentData.commentText
+        holder.userName.text = data.userName
+        holder.comment.text = data.commentText
 
         holder.itemView.setOnLongClickListener {
-            onLongPress(commentData)
+            onLongPress(data)
             true
         }
 
-        db.collection("users")
-            .document(commentData.userId)
-            .get()
-            .addOnSuccessListener { doc ->
-
-                val profileImage = doc.getString("profileImage")
-
-                Glide.with(holder.itemView.context)
-                    .load(profileImage)
-                    .placeholder(R.drawable.ic_personz)
-                    .circleCrop()
-                    .into(holder.profile)
-            }
+        // 🔥 BASE64 IMAGE LOAD
+        if (data.userImage.isNotEmpty()) {
+            val bytes = Base64.decode(data.userImage, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            holder.profile.setImageBitmap(bitmap)
+        } else {
+            holder.profile.setImageResource(R.drawable.ic_personz)
+        }
     }
 }

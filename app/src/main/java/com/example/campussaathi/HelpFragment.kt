@@ -4,11 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.campussaathi.databinding.FragmentHelpBinding
 import com.example.campussaathi.databinding.ItemEmergencyCardBinding
 import com.example.campussaathi.utils.DrawerManager
+import com.example.campussaathi.utils.ProfileImageLoader
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 
@@ -31,11 +33,21 @@ class HelpFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+
+
         DrawerManager.setupDrawer(
             requireActivity(),
             binding.drawerLayout,
             binding.studentDrawer.root
         )
+
+        // Drawer image
+        val drawerImage = binding.studentDrawer.root
+            .findViewById<ImageView>(R.id.profileImage)
+
+        ProfileImageLoader.loadProfile(drawerImage)
+
 
         binding.header.tvHeaderTitle.text = "Help"
 

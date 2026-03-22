@@ -3,12 +3,14 @@ package com.example.campussaathi
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.campussaathi.databinding.FragmentExploreBinding
 import com.example.campussaathi.utils.DrawerManager
+import com.example.campussaathi.utils.ProfileImageLoader
 
 class ExploreFragment : Fragment() {
 
@@ -30,11 +32,18 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+
         DrawerManager.setupDrawer(
             requireActivity(),
             binding.drawerLayout,
             binding.studentDrawer.root
         )
+        // Drawer image
+        val drawerImage = binding.studentDrawer.root
+            .findViewById<ImageView>(R.id.profileImage)
+
+        ProfileImageLoader.loadProfile(drawerImage)
 
         // Header
         binding.header.tvHeaderTitle.text = "Explore"

@@ -2,12 +2,14 @@ package com.example.campussaathi
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.campussaathi.databinding.ActivitySavedBinding
 import com.example.campussaathi.utils.DrawerManager
+import com.example.campussaathi.utils.ProfileImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -23,12 +25,19 @@ class SavedActivity : AppCompatActivity() {
         binding = ActivitySavedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 🔹 Drawer setup (same as other screens)
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+
         DrawerManager.setupDrawer(
             this,
             binding.drawerLayout,
             binding.studentDrawer.root
         )
+
+        // Drawer image
+        val drawerImage = binding.studentDrawer.root
+            .findViewById<ImageView>(R.id.profileImage)
+
+        ProfileImageLoader.loadProfile(drawerImage)
 
         // 🔹 Header title
         binding.header.tvHeaderTitle.text = "Saved Services"
