@@ -19,6 +19,12 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+    private var ownerId: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ownerId = arguments?.getString("ownerId") ?: auth.currentUser?.uid
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,24 +41,21 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun loadPosts() {
-
-        val uid = auth.currentUser?.uid ?: return
+        val uid = ownerId ?: return
 
         db.collection("posts")
             .whereEqualTo("ownerId", uid)
             .get()
             .addOnSuccessListener { documents ->
-
                 postList.clear()
-
                 for (doc in documents) {
                     val post = doc.toObject(Post::class.java)
+                    post.postId = doc.id // ✅ Set postId from document ID
                     postList.add(post)
                 }
 
                 adapter.notifyDataSetChanged()
 
-                // Show empty layout if no posts
                 if (postList.isEmpty()) {
                     emptyLayout.visibility = View.VISIBLE
                     recyclerView.visibility = View.GONE
@@ -61,5 +64,15 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                     recyclerView.visibility = View.VISIBLE
                 }
             }
+    }
+
+    companion object {
+        fun newInstance(ownerId: String): PostsFragment {
+            val fragment = PostsFragment()
+            val args = Bundle()
+            args.putString("ownerId", ownerId)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

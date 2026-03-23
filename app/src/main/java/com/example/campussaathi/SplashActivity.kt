@@ -2,11 +2,11 @@ package com.example.campussaathi
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.os.Handler
 
 class SplashActivity : AppCompatActivity() {
 
@@ -20,82 +20,91 @@ class SplashActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // 🔥 SPLASH DELAY (clean & safe)
         Handler(Looper.getMainLooper()).postDelayed({
+            startAppFlow()
+        }, 1500) // 👈 reduce time (better UX)
+    }
 
-            // ✅ STEP 1: Onboarding check
-            val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-            val isFirstTime = sharedPref.getBoolean("isFirstTime", true)
+    private fun startAppFlow() {
 
-            if (isFirstTime) {
-                startActivity(Intent(this, OnboardingActivity::class.java))
-                finish()
-                return@postDelayed
-            }
+        // ✅ STEP 1: Onboarding check
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        val isFirstTime = sharedPref.getBoolean("isFirstTime", true)
 
-            // 🔹 EXISTING LOGIC (unchanged)
-            val currentUser = auth.currentUser
+        if (isFirstTime) {
+            open(OnboardingActivity::class.java)
+            return
+        }
 
-            // If user NOT logged in → Login
-            if (currentUser == null) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-                return@postDelayed
-            }
+        val currentUser = auth.currentUser
 
-            // If logged in → check role
-            val uid = currentUser.uid
+        // 🔹 NOT LOGGED IN
+        if (currentUser == null) {
+            open(LoginActivity::class.java)
+            return
+        }
 
-            db.collection("users").document(uid).get()
-                .addOnSuccessListener { doc ->
+        val uid = currentUser.uid
 
-                    val role = doc.getString("role")
-                    val ownerSetupDone = doc.getBoolean("ownerSetupDone") ?: false
-                    val isVerified = doc.getBoolean("isVerified") ?: false
-                    val verificationSubmitted = doc.getBoolean("verificationSubmitted") ?: false
+        // 🔹 FETCH USER ROLE
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { doc ->
 
-                    when (role) {
+                if (!doc.exists()) {
+                    open(LoginActivity::class.java)
+                    return@addOnSuccessListener
+                }
 
-                        "student" -> {
-                            startActivity(
-                                Intent(this, StudentActivity::class.java)
-                            )
-                        }
+                val role = doc.getString("role")
+                val ownerSetupDone = doc.getBoolean("ownerSetupDone") ?: false
+                val isVerified = doc.getBoolean("isVerified") ?: false
+                val verificationSubmitted = doc.getBoolean("verificationSubmitted") ?: false
 
-                        "owner" -> {
-                            when {
-                                !ownerSetupDone -> {
-                                    startActivity(
-                                        Intent(this, ActivityOwnerChooseTypeService::class.java)
-                                    )
-                                }
-                                !verificationSubmitted -> {
-                                    startActivity(
-                                        Intent(this, OwnerVerification::class.java)
-                                    )
-                                }
-                                !isVerified -> {
-                                    startActivity(
-                                        Intent(this, ActivityOwnerVerificationInProgress::class.java)
-                                    )
-                                }
-                                else -> {
-                                    startActivity(
-                                        Intent(this, OwnerMainActivity::class.java)
-                                    )
-                                }
+                when (role) {
+
+                    "admin" -> {
+                        open(AdminActivityMain::class.java)
+                    }
+
+
+                    "student" -> {
+                        open(StudentActivity::class.java)
+                    }
+
+                    "owner" -> {
+                        when {
+                            !ownerSetupDone -> {
+                                open(ActivityOwnerChooseTypeService::class.java)
                             }
-                        }
-
-                        else -> {
-                            startActivity(
-                                Intent(this, LoginActivity::class.java)
-                            )
+                            !verificationSubmitted -> {
+                                open(OwnerVerification::class.java)
+                            }
+                            !isVerified -> {
+                                open(ActivityOwnerVerificationInProgress::class.java)
+                            }
+                            else -> {
+                                open(OwnerMainActivity::class.java)
+                            }
                         }
                     }
 
-                    finish()
+                    else -> {
+                        open(LoginActivity::class.java)
+                    }
                 }
+            }
+            .addOnFailureListener {
+                // 🔥 FAIL SAFE
+                open(LoginActivity::class.java)
+            }
+    }
 
-        }, 2000)
+    // 🔥 CLEAN NAVIGATION METHOD
+    private fun open(cls: Class<*>) {
+        val intent = Intent(this, cls)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

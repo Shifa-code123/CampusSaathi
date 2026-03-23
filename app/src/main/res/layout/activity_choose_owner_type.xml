@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +24,7 @@
             android:text="Choose Owner Type"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/owner_text_primary"
             android:layout_gravity="center"
             android:layout_marginTop="12dp" />
 
@@ -35,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="This helps us customize tools for your service"
             android:textSize="14sp"
-            android:textColor="#666666"
+            android:textColor="@color/owner_text_secondary"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp" />
 
@@ -47,7 +46,7 @@
             android:layout_marginBottom="14dp"
             app:cardCornerRadius="14dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#FFFFFF">
+            app:cardBackgroundColor="@color/owner_card_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,14 +74,14 @@
                         android:text="Room / PG / Hotel"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Manage rooms, beds, rent, and student requests"
                         android:textSize="13sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -96,7 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             app:cardCornerRadius="14dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/owner_card_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,14 +124,14 @@
                         android:text="Mess / Tiffin Services"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Offer daily or monthly food services to students"
                         android:textSize="13sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -146,7 +146,7 @@
             android:layout_marginBottom="14dp"
             app:cardCornerRadius="14dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#FFFFFF">
+            app:cardBackgroundColor="@color/owner_card_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,14 +174,14 @@
                         android:text="Tution's"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tution’s near campus"
                         android:textSize="13sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -196,7 +196,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             app:cardCornerRadius="14dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/owner_card_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -224,14 +225,14 @@
                         android:text="Near Campus Shop / Service"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List essential services near the campus"
                         android:textSize="13sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -245,7 +246,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="14dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/owner_card_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -273,14 +275,14 @@
                         android:text="City help navigator"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List services in city"
                         android:textSize="13sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -294,8 +296,8 @@
             android:layout_height="50dp"
             android:text="Continue"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#2196F3" />
+            android:textColor="@color/white"
+            android:backgroundTint="@color/owner_primary" />
 
     </LinearLayout>
 </ScrollView>

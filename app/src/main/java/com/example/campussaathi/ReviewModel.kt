@@ -1,10 +1,10 @@
 package com.example.campussaathi
 
 data class ReviewModel(
+    val userName: String = "",
+    val comment: String = "",
     val rating: Int = 0,
-    val serviceId: String = "",
-    val studentId: String = "",
-    val reviewText: String = "",
-    val timestamp: Long? = null,
-    val studentName: String = "Student" // Placeholder as requested
+    val userId: String = "",
+    val timestamp: Long = 0L,
+    val profileImageBase64: String = ""
 )

@@ -37,11 +37,7 @@ class HelpFragment : Fragment() {
             binding.studentDrawer.root
         )
 
-        binding.header.tvHeaderTitle.text = "Help"
 
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
 
 
         setupEmergencyCards()

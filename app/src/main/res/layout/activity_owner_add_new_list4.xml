@@ -6,12 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:orientation="vertical">
 
         <!-- ===== TOOLBAR ===== -->
         <androidx.appcompat.widget.Toolbar
@@ -39,12 +37,13 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp"
-                    android:padding="16dp">
+                    app:cardBackgroundColor="@color/owner_card_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <!-- ===== STEP TITLE ===== -->
                         <TextView
@@ -52,7 +51,8 @@
                             android:layout_height="wrap_content"
                             android:text="Step 4 of 6: Location and Reachability"
                             android:textStyle="bold"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textColor="@color/owner_text_primary" />
 
                         <!-- ===== STEPS (6 TOTAL, 4 ACTIVE) ===== -->
                         <LinearLayout
@@ -67,55 +67,57 @@
                                 android:layout_height="28dp"
                                 android:text="1"
                                 android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_done" />
 
-                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="#2979FF" />
+                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="@color/owner_primary" />
 
                             <TextView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="2"
                                 android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_done" />
 
-                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="#2979FF" />
+                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="@color/owner_primary" />
 
                             <TextView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="3"
                                 android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_done" />
 
-                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="#2979FF" />
+                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="@color/owner_primary" />
 
                             <TextView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="4"
                                 android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_active" />
 
-                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="#CCCCCC" />
+                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="@color/owner_divider" />
 
                             <TextView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="5"
                                 android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive" />
 
-                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="#CCCCCC" />
+                            <View android:layout_width="20dp" android:layout_height="2dp" android:background="@color/owner_divider" />
 
                             <TextView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="6"
                                 android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive" />
                         </LinearLayout>
 
@@ -126,6 +128,7 @@
                             android:layout_marginTop="16dp"
                             android:text="Select Location on Map"
                             android:textStyle="bold"
+                            android:textColor="@color/owner_text_primary"
                             android:drawableStart="@drawable/ic_location"
                             android:drawablePadding="8dp" />
 
@@ -150,7 +153,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Tap GPS icon to detect your location"
                                 android:textSize="12sp"
-                                android:textColor="#666"
+                                android:textColor="@color/owner_text_secondary"
                                 android:layout_gravity="center_horizontal|bottom"
                                 android:layout_marginBottom="8dp"/>
 
@@ -173,6 +176,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:text="Distance from campus: 0.0 km"
+                            android:textColor="@color/owner_text_secondary"
                             android:textSize="12sp" />
 
                         <!-- ===== COMMON ADDRESS DETAILS ===== -->
@@ -181,6 +185,7 @@
                             android:layout_height="wrap_content"
                             android:text="Address Details"
                             android:textStyle="bold"
+                            android:textColor="@color/owner_text_primary"
                             android:layout_marginTop="12dp" />
 
                         <EditText
@@ -188,6 +193,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Area / Locality"
+                            android:textColor="@color/owner_text_primary"
+                            android:textColorHint="@color/owner_text_secondary"
                             android:background="@drawable/edit_bg" />
 
                         <EditText
@@ -195,6 +202,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Landmark (Optional)"
+                            android:textColor="@color/owner_text_primary"
+                            android:textColorHint="@color/owner_text_secondary"
                             android:background="@drawable/edit_bg"
                             android:layout_marginTop="8dp" />
 
@@ -203,6 +212,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="City"
+                            android:textColor="@color/owner_text_primary"
+                            android:textColorHint="@color/owner_text_secondary"
                             android:background="@drawable/edit_bg"
                             android:layout_marginTop="8dp" />
 
@@ -211,12 +222,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Pincode"
+                            android:textColor="@color/owner_text_primary"
+                            android:textColorHint="@color/owner_text_secondary"
                             android:inputType="number"
                             android:background="@drawable/edit_bg"
                             android:layout_marginTop="8dp" />
 
                         <!-- ===== ROOM / PG / HOSTEL LOCATION DETAILS ===== -->
-                        <!-- ================= ROOM / PG / HOSTEL ================= -->
                         <LinearLayout
                             android:id="@+id/layoutRoomStep4"
                             android:layout_width="match_parent"
@@ -228,24 +240,28 @@
                                 android:layout_height="wrap_content"
                                 android:text="Room / PG / Hostel Details"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="16dp" />
 
                             <CheckBox
                                 android:id="@+id/cbNearCampus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Near Campus" />
 
                             <CheckBox
                                 android:id="@+id/cbMarketNearby"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Market Nearby" />
 
                             <CheckBox
                                 android:id="@+id/cbHospitalNearby"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Hospital / Medical Nearby" />
 
                         </LinearLayout>
@@ -262,6 +278,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Mess Service Area"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="16dp" />
 
                             <EditText
@@ -269,6 +286,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Service Radius (km)"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:inputType="number"
                                 android:background="@drawable/edit_bg" />
 
@@ -276,51 +295,56 @@
                                 android:id="@+id/cbHomeDelivery"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Home Delivery Available" />
 
                             <CheckBox
                                 android:id="@+id/cbPickupAvailable"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Pickup Available" />
 
                         </LinearLayout>
 
 
                         <!-- ===== TUITION LOCATION DETAILS ===== -->
-                    <!-- ===== TUITION LOCATION DETAILS ===== -->
-                    <LinearLayout
-                        android:id="@+id/layoutTuitionStep4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/layoutTuitionStep4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Tuition / Coaching Access"
-                            android:textStyle="bold"
-                            android:layout_marginTop="16dp" />
+                            android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/cbMainRoad"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Near Main Road" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tuition / Coaching Access"
+                                android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
+                                android:layout_marginTop="16dp" />
 
-                        <CheckBox
-                            android:id="@+id/cbSafeArea"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Safe for Evening Batches" />
+                            <CheckBox
+                                android:id="@+id/cbMainRoad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
+                                android:text="Near Main Road" />
 
-                        <CheckBox
-                            android:id="@+id/cbParkingAvailable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Student Parking Available" />
+                            <CheckBox
+                                android:id="@+id/cbSafeArea"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
+                                android:text="Safe for Evening Batches" />
 
-                    </LinearLayout>
+                            <CheckBox
+                                android:id="@+id/cbParkingAvailable"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
+                                android:text="Student Parking Available" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -332,8 +356,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Next"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#2979FF" />
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/owner_primary" />
 
             </LinearLayout>
         </ScrollView>
@@ -347,6 +371,5 @@
         android:fitsSystemWindows="true"
         app:itemBackground="@drawable/nav_item_background"
         app:menu="@menu/owner_menu_drawer"/>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

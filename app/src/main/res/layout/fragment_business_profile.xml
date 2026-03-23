@@ -2,8 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
                 android:layout_height="90dp"
                 android:src="@drawable/default_avatar"
                 app:civ_border_width="2dp"
-                app:civ_border_color="#DDDDDD" />
+                app:civ_border_color="@color/owner_divider" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -45,13 +44,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/owner_text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/owner_text_secondary"
                         android:text="Posts" />
                 </LinearLayout>
 
@@ -68,13 +68,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/owner_text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/owner_text_secondary"
                         android:text="Followers" />
                 </LinearLayout>
             </LinearLayout>
@@ -87,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Owner Name"
-            android:textColor="@android:color/black"
+            android:textColor="@color/owner_text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Add your bio..."
-            android:textColor="#555555" />
+            android:textColor="@color/owner_text_secondary" />
 
         <!-- ===== Edit Button ===== -->
         <Button
@@ -105,23 +106,23 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
-            android:backgroundTint="#8EAFE6"
+            android:backgroundTint="@color/owner_accent"
             android:text="Edit Profile"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/owner_text_primary" />
 
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="#E0E0E0" />
+            android:background="@color/owner_divider" />
 
         <!-- ================= TABS ================= -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@android:color/black"
+            app:tabIndicatorColor="@color/owner_primary"
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabGravity="fill" />
@@ -144,6 +145,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#C5D9E9" />
+        app:backgroundTint="@color/owner_accent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

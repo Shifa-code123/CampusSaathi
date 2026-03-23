@@ -19,6 +19,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusSaathi"
         android:usesCleartextTraffic="true">
+
+
+        <activity
+            android:name=".AdminActivityMain"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminManageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminApprovalDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminVolunteerDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminManageDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminNotificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+
+
         <activity
             android:name=".OnboardingActivity"
             android:exported="false" />
@@ -60,6 +98,9 @@
             android:exported="false" />
         <activity
             android:name=".StudentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RatingActivity"
             android:exported="false" />
         <activity
             android:name=".CategoryListActivity"

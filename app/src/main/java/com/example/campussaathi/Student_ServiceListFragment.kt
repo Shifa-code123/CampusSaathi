@@ -37,14 +37,7 @@ class Student_ServiceListFragment : Fragment() {
         val category = arguments?.getString("category") ?: ""
         val firestoreCategory = categoryMap[category] ?: category
 
-        binding.header.tvHeaderTitle.text = category
-        binding.header.ivMenu.setImageResource(R.drawable.ic_back)
-        binding.header.ivMenu.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-        
-        binding.header.notificationContainer.visibility = View.GONE
-        binding.header.profileContainer.visibility = View.GONE
+        (activity as? StudentActivity)?.updateHeaderForFragment(category, isBack = true)
 
         binding.rvServices.layoutManager = LinearLayoutManager(requireContext())
         adapter = Student_ServiceAdapter(emptyList()) { service ->

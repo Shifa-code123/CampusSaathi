@@ -5,21 +5,20 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:orientation="vertical">
 
         <!-- TOOLBAR -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#2196F3"
+            android:background="@color/owner_primary"
             app:title="Add New Listing"
-            app:titleTextColor="#FFFFFF"
+            app:titleTextColor="@color/white"
             app:navigationIcon="@drawable/ic_menu"/>
 
         <ScrollView
@@ -37,12 +36,13 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp"
-                    android:padding="16dp">
+                    app:cardBackgroundColor="@color/owner_card_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <!-- STEP TITLE -->
                         <TextView
@@ -50,7 +50,8 @@
                             android:layout_height="wrap_content"
                             android:text="Step 3 of 6: Amenities and Services"
                             android:textStyle="bold"
-                            android:textSize="14sp"/>
+                            android:textSize="14sp"
+                            android:textColor="@color/owner_text_primary"/>
 
                         <!-- STEPS -->
                         <LinearLayout
@@ -62,51 +63,48 @@
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="1" android:gravity="center"
-                                android:textColor="#FFFFFF" android:background="@drawable/step_done"/>
+                                android:textColor="@color/white" android:background="@drawable/step_done"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#2979FF"/>
+                                android:background="@color/owner_primary"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="2" android:gravity="center"
-                                android:textColor="#FFFFFF" android:background="@drawable/step_done"/>
+                                android:textColor="@color/white" android:background="@drawable/step_done"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#2979FF"/>
+                                android:background="@color/owner_primary"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="3" android:gravity="center"
-                                android:textColor="#FFFFFF" android:background="@drawable/step_active"/>
+                                android:textColor="@color/white" android:background="@drawable/step_active"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="4" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="5" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="6" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
                         </LinearLayout>
 
-                        <!-- ================================================= -->
-                        <!-- ================================================= -->
-                        <!-- ROOM / PG / HOSTEL -->
-                        <!-- ================================================= -->
-
                         <!-- ================= ROOM / PG / HOSTEL ================= -->
-
                         <LinearLayout
                             android:id="@+id/layoutRoomStep3"
                             android:layout_width="match_parent"
@@ -119,48 +117,56 @@
                                 android:layout_height="wrap_content"
                                 android:text="Room / PG / Hostel"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="20dp"/>
 
                             <CheckBox
                                 android:id="@+id/cbWifi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Wi-Fi"/>
 
                             <CheckBox
                                 android:id="@+id/cbWater"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Water Supply"/>
 
                             <CheckBox
                                 android:id="@+id/cbElectricity"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Electricity Included"/>
 
                             <CheckBox
                                 android:id="@+id/cbFanLight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Fan and Light"/>
 
                             <CheckBox
                                 android:id="@+id/cbBed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Bed and Mattress"/>
 
                             <CheckBox
                                 android:id="@+id/cbStudyTable"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Study Table"/>
 
                             <CheckBox
                                 android:id="@+id/cbCupboard"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Cupboard / Wardrobe"/>
 
                             <!-- Bathroom -->
@@ -169,12 +175,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="Bathroom and Hygiene"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="12dp"/>
 
                             <CheckBox
                                 android:id="@+id/cbHotWater"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Hot Water"/>
 
                             <RadioGroup
@@ -186,11 +194,13 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Attached"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Common"/>
                             </RadioGroup>
 
@@ -198,12 +208,14 @@
                                 android:id="@+id/cbCleaning"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Daily Cleaning"/>
 
                             <CheckBox
                                 android:id="@+id/cbToiletType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Western / Indian Toilet"/>
 
                             <!-- House Rules -->
@@ -212,27 +224,26 @@
                                 android:layout_height="wrap_content"
                                 android:text="House Rules"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="12dp"/>
 
                             <CheckBox
                                 android:id="@+id/cbVisitors"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Visitors Allowed"/>
 
                             <CheckBox
                                 android:id="@+id/cbOutsideFood"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Outside Food Allowed"/>
 
                         </LinearLayout>
-                        <!-- ================================================= -->
-                        <!-- MESS SERVICES -->
-                        <!-- ================================================= -->
 
                         <!-- ================= MESS SERVICES ================= -->
-
                         <LinearLayout
                             android:id="@+id/layoutMessStep3"
                             android:layout_width="match_parent"
@@ -245,30 +256,35 @@
                                 android:layout_height="wrap_content"
                                 android:text="Mess Services"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="20dp"/>
 
                             <CheckBox
                                 android:id="@+id/cbBreakfast"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Breakfast"/>
 
                             <CheckBox
                                 android:id="@+id/cbLunch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Lunch"/>
 
                             <CheckBox
                                 android:id="@+id/cbDinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Dinner"/>
 
                             <CheckBox
                                 android:id="@+id/cbFestivalMeal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Festival Special Meals"/>
 
                             <!-- MESS TYPE -->
@@ -281,16 +297,19 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Veg"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Non-Veg"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Both"/>
                             </RadioGroup>
 
@@ -298,28 +317,26 @@
                                 android:id="@+id/cbTiffin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Tiffin Service"/>
 
                             <CheckBox
                                 android:id="@+id/cbDelivery"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Home Delivery"/>
 
                             <CheckBox
                                 android:id="@+id/cbTrial"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Trial Available"/>
 
                         </LinearLayout>
-                        ========================================== -->
-                        <!-- ================================================= -->
-                        <!-- TUITION / COACHING -->
-                        <!-- ================================================= -->
 
                         <!-- ================= TUITION / COACHING ================= -->
-
                         <LinearLayout
                             android:id="@+id/layoutTuitionStep3"
                             android:layout_width="match_parent"
@@ -332,36 +349,42 @@
                                 android:layout_height="wrap_content"
                                 android:text="Tuition / Coaching"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="20dp"/>
 
                             <CheckBox
                                 android:id="@+id/cbBoard"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Whiteboard / Digital Board"/>
 
                             <CheckBox
                                 android:id="@+id/cbNotes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Printed Notes"/>
 
                             <CheckBox
                                 android:id="@+id/cbRecorded"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Recorded Lectures"/>
 
                             <CheckBox
                                 android:id="@+id/cbDoubt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Doubt Solving Sessions"/>
 
                             <CheckBox
                                 android:id="@+id/cbTestSeries"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Test Series"/>
 
                             <!-- TUITION MODE -->
@@ -374,16 +397,19 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Offline"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Online"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Hybrid"/>
                             </RadioGroup>
 
@@ -396,8 +422,8 @@
                             android:layout_height="wrap_content"
                             android:text="Next"
                             android:layout_marginTop="24dp"
-                            android:backgroundTint="#2979FF"
-                            android:textColor="#FFFFFF"/>
+                            android:backgroundTint="@color/owner_primary"
+                            android:textColor="@color/white"/>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

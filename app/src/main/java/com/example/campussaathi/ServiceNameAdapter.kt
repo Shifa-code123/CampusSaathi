@@ -1,12 +1,14 @@
 package com.example.campussaathi
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
-class ServiceNameAdapter(private val list: List<String>) :
+class ServiceNameAdapter(private val list: List<String>, private val serviceIds: List<String> = emptyList()) :
     RecyclerView.Adapter<ServiceNameAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,5 +25,21 @@ class ServiceNameAdapter(private val list: List<String>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.txtName.text = list[position]
+        
+        holder.itemView.setOnClickListener {
+            if (position < serviceIds.size) {
+                val serviceId = serviceIds[position]
+                val activity = holder.itemView.context as? AppCompatActivity
+                val fragment = Student_ServiceDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("serviceId", serviceId)
+                    }
+                }
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(android.R.id.content, fragment)
+                    ?.addToBackStack(null)
+                    ?.commit()
+            }
+        }
     }
 }

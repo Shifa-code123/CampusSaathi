@@ -8,8 +8,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F4F6FA">
+        android:layout_height="match_parent">
 
         <!-- HEADER TOOLBAR -->
         <androidx.appcompat.widget.Toolbar
@@ -25,15 +24,13 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Notification"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -62,7 +59,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <!-- YOUR EXISTING FORM CONTENT -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="All"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/white"
                             android:textStyle="bold"
                             android:gravity="center"
                             android:paddingHorizontal="22dp"
@@ -90,7 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="New (5)"
-                            android:textColor="#555"
+                            android:textColor="@color/owner_text_secondary"
                             android:gravity="center"
                             android:paddingHorizontal="22dp"
                             android:layout_marginStart="10dp"
@@ -104,7 +100,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
                         app:cardCornerRadius="18dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@color/owner_card_bg">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -123,7 +120,7 @@
                                 android:text="Riya Sharma liked your post"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="#222"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -132,13 +129,14 @@
                                 android:layout_marginTop="28dp"
                                 android:text="5 minutes ago"
                                 android:textSize="12sp"
-                                android:textColor="#777"
+                                android:textColor="@color/owner_text_secondary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                             <ImageView
                                 android:layout_alignParentEnd="true"
                                 android:src="@drawable/ic_heart"
+                                app:tint="@color/owner_error"
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"/>
 
@@ -153,7 +151,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
                         app:cardCornerRadius="18dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@color/owner_card_bg">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -180,7 +179,7 @@
                                 android:text="May Tiffin Services accepted your listing request"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="#222"/>
+                                android:textColor="@color/owner_text_primary"/>
 
                             <!-- Time -->
                             <TextView
@@ -192,7 +191,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="1 hour ago"
                                 android:textSize="12sp"
-                                android:textColor="#777"/>
+                                android:textColor="@color/owner_text_secondary"/>
 
                             <!-- Green Check Icon -->
                             <ImageView
@@ -201,7 +200,8 @@
                                 android:layout_height="22dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignTop="@id/title2"
-                                android:src="@drawable/ic_check_circle"/>
+                                android:src="@drawable/ic_check_circle"
+                                app:tint="@color/owner_success"/>
 
                         </RelativeLayout>
 
@@ -212,7 +212,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
                         app:cardCornerRadius="18dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@color/owner_card_bg">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -239,7 +240,7 @@
                                 android:text="Ananya Gupta submitted a request to follow you. Tap to view."
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="#222"/>
+                                android:textColor="@color/owner_text_primary"/>
 
                             <!-- Time -->
                             <TextView
@@ -251,7 +252,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="2 hours ago"
                                 android:textSize="12sp"
-                                android:textColor="#777"/>
+                                android:textColor="@color/owner_text_secondary"/>
 
                             <!-- Follow Icon -->
                             <ImageView
@@ -271,7 +272,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
                         app:cardCornerRadius="18dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@color/owner_card_bg">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -298,7 +300,7 @@
                                 android:text='BookStore verified your listing "Textbook Outlet for Engineering Students"'
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="#222"/>
+                                android:textColor="@color/owner_text_primary"/>
 
                             <!-- Time -->
                             <TextView
@@ -310,7 +312,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="Yesterday"
                                 android:textSize="12sp"
-                                android:textColor="#777"/>
+                                android:textColor="@color/owner_text_secondary"/>
 
                             <!-- Orange Verified Icon -->
                             <ImageView
@@ -329,7 +331,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
                         app:cardCornerRadius="18dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@color/owner_card_bg">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -352,7 +355,8 @@
                                 android:layout_height="22dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignTop="@id/profile5"
-                                android:src="@drawable/ic_comment"/>
+                                android:src="@drawable/ic_comment"
+                                app:tint="@color/owner_primary"/>
 
                             <!-- Title -->
                             <TextView
@@ -365,7 +369,7 @@
                                 android:text="Rohit Patel commented:"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
-                                android:textColor="#222"
+                                android:textColor="@color/owner_text_primary"
                                 android:maxLines="1"
                                 android:ellipsize="end"/>
 
@@ -379,7 +383,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text='"Amazing food and great service!"'
                                 android:textSize="14sp"
-                                android:textColor="#444"
+                                android:textColor="@color/owner_text_secondary"
                                 android:maxLines="2"
                                 android:ellipsize="end"/>
 
@@ -393,7 +397,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="Yesterday"
                                 android:textSize="12sp"
-                                android:textColor="#777"/>
+                                android:textColor="@color/owner_text_secondary"/>
 
                         </RelativeLayout>
 

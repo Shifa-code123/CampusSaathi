@@ -3,12 +3,10 @@ package com.example.campussaathi
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.campussaathi.databinding.FragmentExploreBinding
-import com.example.campussaathi.utils.DrawerManager
 
 class ExploreFragment : Fragment() {
 
@@ -29,23 +27,6 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        DrawerManager.setupDrawer(
-            requireActivity(),
-            binding.drawerLayout,
-            binding.studentDrawer.root
-        )
-
-        // Header
-        binding.header.tvHeaderTitle.text = "Explore"
-
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        binding.header.ivProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), StudentProfileActivity::class.java))
-        }
 
         setupRecycler()
         setupSearch()
@@ -81,15 +62,11 @@ class ExploreFragment : Fragment() {
     }
 
     private fun setupSearch() {
-
         binding.edtSearch.addTextChangedListener { editable ->
-
             val query = editable.toString().trim().lowercase()
-
             val filteredList = originalList.filter {
                 it.name.lowercase().contains(query)
             }
-
             categoryAdapter.updateList(filteredList)
         }
     }

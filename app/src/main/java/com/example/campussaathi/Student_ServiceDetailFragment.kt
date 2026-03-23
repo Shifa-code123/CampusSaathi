@@ -26,13 +26,8 @@ class Student_ServiceDetailFragment : Fragment() {
 
         val serviceId = arguments?.getString("serviceId") ?: return
 
-        binding.header.ivMenu.setImageResource(R.drawable.ic_back)
-        binding.header.ivMenu.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-        
-        binding.header.notificationContainer.visibility = View.GONE
-        binding.header.profileContainer.visibility = View.GONE
+        // Header handled by StudentActivity
+        (activity as? StudentActivity)?.updateHeaderForFragment("Service Details", isBack = true)
 
         fetchServiceDetails(serviceId)
     }
@@ -43,7 +38,8 @@ class Student_ServiceDetailFragment : Fragment() {
             .addOnSuccessListener { document ->
                 val service = document.toObject(Student_ServiceModel::class.java)
                 service?.let {
-                    binding.header.tvHeaderTitle.text = it.serviceName
+                    (activity as? StudentActivity)?.updateHeaderForFragment(it.serviceName, isBack = true)
+
                     binding.tvDetailName.text = it.serviceName
                     binding.tvDetailDesc.text = it.description
                     binding.tvDetailContact.text = it.contact

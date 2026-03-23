@@ -2,6 +2,7 @@ package com.example.campussaathi
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -19,18 +20,19 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // 🔥 AUTO LOGIN CHECK (Permanent Session)
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            checkUserRole(currentUser.uid)
-            return
-        }
-
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val txtSignup = findViewById<TextView>(R.id.txtSignup)
         val txtForgot = findViewById<TextView>(R.id.txtForgotPassword)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar) // 👈 ADD THIS IN XML
+
+        // 🔥 AUTO LOGIN CHECK
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            checkUserRole(currentUser.uid)
+            return
+        }
 
         // 🔹 LOGIN BUTTON
         btnLogin.setOnClickListener {
@@ -43,13 +45,39 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // 🔥 LOADING START
+            progressBar.visibility = View.VISIBLE
+            btnLogin.isEnabled = false
+
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-                    val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
+
+                    val uid = auth.currentUser?.uid
+                    if (uid == null) {
+                        progressBar.visibility = View.GONE
+                        btnLogin.isEnabled = true
+                        toast("Something went wrong")
+                        return@addOnSuccessListener
+                    }
+
                     checkUserRole(uid)
                 }
                 .addOnFailureListener {
-                    toast("Login failed: ${it.message}")
+
+                    progressBar.visibility = View.GONE
+                    btnLogin.isEnabled = true
+
+                    val message = when {
+                        it.message?.contains("badly formatted") == true ->
+                            "Invalid email format"
+                        it.message?.contains("password is invalid") == true ->
+                            "Wrong password"
+                        it.message?.contains("no user record") == true ->
+                            "User not found"
+                        else -> "Login failed"
+                    }
+
+                    toast(message)
                 }
         }
 
@@ -61,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
         // 🔹 FORGOT PASSWORD
         txtForgot.setOnClickListener {
             val email = etEmail.text.toString().trim()
+
             if (email.isEmpty()) {
                 toast("Enter email first")
                 return@setOnClickListener
@@ -72,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    //  ROLE + VERIFICATION LOGIC
+    // 🔥 ROLE + VERIFICATION LOGIC (UNCHANGED CORE)
     private fun checkUserRole(uid: String) {
 
         db.collection("users").document(uid).get()
@@ -88,6 +117,7 @@ class LoginActivity : AppCompatActivity() {
 
                 when (role) {
 
+                    "admin" -> open(AdminActivityMain::class.java)
 
 
                     "student" -> open(StudentActivity::class.java)
@@ -131,15 +161,29 @@ class LoginActivity : AppCompatActivity() {
 
                     else -> open(RoleSelectionActivity::class.java)
                 }
+
+                // 🔥 STOP LOADING AFTER ROLE CHECK
+                stopLoading()
             }
             .addOnFailureListener {
                 toast("Database error")
+                stopLoading()
             }
     }
 
     private fun open(cls: Class<*>) {
-        startActivity(Intent(this, cls))
+        val intent = Intent(this, cls)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         finish()
+    }
+
+    private fun stopLoading() {
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+
+        progressBar.visibility = View.GONE
+        btnLogin.isEnabled = true
     }
 
     private fun toast(msg: String) {

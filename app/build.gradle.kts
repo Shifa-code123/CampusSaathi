@@ -89,10 +89,13 @@ dependencies {
 
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.android.material:material:1.11.0")
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.cardview:cardview:1.0.0")
+
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
 }
 

@@ -1,39 +1,53 @@
 package com.example.campussaathi
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.example.campussaathi.databinding.ActivityStudentProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.bumptech.glide.Glide
 import com.example.campussaathi.utils.DrawerManager
+import java.io.File
+import com.google.firebase.firestore.SetOptions
+import android.widget.Toast
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.widget.ImageView
+import java.io.ByteArrayOutputStream
+import com.example.campussaathi.utils.ProfileImageLoader
 
 class StudentProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStudentProfileBinding
 
-    private var isEditing = false
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
-    // 📸 Image Picker
-    private val pickImage =
+    private lateinit var cameraImageUri: Uri
+
+    // ===============================
+    // GALLERY
+    // ===============================
+    private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
+                convertAndSaveProfileImage(it)
+            }
+        }
 
-                // show instantly
-                Glide.with(this)
-                    .load(it)
-                    .circleCrop()
-                    .into(binding.profileImage)
-
-                uploadProfileImage(it)
+    // ===============================
+    // CAMERA
+    // ===============================
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                convertAndSaveProfileImage(cameraImageUri)
             }
         }
 
@@ -43,11 +57,18 @@ class StudentProfileActivity : AppCompatActivity() {
         binding = ActivityStudentProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+
         DrawerManager.setupDrawer(
             this,
             binding.drawerLayout,
             binding.studentDrawer.root
         )
+
+        val drawerImage = binding.studentDrawer.root
+            .findViewById<ImageView>(R.id.profileImage)
+
+        ProfileImageLoader.loadProfile(drawerImage)
 
         binding.header.tvHeaderTitle.text = "Profile"
 
@@ -56,11 +77,11 @@ class StudentProfileActivity : AppCompatActivity() {
         }
 
         binding.ivAddPhoto.setOnClickListener {
-            pickImage.launch("image/*")
+            showImagePickerDialog()
         }
 
         binding.profileImage.setOnClickListener {
-            pickImage.launch("image/*")
+            showImagePickerDialog()
         }
 
         binding.btnEditProfile.setOnClickListener {
@@ -68,30 +89,49 @@ class StudentProfileActivity : AppCompatActivity() {
         }
 
         binding.btnSaveProfile.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle("Do you want to save changes?")
-                .setPositiveButton("Yes") { _, _ ->
-                    saveProfileChanges()
-                }
-                .setNegativeButton("Cancel") { _, _ ->
-                    exitEditMode()
-                }
-                .show()
+            saveProfileChanges()
         }
 
         loadStudentData()
     }
 
-    // 🔥 IMPORTANT FIX
     override fun onResume() {
         super.onResume()
         loadStudentData()
     }
 
     // ===============================
+    // IMAGE PICKER
+    // ===============================
+    private fun showImagePickerDialog() {
+        val options = arrayOf("Take Photo", "Choose from Gallery")
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Select Profile Photo")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> openCamera()
+                    1 -> galleryLauncher.launch("image/*")
+                }
+            }
+            .show()
+    }
+
+    private fun openCamera() {
+        val file = File.createTempFile("profile_", ".jpg", cacheDir)
+
+        cameraImageUri = FileProvider.getUriForFile(
+            this,
+            "$packageName.provider",
+            file
+        )
+
+        cameraLauncher.launch(cameraImageUri)
+    }
+
+    // ===============================
     // LOAD DATA
     // ===============================
-
     private fun loadStudentData() {
 
         val uid = auth.currentUser?.uid ?: return
@@ -106,66 +146,34 @@ class StudentProfileActivity : AppCompatActivity() {
                     val name = document.getString("fullName") ?: ""
                     val email = document.getString("email") ?: ""
                     val phone = document.getString("phone") ?: ""
-                    val imageUrl = document.getString("profileImage")
 
                     binding.tvStudentName.text = name
                     binding.edtName.setText(name)
                     binding.edtEmail.setText(email)
                     binding.edtPhone.setText(phone)
 
-                    if (!imageUrl.isNullOrEmpty()) {
+                    val base64 = document.getString("profileImageBase64")
 
-                        Glide.with(this)
-                            .load(imageUrl)
-                            .circleCrop()
-                            .placeholder(R.drawable.ic_default_profile)
-                            .skipMemoryCache(true) // 🔥 fix
-                            .into(binding.profileImage)
+                    if (!base64.isNullOrEmpty()) {
 
-                        Glide.with(this)
-                            .load(imageUrl)
-                            .circleCrop()
-                            .skipMemoryCache(true)
-                            .into(binding.header.ivProfile)
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                        binding.profileImage.setImageBitmap(bitmap)
+                        binding.header.ivProfile.setImageBitmap(bitmap)
+
+                        val drawerImage = binding.studentDrawer.root
+                            .findViewById<ImageView>(R.id.profileImage)
+
+                        drawerImage.setImageBitmap(bitmap)
                     }
                 }
             }
     }
 
     // ===============================
-    // EDIT MODE
+    // SAVE PROFILE
     // ===============================
-
-    private fun enableEditMode() {
-
-        isEditing = true
-
-        binding.edtName.isEnabled = true
-        binding.edtEmail.isEnabled = true
-        binding.edtPhone.isEnabled = true
-
-        binding.edtName.requestFocus()
-
-        binding.btnEditProfile.visibility = View.GONE
-        binding.btnSaveProfile.visibility = View.VISIBLE
-    }
-
-    private fun exitEditMode() {
-
-        isEditing = false
-
-        binding.edtName.isEnabled = false
-        binding.edtEmail.isEnabled = false
-        binding.edtPhone.isEnabled = false
-
-        binding.btnSaveProfile.visibility = View.GONE
-        binding.btnEditProfile.visibility = View.VISIBLE
-    }
-
-    // ===============================
-    // SAVE DATA
-    // ===============================
-
     private fun saveProfileChanges() {
 
         val uid = auth.currentUser?.uid ?: return
@@ -181,48 +189,52 @@ class StudentProfileActivity : AppCompatActivity() {
             .update(updates)
             .addOnSuccessListener {
                 binding.tvStudentName.text = binding.edtName.text.toString()
-                exitEditMode()
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
             }
     }
 
     // ===============================
-    // UPLOAD IMAGE
+    // IMAGE SAVE (BASE64)
     // ===============================
-
-    private fun uploadProfileImage(uri: Uri) {
+    private fun convertAndSaveProfileImage(uri: Uri) {
 
         val uid = auth.currentUser?.uid ?: return
 
-        val storageRef = FirebaseStorage.getInstance()
-            .reference.child("profileImages/$uid.jpg")
+        try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
 
-        storageRef.putFile(uri)
-            .addOnSuccessListener {
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
 
-                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+            val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
 
-                    val imageUrl = downloadUrl.toString()
+            db.collection("users")
+                .document(uid)
+                .set(mapOf("profileImageBase64" to base64Image), SetOptions.merge())
+                .addOnSuccessListener {
 
-                    // ✅ FIXED SAVE
-                    db.collection("users")
-                        .document(uid)
-                        .set(
-                            mapOf("profileImage" to imageUrl),
-                            com.google.firebase.firestore.SetOptions.merge()
-                        )
-                        .addOnSuccessListener {
+                    val bytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmapDecoded = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-                            Glide.with(this)
-                                .load(imageUrl)
-                                .circleCrop()
-                                .into(binding.profileImage)
+                    binding.profileImage.setImageBitmap(bitmapDecoded)
+                    binding.header.ivProfile.setImageBitmap(bitmapDecoded)
 
-                            Glide.with(this)
-                                .load(imageUrl)
-                                .circleCrop()
-                                .into(binding.header.ivProfile)
-                        }
+                    Toast.makeText(this, "Image Saved 🔥", Toast.LENGTH_SHORT).show()
                 }
-            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun enableEditMode() {
+        binding.edtName.isEnabled = true
+        binding.edtEmail.isEnabled = true
+        binding.edtPhone.isEnabled = true
+
+        binding.btnEditProfile.visibility = View.GONE
+        binding.btnSaveProfile.visibility = View.VISIBLE
     }
 }

@@ -42,9 +42,11 @@ class BusinessProfileFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private val PICK_IMAGE_REQUEST = 1001
-    private val CAMERA_REQUEST = 1002
-    private var isProfileImage = false
+    // Separate Request Codes to prevent logic cross-triggering
+    private val PICK_PROFILE_IMAGE = 1001
+    private val CAMERA_PROFILE_IMAGE = 1002
+    private val PICK_POST_IMAGE = 1003
+    private val CAMERA_POST_IMAGE = 1004
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,13 +62,11 @@ class BusinessProfileFragment : Fragment() {
         }
 
         profileImage.setOnClickListener {
-            isProfileImage = true
-            showImageSourceDialog()
+            showProfileImageSourceDialog()
         }
 
         fabAddPost.setOnClickListener {
-            isProfileImage = false
-            showImageSourceDialog()
+            showPostImageSourceDialog()
         }
 
         return view
@@ -103,6 +103,7 @@ class BusinessProfileFragment : Fragment() {
                 txtBio.text = doc.getString("bio") ?: "Add your bio..."
                 loadBusinessProfileImage(uid)
                 loadPostsCount(uid)
+                loadFollowersCount(uid)
             }
     }
 
@@ -132,62 +133,102 @@ class BusinessProfileFragment : Fragment() {
             .addOnSuccessListener { txtPostsCount.text = it.size().toString() }
     }
 
-    private fun showImageSourceDialog() {
+    private fun loadFollowersCount(uid: String) {
+        // Real-time listener for followers count
+        db.collection("followers").document(uid)
+            .collection("userFollowers")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null || snapshot == null) return@addSnapshotListener
+                txtFollowersCount.text = snapshot.size().toString()
+            }
+    }
+
+    // --- Profile Image Logic ---
+    private fun showProfileImageSourceDialog() {
         val options = arrayOf("Upload from Gallery", "Open Camera")
         AlertDialog.Builder(requireContext())
-            .setTitle("Select Option")
+            .setTitle("Update Profile Photo")
             .setItems(options) { _, which ->
-                if (which == 0) openGallery()
-                else openCamera()
+                if (which == 0) openProfileGallery()
+                else openProfileCamera()
             }.show()
     }
 
-    private fun openGallery() {
+    private fun openProfileGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, PICK_PROFILE_IMAGE)
     }
 
-    private fun openCamera() {
+    private fun openProfileCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA_REQUEST)
+        startActivityForResult(intent, CAMERA_PROFILE_IMAGE)
+    }
+
+    // --- Post Upload Logic ---
+    private fun showPostImageSourceDialog() {
+        val options = arrayOf("Upload from Gallery", "Open Camera")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Add New Post")
+            .setItems(options) { _, which ->
+                if (which == 0) openPostGallery()
+                else openPostCamera()
+            }.show()
+    }
+
+    private fun openPostGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_POST_IMAGE)
+    }
+
+    private fun openPostCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA_POST_IMAGE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
 
-        var bitmap: Bitmap? = null
         when (requestCode) {
-            PICK_IMAGE_REQUEST -> {
-                data?.data?.let { uri ->
-                    val inputStream = requireContext().contentResolver.openInputStream(uri)
-                    bitmap = BitmapFactory.decodeStream(inputStream)
-                }
-            }
-            CAMERA_REQUEST -> {
-                bitmap = data?.extras?.get("data") as? Bitmap
-            }
-        }
-
-        bitmap?.let {
-            if (isProfileImage) {
-                profileImage.setImageBitmap(it)
-                uploadImageToCloudinary(it)
-            } else {
-                val stream = ByteArrayOutputStream()
-                it.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                val byteArray = stream.toByteArray()
-                
-                val fragment = CreatePostFragment().apply {
-                    arguments = Bundle().apply {
-                        putByteArray("image_data", byteArray)
+            PICK_PROFILE_IMAGE, CAMERA_PROFILE_IMAGE -> {
+                val bitmap = if (requestCode == PICK_PROFILE_IMAGE) {
+                    data?.data?.let { uri ->
+                        val inputStream = requireContext().contentResolver.openInputStream(uri)
+                        BitmapFactory.decodeStream(inputStream)
                     }
+                } else {
+                    data?.extras?.get("data") as? Bitmap
                 }
-                
-                parentFragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment)
-                    .addToBackStack(null)
-                    .commit()
+                bitmap?.let {
+                    profileImage.setImageBitmap(it)
+                    uploadImageToCloudinary(it)
+                }
+            }
+            PICK_POST_IMAGE, CAMERA_POST_IMAGE -> {
+                val bitmap = if (requestCode == PICK_POST_IMAGE) {
+                    data?.data?.let { uri ->
+                        val inputStream = requireContext().contentResolver.openInputStream(uri)
+                        BitmapFactory.decodeStream(inputStream)
+                    }
+                } else {
+                    data?.extras?.get("data") as? Bitmap
+                }
+                bitmap?.let {
+                    val stream = ByteArrayOutputStream()
+                    it.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+                    val byteArray = stream.toByteArray()
+                    
+                    val fragment = CreatePostFragment().apply {
+                        arguments = Bundle().apply {
+                            putByteArray("image_data", byteArray)
+                        }
+                    }
+                    
+                    parentFragmentManager.beginTransaction()
+                        .replace(android.R.id.content, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
         }
     }

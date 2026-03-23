@@ -30,7 +30,7 @@
             android:text="CampusSaathi"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/follow_button_blue"
+            android:textColor="@color/owner_primary"
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:civ_border_width="2dp"
-            app:civ_border_color="@color/cs_primary"/>
+            app:civ_border_color="@color/owner_primary"/>
 
         <TextView
             android:id="@+id/tvUserName"
@@ -62,13 +62,10 @@
             android:text="Owner"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/owner_text_primary"
             android:layout_marginStart="14dp"/>
 
-
-
     </LinearLayout>
-
-
 
     <!-- 🔥 MENU -->
     <LinearLayout
@@ -79,10 +76,11 @@
         app:layout_constraintTop_toBottomOf="@id/profileSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E0E0E0"
+            android:background="@color/owner_divider"
             android:layout_marginVertical="6dp"/>
 
         <!-- My Services -->
@@ -90,59 +88,60 @@
             android:id="@+id/menuMyServices"
             style="@style/DrawerItemStyle"
             android:text="My Services"
-            android:drawableStart="@drawable/ic_services"/>
-
-        <!-- Verification -->
-
+            android:textColor="@color/owner_text_primary"
+            android:drawableStart="@drawable/ic_services"
+            app:drawableTint="@color/owner_text_primary"/>
 
         <!-- Subscription -->
         <TextView
-            android:drawableTint="@color/black"
-            android:drawableStart="@drawable/ic_sub"
             android:id="@+id/menuSubscription"
             style="@style/DrawerItemStyle"
             android:text="Subscription (Coming Soon)"
+            android:textColor="@color/owner_text_secondary"
+            android:drawableStart="@drawable/ic_sub"
+            app:drawableTint="@color/owner_text_secondary"
             />
-<!--        android:drawableStart="@drawable/ic_subscription"-->
 
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E0E0E0"
+            android:background="@color/owner_divider"
             android:layout_marginVertical="6dp"/>
 
         <!-- Help -->
         <TextView
-            android:drawableTint="@color/black"
             android:id="@+id/menuHelp"
             style="@style/DrawerItemStyle"
             android:text="Help and Support"
-            android:drawableStart="@drawable/ic_support"/>
+            android:textColor="@color/owner_text_primary"
+            android:drawableStart="@drawable/ic_support"
+            app:drawableTint="@color/owner_text_primary"/>
 
         <!-- About -->
         <TextView
-            android:drawableTint="@color/black"
             android:id="@+id/menuAbout"
             style="@style/DrawerItemStyle"
             android:text="About CampusSaathi"
-            android:drawableStart="@drawable/ic_cap"/>
+            android:textColor="@color/owner_text_primary"
+            android:drawableStart="@drawable/ic_cap"
+            app:drawableTint="@color/owner_text_primary"/>
 
         <!-- Dark Mode -->
         <TextView
-            android:drawableStart="@drawable/ic_toggle_off"
             android:id="@+id/menuDarkMode"
             style="@style/DrawerItemStyle"
             android:text="Light / Dark Mode"
-            android:drawableTint="@color/black"
+            android:textColor="@color/owner_text_primary"
+            android:drawableStart="@drawable/ic_toggle_off"
+            app:drawableTint="@color/owner_text_primary"
             />
-<!--        android:drawableStart="@drawable/ic_dark_mode"-->
 
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E0E0E0"
+            android:background="@color/owner_divider"
             android:layout_marginVertical="6dp"/>
 
         <!-- Logout -->
@@ -150,7 +149,9 @@
             android:id="@+id/menuLogout"
             style="@style/DrawerItemStyle"
             android:text="Logout"
-            android:drawableStart="@drawable/ic_logout"/>
+            android:textColor="@color/owner_error"
+            android:drawableStart="@drawable/ic_logout"
+            app:drawableTint="@color/owner_error"/>
 
     </LinearLayout>
 

@@ -1,114 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.drawerlayout.widget.DrawerLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:background="@color/std_background_primary">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <!-- HEADER + MAP COLLAPSING -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="260dp"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <!-- HEADER + MAP COLLAPSING -->
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="260dp">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <FrameLayout
-                    android:id="@+id/mapContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="parallax">
-
-                    <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/btnMenu"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="12dp"
-                    android:background="@drawable/description_box"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_menu"
-                    android:layout_gravity="top|start"
-                    app:layout_collapseMode="pin"/>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-
-        <!-- RECYCLER VIEW SCROLL -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/servicesRecycler"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp"
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <FrameLayout
+                android:id="@+id/mapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax">
 
-        <!-- PLACE CARD -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/placeCard"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/btnMenu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="@dimen/std_margin_16"
+                android:background="@drawable/description_box"
+                android:padding="8dp"
+                android:src="@drawable/ic_menu"
+                android:layout_gravity="top|start"
+                app:tint="@color/std_icon_tint"
+                app:layout_collapseMode="pin"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- RECYCLER VIEW SCROLL -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/servicesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/std_padding_16"
+        android:paddingBottom="@dimen/std_padding_16"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <!-- PLACE CARD -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/placeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="@dimen/std_margin_16"
+        app:cardCornerRadius="@dimen/std_radius_16"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/std_background_secondary"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            android:layout_gravity="bottom">
+            android:orientation="vertical"
+            android:padding="@dimen/std_padding_16">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/placeName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:text="Place Name"
+                android:textColor="@color/std_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/placeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Place Name"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/placeAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textColor="@color/std_text_secondary"
+                android:layout_marginTop="4dp"/>
 
-                <TextView
-                    android:id="@+id/placeAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Address"
-                    android:layout_marginTop="4dp"/>
+        </LinearLayout>
 
-            </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-    <!-- DRAWER -->
-    <include
-        android:id="@+id/studentDrawer"
-        layout="@layout/layout_student_drawer"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"/>
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

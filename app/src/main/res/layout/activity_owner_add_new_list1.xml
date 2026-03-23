@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,22 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
-
+        android:orientation="vertical">
 
         <!-- ===== TOOLBAR ===== -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#2196F3"
+            android:background="@color/owner_primary"
             app:title="Add New Listing"
-            app:titleTextColor="#FFFFFF"
+            app:titleTextColor="@color/white"
             app:navigationIcon="@drawable/ic_menu" />
 
         <!-- ===== BODY ===== -->
@@ -41,12 +37,13 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp"
-                    android:padding="16dp">
+                    app:cardBackgroundColor="@color/owner_card_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <!-- Title -->
                         <TextView
@@ -54,14 +51,15 @@
                             android:layout_height="wrap_content"
                             android:text="Add New Listing"
                             android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textColor="@color/owner_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Step 1 of 6: Basic Details"
                             android:textSize="12sp"
-                            android:textColor="#666666"
+                            android:textColor="@color/owner_text_secondary"
                             android:layout_marginBottom="12dp" />
 
                         <!-- ===== STEPS (6) ===== -->
@@ -75,34 +73,34 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:text="1"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:gravity="center"
                                 android:background="@drawable/step_active" />
 
-                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="2"
-                                android:gravity="center" android:background="@drawable/step_inactive"/>
+                                android:gravity="center" android:textColor="@color/owner_text_secondary" android:background="@drawable/step_inactive"/>
 
-                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="3"
-                                android:gravity="center" android:background="@drawable/step_inactive"/>
+                                android:gravity="center" android:textColor="@color/owner_text_secondary" android:background="@drawable/step_inactive"/>
 
-                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="4"
-                                android:gravity="center" android:background="@drawable/step_inactive"/>
+                                android:gravity="center" android:textColor="@color/owner_text_secondary" android:background="@drawable/step_inactive"/>
 
-                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="5"
-                                android:gravity="center" android:background="@drawable/step_inactive"/>
+                                android:gravity="center" android:textColor="@color/owner_text_secondary" android:background="@drawable/step_inactive"/>
 
-                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="#CCCCCC"/>
+                            <View android:layout_width="16dp" android:layout_height="2dp" android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp" android:text="6"
-                                android:gravity="center" android:background="@drawable/step_inactive"/>
+                                android:gravity="center" android:textColor="@color/owner_text_secondary" android:background="@drawable/step_inactive"/>
                         </LinearLayout>
 
                         <!-- ================================================= -->
@@ -117,6 +115,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Property Name *" />
 
                             <EditText
@@ -124,6 +123,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Enter property name"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp" />
 
@@ -131,6 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Property Type *"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="10dp" />
 
                             <RadioGroup
@@ -142,16 +144,19 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Room"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="PG"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Hostel"/>
                             </RadioGroup>
 
@@ -159,6 +164,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Gender Allowed *"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="10dp" />
 
                             <RadioGroup
@@ -170,16 +176,19 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Boys"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Girls"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Both"/>
                             </RadioGroup>
 
@@ -198,6 +207,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Mess Name *"/>
 
                             <EditText
@@ -205,6 +215,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Enter mess name"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
@@ -212,6 +224,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Mess Type *"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_marginTop="10dp"/>
 
                             <RadioGroup
@@ -222,16 +235,19 @@
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Veg"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Non-Veg"/>
 
                                 <RadioButton
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/owner_text_primary"
                                     android:text="Both"/>
                             </RadioGroup>
 
@@ -249,6 +265,7 @@
                             android:layout_marginTop="16dp">
 
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Tuition Name *"/>
 
                             <EditText
@@ -256,18 +273,21 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Enter tuition name"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:textColor="@color/owner_text_primary"
                                 android:text="Tuition Type *" android:layout_marginTop="10dp"/>
 
                             <RadioGroup
                                 android:id="@+id/rgTuitionType"
                                 android:layout_width="wrap_content" android:layout_height="wrap_content">
-                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home Tuition"/>
-                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Coaching Class"/>
-                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Online"/>
+                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/owner_text_primary" android:text="Home Tuition"/>
+                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/owner_text_primary" android:text="Coaching Class"/>
+                                <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/owner_text_primary" android:text="Online"/>
                             </RadioGroup>
                         </LinearLayout>
 
@@ -278,8 +298,8 @@
                             android:layout_height="wrap_content"
                             android:text="Next"
                             android:layout_marginTop="20dp"
-                            android:backgroundTint="#2979FF"
-                            android:textColor="#FFFFFF" />
+                            android:backgroundTint="@color/owner_primary"
+                            android:textColor="@color/white" />
 
 
                     </LinearLayout>

@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="Base.Theme.CampusSaathi" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Light theme force -->
+        <!-- Status Bar Fix -->
     </style>
 
     <style name="Theme.CampusSaathi" parent="Base.Theme.CampusSaathi" />
@@ -11,6 +11,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="Theme.CampusSaathi.Dialog" parent="Theme.Material3.DayNight.Dialog">
     </style>
 

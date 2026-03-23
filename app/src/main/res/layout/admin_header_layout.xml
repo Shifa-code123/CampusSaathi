@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="8dp"
+    android:fitsSystemWindows="true"
+    app:cardBackgroundColor="@color/admin_header_bg"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="6dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <!-- ⬅ BACK BUTTON -->
+        <ImageView
+            android:id="@+id/adminBackBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/admin_bg_circle_icon"
+            android:padding="10dp"
+            android:src="@drawable/admin_ic_back"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LOGO -->
+        <LinearLayout
+            android:id="@+id/adminLogoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/adminBackBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/adminLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="App Logo" />
+
+            <TextView
+                android:id="@+id/adminLogoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="CampusSaathi"
+                android:textColor="@color/admin_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- TITLE -->
+        <TextView
+            android:id="@+id/adminHeaderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="Dashboard"
+            android:textColor="@color/admin_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/adminLogoLayout"
+            app:layout_constraintEnd_toStartOf="@id/adminNotificationBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- 🔔 NOTIFICATION -->
+        <ImageView
+            android:id="@+id/adminNotificationBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/admin_bg_circle_icon"
+            android:padding="10dp"
+            android:src="@drawable/admin_ic_notifications"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toStartOf="@id/adminProfileBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- 👤 PROFILE -->
+        <ImageView
+            android:id="@+id/adminProfileBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/admin_bg_circle_icon"
+            android:padding="10dp"
+            android:src="@drawable/admin_ic_profile"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

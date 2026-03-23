@@ -5,21 +5,20 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:orientation="vertical">
 
         <!-- TOOLBAR -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#2196F3"
+            android:background="@color/owner_primary"
             app:title="Add New Listing"
-            app:titleTextColor="#FFFFFF"
+            app:titleTextColor="@color/white"
             app:navigationIcon="@drawable/ic_menu" />
 
         <ScrollView
@@ -37,12 +36,13 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp"
-                    android:padding="16dp">
+                    app:cardBackgroundColor="@color/owner_card_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <!-- HEADER -->
                         <TextView
@@ -50,7 +50,8 @@
                             android:layout_height="wrap_content"
                             android:text="Step 2 of 6: Pricing and Availability"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textColor="@color/owner_text_primary" />
 
                         <!-- STEPS -->
                         <LinearLayout
@@ -62,47 +63,50 @@
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="1" android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_done"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#2979FF"/>
+                                android:background="@color/owner_primary"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="2" android:gravity="center"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/white"
                                 android:background="@drawable/step_active"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="3" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="4" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="5" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
 
                             <View android:layout_width="16dp" android:layout_height="2dp"
-                                android:background="#CCCCCC"/>
+                                android:background="@color/owner_divider"/>
 
                             <TextView android:layout_width="28dp" android:layout_height="28dp"
                                 android:text="6" android:gravity="center"
+                                android:textColor="@color/owner_text_secondary"
                                 android:background="@drawable/step_inactive"/>
                         </LinearLayout>
 
-                        <!-- ================================================= -->
                         <!-- ================================================= -->
                         <!-- ROOM STEP 2 : RENT, AVAILABILITY & ROOMS COUNT -->
                         <!-- ================================================= -->
@@ -118,6 +122,7 @@
                             <TextView
                                 android:text="Rent Details"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -127,6 +132,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Monthly Rent (₹)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
@@ -136,6 +143,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Security Deposit (Optional)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"
                                 android:layout_marginTop="8dp"/>
@@ -143,6 +152,7 @@
                             <!-- RENT TYPE -->
                             <TextView
                                 android:text="Rent Type"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"/>
@@ -155,11 +165,13 @@
 
                                 <RadioButton
                                     android:text="Per Room"
+                                    android:textColor="@color/owner_text_primary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
 
                                 <RadioButton
                                     android:text="Per Bed"
+                                    android:textColor="@color/owner_text_primary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                             </RadioGroup>
@@ -168,6 +180,7 @@
                             <TextView
                                 android:text="Availability"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"/>
@@ -180,11 +193,13 @@
 
                                 <RadioButton
                                     android:text="Vacant"
+                                    android:textColor="@color/owner_text_primary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
 
                                 <RadioButton
                                     android:text="Full"
+                                    android:textColor="@color/owner_text_primary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                             </RadioGroup>
@@ -194,6 +209,7 @@
                                 android:id="@+id/tvRoomCountTitle"
                                 android:text="Room Details"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"/>
@@ -204,6 +220,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Total Rooms"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
@@ -213,6 +231,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Available Rooms"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"
                                 android:layout_marginTop="6dp"/>
@@ -223,15 +243,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Available From"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"
                                 android:layout_marginTop="10dp"/>
 
                         </LinearLayout>
 
-                        <!-- ================================================= -->
-                        <!-- MESS STEP 2 -->
-                        <!-- ================================================= -->
                         <!-- ================================================= -->
                         <!-- MESS STEP 2 : PRICING -->
                         <!-- ================================================= -->
@@ -246,6 +265,7 @@
                             <TextView
                                 android:text="Mess Pricing"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -256,6 +276,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Monthly Charges (₹)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
@@ -266,13 +288,14 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Daily Charges (Optional)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"
                                 android:layout_marginTop="8dp"/>
                         </LinearLayout>
 
 
-                        <!-- ================================================= -->
                         <!-- ================================================= -->
                         <!-- TUITION STEP 2 : FEES & DURATION -->
                         <!-- ================================================= -->
@@ -287,6 +310,7 @@
                             <TextView
                                 android:text="Tuition Fees"
                                 android:textStyle="bold"
+                                android:textColor="@color/owner_text_primary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -297,6 +321,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Fees Amount (₹)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"/>
 
@@ -307,6 +333,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Course Duration (Months)"
                                 android:inputType="number"
+                                android:textColor="@color/owner_text_primary"
+                                android:textColorHint="@color/owner_text_secondary"
                                 android:background="@drawable/edit_bg"
                                 android:padding="10dp"
                                 android:layout_marginTop="8dp"/>
@@ -320,8 +348,8 @@
                             android:layout_height="wrap_content"
                             android:text="Next"
                             android:layout_marginTop="24dp"
-                            android:backgroundTint="#2979FF"
-                            android:textColor="#FFFFFF"/>
+                            android:backgroundTint="@color/owner_primary"
+                            android:textColor="@color/white"/>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

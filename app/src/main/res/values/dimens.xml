@@ -22,6 +22,13 @@
     <dimen name="padding_medium">16dp</dimen>
     <dimen name="padding_large">24dp</dimen>
 
+    <!-- Student Module Standard Dimen -->
+    <dimen name="std_padding_16">16dp</dimen>
+    <dimen name="std_margin_16">16dp</dimen>
+    <dimen name="std_radius_12">12dp</dimen>
+    <dimen name="std_radius_16">16dp</dimen>
+    <dimen name="std_radius_40">40dp</dimen>
+
     <!-- Typography -->
     <dimen name="text_title">18sp</dimen>
     <dimen name="text_title1">20sp</dimen>

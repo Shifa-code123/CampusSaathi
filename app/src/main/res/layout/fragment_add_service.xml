@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:layout_height="match_parent">
 
     <!-- BODY -->
     <LinearLayout
@@ -46,7 +45,7 @@
                     android:text="Add Your Service"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/owner_text_primary"
                     android:layout_marginBottom="20dp"/>
 
                 <!-- Service Name -->
@@ -59,7 +58,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etServiceName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/owner_text_primary"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Contact Number -->
@@ -74,6 +74,7 @@
                         android:id="@+id/etContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/owner_text_primary"
                         android:inputType="phone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,17 +90,10 @@
                         android:id="@+id/etDescription"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
+                        android:textColor="@color/owner_text_primary"
                         android:gravity="top"
                         android:inputType="textMultiLine"/>
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Location -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Location"
-                    android:layout_marginTop="16dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -107,6 +101,7 @@
                     android:layout_marginTop="16dp"
                     android:text="Select Location on Map"
                     android:textStyle="bold"
+                    android:textColor="@color/owner_text_primary"
                     android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="8dp" />
 
@@ -129,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text="Tap GPS icon to detect your location"
                         android:textSize="12sp"
-                        android:textColor="#666"
+                        android:textColor="@color/owner_text_secondary"
                         android:layout_gravity="center_horizontal|bottom"
                         android:layout_marginBottom="8dp"/>
 
@@ -150,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="Distance from campus: 0.0 km"
+                    android:textColor="@color/owner_text_secondary"
                     android:textSize="12sp" />
 
                 <!-- Photo Section Title -->
@@ -158,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:text="Add Photos"
                     android:textStyle="bold"
+                    android:textColor="@color/owner_text_primary"
                     android:textSize="16sp"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"/>
@@ -183,7 +180,8 @@
                     android:text="Upload Photo"
                     android:layout_marginTop="10dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#2979FF"/>
+                    android:backgroundTint="@color/owner_primary"
+                    android:textColor="@color/white"/>
 
                 <!-- Submit Button -->
                 <com.google.android.material.button.MaterialButton
@@ -195,7 +193,8 @@
                     android:textSize="16sp"
                     android:layout_marginTop="30dp"
                     app:cornerRadius="12dp"
-                    android:backgroundTint="#2979FF"/>
+                    android:backgroundTint="@color/owner_primary"
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

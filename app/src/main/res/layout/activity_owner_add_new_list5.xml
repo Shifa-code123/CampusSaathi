@@ -6,39 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:orientation="vertical">
 
-
-    <!-- ===== TOOLBAR ===== -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#2196F3"
-        app:title="Add New Listing"
-        app:titleTextColor="#FFFFFF"
-        app:navigationIcon="@drawable/ic_menu" />
-
-
-
-
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <!-- ===== TOOLBAR ===== -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#F4F6FA">
+            android:layout_height="56dp"
+            android:background="@color/owner_primary"
+            app:title="Add New Listing"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/ic_menu" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
                 <!-- STEP INDICATOR -->
                 <LinearLayout
@@ -52,8 +42,9 @@
                         android:layout_height="wrap_content"
                         android:text="Step 5 of 6: Photos"
                         android:textStyle="bold"
-                        android:textColor="#555"
+                        android:textColor="@color/owner_text_secondary"
                         android:textSize="14sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -61,11 +52,10 @@
                         android:gravity="center"
                         android:layout_marginTop="12dp">
 
-                        <!-- Step 1 DONE -->
                         <TextView
                             android:text="1"
                             android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
@@ -73,13 +63,12 @@
                         <View
                             android:layout_width="20dp"
                             android:layout_height="2dp"
-                            android:background="#2979FF"/>
+                            android:background="@color/owner_primary"/>
 
-                        <!-- Step 2 DONE -->
                         <TextView
                             android:text="2"
                             android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
@@ -87,13 +76,12 @@
                         <View
                             android:layout_width="20dp"
                             android:layout_height="2dp"
-                            android:background="#2979FF"/>
+                            android:background="@color/owner_primary"/>
 
-                        <!-- Step 3 DONE -->
                         <TextView
                             android:text="3"
                             android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
@@ -101,13 +89,12 @@
                         <View
                             android:layout_width="20dp"
                             android:layout_height="2dp"
-                            android:background="#2979FF"/>
+                            android:background="@color/owner_primary"/>
 
-                        <!-- Step 4 DONE -->
                         <TextView
                             android:text="4"
                             android:background="@drawable/step_done"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
@@ -115,13 +102,12 @@
                         <View
                             android:layout_width="20dp"
                             android:layout_height="2dp"
-                            android:background="#2979FF"/>
+                            android:background="@color/owner_primary"/>
 
-                        <!-- Step 5 ACTIVE -->
                         <TextView
                             android:text="5"
                             android:background="@drawable/step_active"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
@@ -129,18 +115,16 @@
                         <View
                             android:layout_width="20dp"
                             android:layout_height="2dp"
-                            android:background="#2979FF"/>
+                            android:background="@color/owner_divider"/>
 
                         <TextView android:text="6"
                             android:background="@drawable/step_inactive"
-                            android:textColor="#fff"
+                            android:textColor="@color/owner_text_secondary"
                             android:gravity="center"
                             android:layout_width="28dp"
                             android:layout_height="28dp"/>
 
                     </LinearLayout>
-
-
 
                 </LinearLayout>
 
@@ -159,7 +143,7 @@
                         android:text="Upload Property Photos"
                         android:textStyle="bold"
                         android:textSize="16sp"
-                        android:textColor="#000" />
+                        android:textColor="@color/owner_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,7 +151,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Upload at least 3 photos (max 5)"
                         android:textSize="12sp"
-                        android:textColor="#777" />
+                        android:textColor="@color/owner_text_secondary" />
 
                     <!-- EMPTY GRID -->
                     <GridLayout
@@ -191,7 +175,8 @@
                         <ImageView
                             android:layout_width="26dp"
                             android:layout_height="28dp"
-                            android:src="@drawable/ic_add" />
+                            android:src="@drawable/ic_add"
+                            app:tint="@color/owner_primary"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -199,7 +184,7 @@
                             android:layout_marginTop="4dp"
                             android:text="+ Add Photo"
                             android:textSize="12sp"
-                            android:textColor="#2196F3" />
+                            android:textColor="@color/owner_primary" />
                     </LinearLayout>
 
                     <TextView
@@ -208,18 +193,15 @@
                         android:layout_marginTop="8dp"
                         android:text="• Avoid blurry or duplicate photos"
                         android:textSize="11sp"
-                        android:textColor="#999" />
+                        android:textColor="@color/owner_text_secondary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="• Personal faces are not allowed"
                         android:textSize="11sp"
-                        android:textColor="#999" />
+                        android:textColor="@color/owner_text_secondary" />
                 </LinearLayout>
-
-
-
 
                 <!-- SUBMIT -->
                 <Button
@@ -229,8 +211,8 @@
                     android:layout_height="48dp"
                     android:text="next"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="#2196F3" />
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/owner_primary" />
 
             </LinearLayout>
         </ScrollView>
@@ -245,7 +227,4 @@
         app:itemBackground="@drawable/nav_item_background"
         app:menu="@menu/owner_menu_drawer"/>
 
-
 </androidx.drawerlayout.widget.DrawerLayout>
-
-

@@ -7,75 +7,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main Content -->
-
-    <!-- Drawer -->
-
+    <!-- MAIN CONTENT -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <!-- HEADER -->
-
-        <include
-            android:id="@+id/header"
-            layout="@layout/layout_cs_header"
-            app:layout_constraintTop_toTopOf="parent"/>
         <!-- Title -->
-
         <TextView
             android:id="@+id/txtNeedAssistance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_medium"
             android:layout_marginTop="@dimen/padding_large"
-            android:layout_marginEnd="@dimen/padding_medium"
             android:text="Need Assistance?"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/text_title"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Police -->
-
         <include
             android:id="@+id/cardPolice"
             layout="@layout/item_emergency_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_large"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNeedAssistance"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNeedAssistance" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Medical -->
-
         <include
             android:id="@+id/cardMedical"
             layout="@layout/item_emergency_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardPolice"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardPolice" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Ambulance -->
-
         <include
             android:id="@+id/cardAmbulance"
             layout="@layout/item_emergency_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_medium"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardMedical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardMedical" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- DRAWER -->
     <include
         android:id="@+id/studentDrawer"
         layout="@layout/layout_student_drawer"

@@ -13,12 +13,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.campussaathi.CommentBottomSheet
 import android.view.MotionEvent
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 
 class ServicesAdapter(
     private val services: List<Service>
 ) : RecyclerView.Adapter<ServicesAdapter.ServiceViewHolder>() {
 
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     class ServiceViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -35,12 +37,9 @@ class ServicesAdapter(
         val commentIcon: ImageView = view.findViewById(R.id.iconComment)
 
         val btnSave: ImageView = view.findViewById(R.id.btnSave)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
-
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_service_card, parent, false)
 
@@ -57,15 +56,13 @@ class ServicesAdapter(
         val service = services[position]
         val context = holder.itemView.context
 
-        // ---------------- SAVE FEATURE ----------------
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val userId = auth.currentUser?.uid ?: return
         val saveRef = db.collection("saved")
             .document(userId)
             .collection("services")
             .document(service.serviceId)
 
-        // auto sync icon
+        // Save icon sync
         saveRef.addSnapshotListener { doc, _ ->
             if (doc != null && doc.exists()) {
                 holder.btnSave.setImageResource(R.drawable.ic_saved)
@@ -74,11 +71,8 @@ class ServicesAdapter(
             }
         }
 
-        // click save
         holder.btnSave.setOnClickListener {
-
             saveRef.get().addOnSuccessListener { doc ->
-
                 if (doc.exists()) {
                     saveRef.delete()
                 } else {
@@ -106,7 +100,6 @@ class ServicesAdapter(
 
         // Owner name
         if (service.ownerId.isNotBlank()) {
-
             db.collection("owner_verifications")
                 .document(service.ownerId)
                 .get()
@@ -119,7 +112,6 @@ class ServicesAdapter(
 
         // Owner image
         if (service.ownerId.isNotBlank()) {
-
             db.collection("posts")
                 .whereEqualTo("ownerId", service.ownerId)
                 .limit(1)
@@ -135,7 +127,6 @@ class ServicesAdapter(
                         }
 
                         if (!url.isNullOrEmpty()) {
-
                             Glide.with(holder.itemView.context)
                                 .load(url)
                                 .placeholder(R.drawable.ic_profile)
@@ -145,6 +136,22 @@ class ServicesAdapter(
                     }
                 }
         }
+
+        // ---------------- NAVIGATION TO PROFILE ----------------
+
+        val navigateToProfile = View.OnClickListener {
+            if (service.ownerId.isNotBlank()) {
+                val activity = context as? AppCompatActivity
+                val fragment = StudentBusinessProfileFragment.newInstance(service.ownerId)
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(android.R.id.content, fragment)
+                    ?.addToBackStack(null)
+                    ?.commit()
+            }
+        }
+
+        holder.profile.setOnClickListener(navigateToProfile)
+        holder.name.setOnClickListener(navigateToProfile)
 
         // ---------------- PHOTOS ----------------
 
@@ -160,13 +167,69 @@ class ServicesAdapter(
             }
         })
 
-        // ❌ REMOVED VIEWPAGER TOUCH BLOCK (CRASH FIX)
+        holder.pager.isUserInputEnabled = true
+        holder.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        // ---------------- FOLLOW ----------------
+        var startX = 0f
+        var startY = 0f
+
+        holder.pager.getChildAt(0).setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    startX = event.x
+                    startY = event.y
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val dx = Math.abs(event.x - startX)
+                    val dy = Math.abs(event.y - startY)
+                    if (dy > dx) {
+                        v.parent.requestDisallowInterceptTouchEvent(false)
+                    } else {
+                        v.parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                }
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL -> {
+                    v.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            false
+        }
+
+        // ---------------- FOLLOW SYNC ----------------
+
+        if (service.ownerId.isNotBlank()) {
+            db.collection("followers").document(service.ownerId)
+                .collection("userFollowers").document(userId)
+                .addSnapshotListener { snapshot, _ ->
+                    if (holder.adapterPosition == position) {
+                        if (snapshot != null && snapshot.exists()) {
+                            holder.followBtn.text = "Following"
+                            holder.followBtn.isEnabled = true // Allow unfollow or just keep as Following
+                            holder.followBtn.alpha = 0.5f
+                        } else {
+                            holder.followBtn.text = "Follow"
+                            holder.followBtn.isEnabled = true
+                            holder.followBtn.alpha = 1.0f
+                        }
+                    }
+                }
+        }
 
         holder.followBtn.setOnClickListener {
-            holder.followBtn.text = "Following"
-            holder.followBtn.isEnabled = false
+            if (service.ownerId.isNotBlank()) {
+                val followRef = db.collection("followers").document(service.ownerId)
+                    .collection("userFollowers").document(userId)
+                
+                followRef.get().addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        followRef.delete()
+                    } else {
+                        followRef.set(hashMapOf("followedAt" to System.currentTimeMillis()))
+                    }
+                }
+            }
         }
 
         // ---------------- COMMENT ----------------
@@ -177,12 +240,10 @@ class ServicesAdapter(
             sheet.show(activity.supportFragmentManager, "comments")
         }
 
-        // ---------------- DETAILS CLICK ----------------
+        // ---------------- DETAILS ----------------
 
         holder.btnViewDetails.setOnClickListener {
-
             val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-
             intent.putStringArrayListExtra("PHOTOS", ArrayList(service.photos))
             intent.putExtra("OWNER_ID", service.ownerId)
             intent.putExtra("SERVICE_NAME", service.serviceName)
@@ -195,32 +256,32 @@ class ServicesAdapter(
             val ctx = holder.itemView.context
             ctx.startActivity(intent)
 
-            // 🔥 ADD THIS (animation)
             if (ctx is android.app.Activity) {
                 ctx.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
 
-        // ---------------- RATING ----------------
+        // ---------------- ⭐ RATING ----------------
 
         db.collection("ratings")
-            .whereEqualTo("ownerId", service.ownerId)
-            .get()
-            .addOnSuccessListener { docs ->
-
-                var total = 0f
-                var count = 0
-
-                for (doc in docs) {
-                    total += doc.getDouble("rating")?.toFloat() ?: 0f
-                    count++
+            .whereEqualTo("serviceId", service.serviceId)
+            .addSnapshotListener { docs, _ ->
+                if (docs != null) {
+                    var total = 0f
+                    var count = 0
+                    for (doc in docs) {
+                        val rating = doc.getDouble("rating")
+                        if (rating != null) {
+                            total += rating.toFloat()
+                            count++
+                        }
+                    }
+                    val avg = if (count > 0) total / count else 0f
+                    holder.ratingText.text = String.format("%.1f", avg)
                 }
-
-                holder.ratingText.text =
-                    if (count > 0) String.format("%.1f", total / count) else "0.0"
             }
 
-        // ---------------- COMMENT COUNT ----------------
+        // ---------------- COMMENTS COUNT ----------------
 
         db.collection("comments")
             .whereEqualTo("serviceId", service.serviceId)
@@ -229,54 +290,26 @@ class ServicesAdapter(
                     holder.commentText.text = value.size().toString()
                 }
             }
-
-           //slider
-           holder.pager.isUserInputEnabled = true
-           holder.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-           holder.pager.getChildAt(0).setOnTouchListener { v, event ->
-
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.parent.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.parent.requestDisallowInterceptTouchEvent(false)
-                }
-            }
-
-            false
-        }
     }
 
-    // ---------------- DOTS ----------------
-
     private fun setupDots(holder: ServiceViewHolder, count: Int) {
-
         holder.dotsLayout.removeAllViews()
-
         for (i in 0 until count) {
-
             val dot = View(holder.itemView.context)
             val params = LinearLayout.LayoutParams(16, 16)
             params.setMargins(6, 0, 6, 0)
-
             dot.layoutParams = params
-
             dot.setBackgroundResource(
                 if (i == 0) R.drawable.dot_active
                 else R.drawable.dot_inactive
             )
-
             holder.dotsLayout.addView(dot)
         }
     }
 
     private fun updateDots(holder: ServiceViewHolder, position: Int) {
-
         for (i in 0 until holder.dotsLayout.childCount) {
-
             val dot = holder.dotsLayout.getChildAt(i)
-
             dot.setBackgroundResource(
                 if (i == position) R.drawable.dot_active
                 else R.drawable.dot_inactive

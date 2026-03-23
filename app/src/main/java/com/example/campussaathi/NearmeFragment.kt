@@ -1,15 +1,10 @@
 package com.example.campussaathi
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import com.example.campussaathi.databinding.FragmentNearmeBinding
-import com.example.campussaathi.utils.DrawerManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.util.Log
+import com.example.campussaathi.databinding.FragmentNearmeBinding
 
 class NearmeFragment : Fragment() {
 
@@ -30,43 +25,19 @@ class NearmeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentNearmeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-
-        // Drawer setup (same as HelpFragment)
-        DrawerManager.setupDrawer(
-            requireActivity(),
-            binding.drawerLayout,
-            binding.studentDrawer.root
-        )
-
-        // Header title
-        binding.header.tvHeaderTitle.text = "Near Me"
-
-        binding.header.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
+        // Header and Drawer logic moved to StudentActivity
         setupCategories()
     }
 
-    // ---------------- CATEGORY GRID ----------------
-
     private fun setupCategories() {
-
-        binding.categoryRecycler.layoutManager =
-
-
-            LinearLayoutManager(requireContext())
-
-        binding.categoryRecycler.adapter =
-            NearmeCategoryAdapter(categories)
+        binding.categoryRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.categoryRecycler.adapter = NearmeCategoryAdapter(categories)
     }
 
     override fun onDestroyView() {

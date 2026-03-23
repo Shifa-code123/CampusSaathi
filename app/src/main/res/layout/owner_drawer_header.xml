@@ -6,7 +6,7 @@
     android:minHeight="180dp"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F5F7FA">
+    android:background="@color/owner_background">
 
     <ImageView
         android:id="@+id/headerLogo"
@@ -40,7 +40,7 @@
                 android:text="Owner Name"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:textColor="#000"/>
+                android:textColor="@color/owner_text_primary"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -48,14 +48,14 @@
                 android:id="@+id/headerRole"
                 android:text="Service Owner"
                 android:textSize="13sp"
-                android:textColor="#666"/>
+                android:textColor="@color/owner_text_secondary"/>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/headerVerified"
                 android:text="✔ Verified"
-                android:textColor="#2E7D32"
+                android:textColor="@color/owner_success"
                 android:textStyle="bold"
                 android:textSize="12sp"/>
 

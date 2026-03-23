@@ -2,21 +2,15 @@ package com.example.campussaathi
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campussaathi.adapter.CommentAdapter
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.campussaathi.utils.ProfileImageLoader
+import com.google.android.material.bottomsheet.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragment() {
 
@@ -24,6 +18,7 @@ class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragm
     private lateinit var editComment: EditText
     private lateinit var btnSend: ImageView
     private lateinit var txtNoComments: TextView
+    private lateinit var profileImage: ImageView
 
     private lateinit var adapter: CommentAdapter
     private val commentList = ArrayList<CommentModel>()
@@ -58,16 +53,22 @@ class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragm
         editComment = view.findViewById(R.id.etComment)
         txtNoComments = view.findViewById(R.id.tvNoComments)
         btnSend = view.findViewById(R.id.btnSend)
+        profileImage = view.findViewById(R.id.profileimage)
 
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = CommentAdapter(commentList) { comment ->
             showCommentOptions(comment)
         }
+
         recycler.adapter = adapter
+
+        // 🔥 INPUT BOX PROFILE IMAGE
+        ProfileImageLoader.loadProfile(profileImage)
 
         loadComments()
 
+        // 🔥 SEND COMMENT
         btnSend.setOnClickListener {
 
             val text = editComment.text.toString().trim()
@@ -76,24 +77,34 @@ class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragm
             val uid = currentUserId
             if (uid.isEmpty()) return@setOnClickListener
 
-            val comment = hashMapOf(
-                "serviceId" to serviceId,
-                "userId" to uid,
-                "userName" to "Student",
-                "commentText" to text,
-                "timestamp" to System.currentTimeMillis()
-            )
+            // 🔥 FETCH USER DATA
+            db.collection("users").document(uid).get()
+                .addOnSuccessListener { userDoc ->
 
-            db.collection("comments")
-                .add(comment)
-                .addOnSuccessListener {
-                    editComment.setText("")
+                    val name = userDoc.getString("fullName") ?: "Student"
+                    val image = userDoc.getString("profileImageBase64") ?: ""
+
+                    val comment = hashMapOf(
+                        "serviceId" to serviceId,
+                        "userId" to uid,
+                        "userName" to name,
+                        "userImage" to image,
+                        "commentText" to text,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    db.collection("comments")
+                        .add(comment)
+                        .addOnSuccessListener {
+                            editComment.setText("")
+                        }
                 }
         }
 
         return view
     }
 
+    // 🔥 LOAD COMMENTS REAL-TIME
     private fun loadComments() {
 
         db.collection("comments")
@@ -120,7 +131,7 @@ class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragm
                                 commentId = doc.id,
                                 userId = doc.getString("userId") ?: "",
                                 userName = doc.getString("userName") ?: "",
-                                userImage = "",
+                                userImage = doc.getString("userImage") ?: "",
                                 commentText = doc.getString("commentText") ?: "",
                                 timestamp = doc.getLong("timestamp") ?: 0L
                             )
@@ -137,6 +148,7 @@ class CommentBottomSheet(private val serviceId: String) : BottomSheetDialogFragm
             }
     }
 
+    // 🔥 LONG PRESS OPTIONS
     private fun showCommentOptions(comment: CommentModel) {
 
         if (comment.userId == currentUserId) {
