@@ -89,17 +89,12 @@ class SignupActivity : AppCompatActivity() {
                         .set(userData)
                         .addOnSuccessListener {
 
-                            // Send verification email from CampusSaathi
+                            // Send verification email
                             auth.currentUser?.sendEmailVerification()
-                                ?.addOnSuccessListener {
-                                    toast(
-                                        "Signup successful! Verification email sent to $email"
-                                    )
-                                }
 
-                            // Move to Role Selection (ONLY ONCE)
+                            // Move to Select Location (NEW FLOW)
                             startActivity(
-                                Intent(this, RoleSelectionActivity::class.java)
+                                Intent(this, SelectLocationActivity::class.java)
                             )
                             finish()
                         }

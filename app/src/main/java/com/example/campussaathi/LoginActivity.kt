@@ -1,17 +1,47 @@
 package com.example.campussaathi
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    private val googleSignInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+
+        if (result.resultCode == RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+            try {
+                val account = task.getResult(ApiException::class.java)
+
+                if (account != null && account.idToken != null) {
+                    firebaseAuthWithGoogle(account.idToken!!)
+                } else {
+                    toast("Google ID Token is null")
+                }
+
+            } catch (e: ApiException) {
+                toast("Google Sign-In Failed: ${e.statusCode}")
+            }
+        } else {
+            toast("Google Sign-In Cancelled")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,23 +50,28 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("554123832675-or01siknqidq0scep6qu1crjmcc51i3j.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnGoogleLogin = findViewById<Button>(R.id.btnGoogleLogin)
         val txtSignup = findViewById<TextView>(R.id.txtSignup)
         val txtForgot = findViewById<TextView>(R.id.txtForgotPassword)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar) // 👈 ADD THIS IN XML
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
-        // 🔥 AUTO LOGIN CHECK
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            checkUserRole(currentUser.uid)
+            checkLocationAndNavigate()
             return
         }
 
-        // 🔹 LOGIN BUTTON
         btnLogin.setOnClickListener {
-
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
@@ -45,124 +80,109 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🔥 LOADING START
             progressBar.visibility = View.VISIBLE
             btnLogin.isEnabled = false
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-
-                    val uid = auth.currentUser?.uid
-                    if (uid == null) {
-                        progressBar.visibility = View.GONE
-                        btnLogin.isEnabled = true
-                        toast("Something went wrong")
-                        return@addOnSuccessListener
-                    }
-
-                    checkUserRole(uid)
+                    checkLocationAndNavigate()
                 }
                 .addOnFailureListener {
-
-                    progressBar.visibility = View.GONE
-                    btnLogin.isEnabled = true
-
-                    val message = when {
-                        it.message?.contains("badly formatted") == true ->
-                            "Invalid email format"
-                        it.message?.contains("password is invalid") == true ->
-                            "Wrong password"
-                        it.message?.contains("no user record") == true ->
-                            "User not found"
-                        else -> "Login failed"
-                    }
-
-                    toast(message)
+                    stopLoading()
+                    toast(it.message ?: "Login failed")
                 }
         }
 
-        // 🔹 SIGNUP
+        btnGoogleLogin.setOnClickListener {
+            val signInIntent = googleSignInClient.signInIntent
+            googleSignInLauncher.launch(signInIntent)
+        }
+
         txtSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
 
-        // 🔹 FORGOT PASSWORD
         txtForgot.setOnClickListener {
-            val email = etEmail.text.toString().trim()
-
-            if (email.isEmpty()) {
-                toast("Enter email first")
-                return@setOnClickListener
-            }
-
-            auth.sendPasswordResetEmail(email)
-                .addOnSuccessListener { toast("Password reset email sent") }
-                .addOnFailureListener { toast(it.message ?: "Error") }
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
 
-    // 🔥 ROLE + VERIFICATION LOGIC (UNCHANGED CORE)
-    private fun checkUserRole(uid: String) {
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
 
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+
+        auth.signInWithCredential(credential)
+            .addOnSuccessListener { authResult ->
+
+                val user = authResult.user
+
+                if (authResult.additionalUserInfo?.isNewUser == true) {
+
+                    val userData = hashMapOf(
+                        "fullName" to (user?.displayName ?: ""),
+                        "email" to (user?.email ?: ""),
+                        "role" to "",
+                        "isVerified" to false,
+                        "createdAt" to com.google.firebase.Timestamp.now()
+                    )
+
+                    db.collection("users").document(user!!.uid).set(userData)
+                        .addOnSuccessListener {
+                            startActivity(Intent(this, SelectLocationActivity::class.java))
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            stopLoading()
+                            toast("Failed to create user profile")
+                        }
+
+                } else {
+                    startActivity(Intent(this, SelectLocationActivity::class.java))
+                    finish()
+                }
+            }
+            .addOnFailureListener {
+                stopLoading()
+                toast("Google authentication failed")
+            }
+    }
+
+    private fun checkLocationAndNavigate() {
+        val prefs = getSharedPreferences("CampusSaathiPrefs", Context.MODE_PRIVATE)
+        val city = prefs.getString("selected_city", null)
+        val college = prefs.getString("selected_college", null)
+
+        if (city == "Khamgaon" && college == "GPK") {
+            val uid = auth.currentUser?.uid
+            if (uid != null) checkUserRole(uid)
+            else open(SelectLocationActivity::class.java)
+        } else {
+            open(SelectLocationActivity::class.java)
+        }
+    }
+
+    private fun checkUserRole(uid: String) {
         db.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
-
                 if (!doc.exists()) {
                     open(RoleSelectionActivity::class.java)
                     return@addOnSuccessListener
                 }
 
                 val role = doc.getString("role")
-                val ownerType = doc.getString("ownerType")
 
-                when (role) {
-
-                    "admin" -> open(AdminActivityMain::class.java)
-
-
-                    "student" -> open(StudentActivity::class.java)
-
-                    "owner" -> {
-
-                        if (ownerType == null) {
-                            open(ChooseOwnerType::class.java)
-                            return@addOnSuccessListener
-                        }
-
-                        db.collection("owner_verifications")
-                            .document(uid)
-                            .get()
-                            .addOnSuccessListener { verificationDoc ->
-
-                                if (!verificationDoc.exists()) {
-                                    open(OwnerVerification::class.java)
-                                    return@addOnSuccessListener
-                                }
-
-                                val status =
-                                    verificationDoc.getString("status") ?: "pending"
-
-                                when (status) {
-
-                                    "pending" ->
-                                        open(ActivityOwnerVerificationInProgress::class.java)
-
-                                    "approved" ->
-                                        open(OwnerMainActivity::class.java)
-
-                                    "rejected" ->
-                                        open(OwnerVerification::class.java)
-
-                                    else ->
-                                        open(OwnerVerification::class.java)
-                                }
-                            }
+                if (role.isNullOrEmpty()) {
+                    open(RoleSelectionActivity::class.java)
+                } else {
+                    when (role) {
+                        "admin" -> open(AdminActivityMain::class.java)
+                        "student" -> open(StudentActivity::class.java)
+                        "owner" -> open(OwnerMainActivity::class.java)
+                        else -> open(RoleSelectionActivity::class.java)
                     }
-
-                    else -> open(RoleSelectionActivity::class.java)
                 }
-
-                // 🔥 STOP LOADING AFTER ROLE CHECK
                 stopLoading()
             }
             .addOnFailureListener {
@@ -181,7 +201,6 @@ class LoginActivity : AppCompatActivity() {
     private fun stopLoading() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
-
         progressBar.visibility = View.GONE
         btnLogin.isEnabled = true
     }

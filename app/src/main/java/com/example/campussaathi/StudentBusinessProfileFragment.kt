@@ -1,6 +1,8 @@
 package com.example.campussaathi
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,29 +96,39 @@ class StudentBusinessProfileFragment : Fragment() {
     private fun loadProfileData() {
         val uid = ownerId ?: return
         
-        db.collection("owner_verifications").document(uid).get()
-            .addOnSuccessListener { doc ->
-                if (doc.exists() && isAdded) {
-                    txtOwnerName.text = doc.getString("fullName") ?: "Owner"
-                    txtBio.text = doc.getString("businessDescription") ?: "No bio available"
-                }
-            }
+        // Use addSnapshotListener for real-time updates from 'users' collection
+        db.collection("users").document(uid).addSnapshotListener { doc, _ ->
+            if (doc != null && doc.exists() && isAdded) {
+                txtOwnerName.text = doc.getString("fullName") ?: "Owner"
+                txtBio.text = doc.getString("bio") ?: doc.getString("businessDescription") ?: "No bio available"
 
-        db.collection("posts").whereEqualTo("ownerId", uid).limit(1).get()
-            .addOnSuccessListener { docs ->
-                if (!docs.isEmpty && isAdded) {
-                    val url = docs.documents[0].getString("business_pic") ?: docs.documents[0].getString("img")
-                    if (!url.isNullOrEmpty()) {
-                        Glide.with(this).load(url).placeholder(R.drawable.ic_profile).circleCrop().into(profileImage)
+                // Load image from profileImageBase64 field
+                val base64 = doc.getString("profileImageBase64")
+                if (!base64.isNullOrEmpty()) {
+                    try {
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        profileImage.setImageBitmap(bitmap)
+                    } catch (e: Exception) {
+                        profileImage.setImageResource(R.drawable.ic_profile)
                     }
+                } else {
+                    profileImage.setImageResource(R.drawable.ic_profile)
                 }
             }
+        }
 
-        db.collection("posts").whereEqualTo("ownerId", uid).get()
-            .addOnSuccessListener { if (isAdded) txtPostsCount.text = it.size().toString() }
+        db.collection("posts").whereEqualTo("ownerId", uid).addSnapshotListener { snapshot, _ ->
+            if (isAdded && snapshot != null) {
+                txtPostsCount.text = snapshot.size().toString()
+            }
+        }
 
-        db.collection("followers").document(uid).collection("userFollowers").get()
-            .addOnSuccessListener { if (isAdded) txtFollowersCount.text = it.size().toString() }
+        db.collection("followers").document(uid).collection("userFollowers").addSnapshotListener { snapshot, _ ->
+            if (isAdded && snapshot != null) {
+                txtFollowersCount.text = snapshot.size().toString()
+            }
+        }
     }
 
     private fun checkFollowStatus() {

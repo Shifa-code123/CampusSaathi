@@ -2,11 +2,11 @@ package com.example.campussaathi
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.campussaathi.databinding.AdminFragmentServicesBinding
+import android.view.View
 
 class AdminFragmentServices : Fragment() {
 
@@ -26,15 +26,16 @@ class AdminFragmentServices : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categories = listOf(
-            AdminCategoryAdapter.Category("Mess", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Room", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Tuition", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Street Food", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Medical", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Stationery", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Fitness", android.R.drawable.ic_menu_gallery),
-            AdminCategoryAdapter.Category("Other", android.R.drawable.ic_menu_gallery)
+            AdminCategoryAdapter.Category("Mess", R.drawable.img_cat_mess),
+            AdminCategoryAdapter.Category("Room", R.drawable.img_cat_room),
+            AdminCategoryAdapter.Category("Tuition", R.drawable.img_cat_tuition),
+            AdminCategoryAdapter.Category("Street Food", R.drawable.img_cat_streetfood),
+            AdminCategoryAdapter.Category("Medical", R.drawable.img_cat_medical),
+            AdminCategoryAdapter.Category("Stationery", R.drawable.img_cat_stationary),
+            AdminCategoryAdapter.Category("Fitness", R.drawable.img_cat_fitness),
+            AdminCategoryAdapter.Category("Other", R.drawable.img_cat_collegeservices)
         )
+
 
         val adapter = AdminCategoryAdapter(categories) { categoryName ->
             openServiceList(categoryName)

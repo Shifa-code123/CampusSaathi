@@ -64,9 +64,11 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Google Maps & Location
-
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    
+    // Google Auth
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
@@ -89,11 +91,6 @@ dependencies {
 
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.android.material:material:1.11.0")
-
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.cardview:cardview:1.0.0")
 
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 

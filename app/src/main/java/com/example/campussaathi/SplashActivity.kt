@@ -1,5 +1,6 @@
 package com.example.campussaathi
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
@@ -20,10 +21,10 @@ class SplashActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // 🔥 SPLASH DELAY (clean & safe)
+        // 🔥 SPLASH DELAY
         Handler(Looper.getMainLooper()).postDelayed({
             startAppFlow()
-        }, 1500) // 👈 reduce time (better UX)
+        }, 1500)
     }
 
     private fun startAppFlow() {
@@ -45,6 +46,16 @@ class SplashActivity : AppCompatActivity() {
             return
         }
 
+        // ✅ STEP 2: Location check (New requirement)
+        val prefs = getSharedPreferences("CampusSaathiPrefs", Context.MODE_PRIVATE)
+        val city = prefs.getString("selected_city", null)
+        val college = prefs.getString("selected_college", null)
+
+        if (city == null || college == null) {
+            open(SelectLocationActivity::class.java)
+            return
+        }
+
         val uid = currentUser.uid
 
         // 🔹 FETCH USER ROLE
@@ -52,7 +63,7 @@ class SplashActivity : AppCompatActivity() {
             .addOnSuccessListener { doc ->
 
                 if (!doc.exists()) {
-                    open(LoginActivity::class.java)
+                    open(RoleSelectionActivity::class.java)
                     return@addOnSuccessListener
                 }
 
@@ -62,45 +73,24 @@ class SplashActivity : AppCompatActivity() {
                 val verificationSubmitted = doc.getBoolean("verificationSubmitted") ?: false
 
                 when (role) {
-
-                    "admin" -> {
-                        open(AdminActivityMain::class.java)
-                    }
-
-
-                    "student" -> {
-                        open(StudentActivity::class.java)
-                    }
-
+                    "admin" -> open(AdminActivityMain::class.java)
+                    "student" -> open(StudentActivity::class.java)
                     "owner" -> {
                         when {
-                            !ownerSetupDone -> {
-                                open(ActivityOwnerChooseTypeService::class.java)
-                            }
-                            !verificationSubmitted -> {
-                                open(OwnerVerification::class.java)
-                            }
-                            !isVerified -> {
-                                open(ActivityOwnerVerificationInProgress::class.java)
-                            }
-                            else -> {
-                                open(OwnerMainActivity::class.java)
-                            }
+                            !ownerSetupDone -> open(ActivityOwnerChooseTypeService::class.java)
+                            !verificationSubmitted -> open(OwnerVerification::class.java)
+                            !isVerified -> open(ActivityOwnerVerificationInProgress::class.java)
+                            else -> open(OwnerMainActivity::class.java)
                         }
                     }
-
-                    else -> {
-                        open(LoginActivity::class.java)
-                    }
+                    else -> open(RoleSelectionActivity::class.java)
                 }
             }
             .addOnFailureListener {
-                // 🔥 FAIL SAFE
                 open(LoginActivity::class.java)
             }
     }
 
-    // 🔥 CLEAN NAVIGATION METHOD
     private fun open(cls: Class<*>) {
         val intent = Intent(this, cls)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

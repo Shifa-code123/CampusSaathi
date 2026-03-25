@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsetsController
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +33,6 @@ class StudentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Force transparent status bar and dark icons
         window.statusBarColor = Color.TRANSPARENT
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
@@ -54,14 +52,12 @@ class StudentActivity : AppCompatActivity() {
         notificationContainer = globalHeader.findViewById(R.id.notificationContainer)
         profileContainer = globalHeader.findViewById(R.id.profileContainer)
 
-        // Setup Global Drawer
         val drawerView = findViewById<View>(R.id.studentDrawer)
         DrawerManager.setupDrawer(this, drawerLayout, drawerView)
         ProfileImageLoader.loadProfile(ivProfile)
 
         setupClickListeners()
         
-        // Handle back stack changes to restore header state when returning from fragments
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 updateHeader(viewPager.currentItem)
@@ -93,6 +89,28 @@ class StudentActivity : AppCompatActivity() {
                 }
             }
         })
+
+        intent?.let { handleIntent(it) }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        if (intent.getStringExtra("targetFragment") == "ServiceDetail") {
+            val serviceId = intent.getStringExtra("serviceId") ?: return
+            val fragment = Student_ServiceDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString("serviceId", serviceId)
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun setupClickListeners() {
@@ -105,19 +123,12 @@ class StudentActivity : AppCompatActivity() {
         ivProfile.setOnClickListener {
             startActivity(Intent(this, StudentProfileActivity::class.java))
         }
-        notificationContainer.setOnClickListener {
-            // Handle notifications
-        }
     }
 
     private fun updateHeader(position: Int) {
-        // If we have a fragment in container, don't let ViewPager change the header
         if (supportFragmentManager.backStackEntryCount > 0) return
-
         when (position) {
-            0 -> {
-                globalHeader.visibility = View.GONE
-            }
+            0 -> globalHeader.visibility = View.GONE
             1 -> {
                 globalHeader.visibility = View.VISIBLE
                 tvHeaderTitle.text = "Explore"

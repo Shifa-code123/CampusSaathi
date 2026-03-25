@@ -1,6 +1,7 @@
 package com.example.campussaathi
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.*
@@ -10,9 +11,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
-import com.example.campussaathi.CommentBottomSheet
 import android.view.MotionEvent
-import android.view.animation.AnimationUtils
+import android.view.GestureDetector
+import android.graphics.Color
+import android.annotation.SuppressLint
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 
 class ServicesAdapter(
@@ -23,7 +26,6 @@ class ServicesAdapter(
     private val auth = FirebaseAuth.getInstance()
 
     class ServiceViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
         val profile: ImageView = view.findViewById(R.id.imgProfile)
         val name: TextView = view.findViewById(R.id.txtOwnerName)
         val serviceName: TextView = view.findViewById(R.id.txtServiceName)
@@ -31,289 +33,205 @@ class ServicesAdapter(
         val followBtn: Button = view.findViewById(R.id.btnFollow)
         val btnViewDetails: Button = view.findViewById(R.id.btnViewDetails)
         val dotsLayout: LinearLayout = view.findViewById(R.id.dotsLayout)
-
         val ratingText: TextView = view.findViewById(R.id.txtRating)
         val commentText: TextView = view.findViewById(R.id.txtCommentCount)
         val commentIcon: ImageView = view.findViewById(R.id.iconComment)
-
         val btnSave: ImageView = view.findViewById(R.id.btnSave)
+        
+        val btnLike: ImageView = view.findViewById(R.id.btnLike)
+        val txtLikeCount: TextView = view.findViewById(R.id.txtLikeCount)
+        val imgHeartAnim: ImageView = view.findViewById(R.id.imgHeartAnim)
+        val photoContainer: View = view.findViewById(R.id.photoContainer)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_service_card, parent, false)
-
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_service_card, parent, false)
         return ServiceViewHolder(view)
     }
 
     override fun getItemCount(): Int = services.size
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
-
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_anim)
-        holder.itemView.startAnimation(animation)
-
         val service = services[position]
         val context = holder.itemView.context
-
         val userId = auth.currentUser?.uid ?: return
-        val saveRef = db.collection("saved")
-            .document(userId)
-            .collection("services")
-            .document(service.serviceId)
 
-        // Save icon sync
-        saveRef.addSnapshotListener { doc, _ ->
-            if (doc != null && doc.exists()) {
-                holder.btnSave.setImageResource(R.drawable.ic_saved)
-            } else {
-                holder.btnSave.setImageResource(R.drawable.ic_save_outline)
+        // Use addSnapshotListener for real-time profile image and name updates
+        if (service.ownerId.isNotBlank()) {
+            db.collection("users").document(service.ownerId).addSnapshotListener { doc, _ ->
+                if (doc != null && doc.exists() && holder.adapterPosition == position) {
+                    holder.name.text = doc.getString("fullName") ?: "Owner"
+                    
+                    val base64 = doc.getString("profileImageBase64")
+                    if (!base64.isNullOrEmpty()) {
+                        try {
+                            val bytes = Base64.decode(base64, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            holder.profile.setImageBitmap(bitmap)
+                        } catch (e: Exception) {
+                            holder.profile.setImageResource(R.drawable.ic_profile)
+                        }
+                    } else {
+                        holder.profile.setImageResource(R.drawable.ic_profile)
+                    }
+                }
             }
+        }
+
+        val likeRef = db.collection("likes").document(service.serviceId)
+        val userLikeRef = likeRef.collection("userLikes").document(userId)
+
+        userLikeRef.addSnapshotListener { doc, _ ->
+            if (doc != null && doc.exists()) {
+                holder.btnLike.setImageResource(R.drawable.ic_heart)
+                holder.btnLike.setColorFilter(Color.RED)
+            } else {
+                holder.btnLike.setImageResource(R.drawable.ic_heart)
+                holder.btnLike.setColorFilter(Color.DKGRAY)
+            }
+        }
+
+        likeRef.collection("userLikes").addSnapshotListener { snapshot, _ ->
+            holder.txtLikeCount.text = (snapshot?.size() ?: 0).toString()
+        }
+
+        fun toggleLike() {
+            userLikeRef.get().addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    userLikeRef.delete()
+                } else {
+                    userLikeRef.set(hashMapOf("timestamp" to System.currentTimeMillis()))
+                }
+            }
+        }
+
+        holder.btnLike.setOnClickListener { toggleLike() }
+
+        val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                showHeartAnimation(holder)
+                userLikeRef.get().addOnSuccessListener { doc ->
+                    if (!doc.exists()) toggleLike()
+                }
+                return true
+            }
+
+            override fun onDown(e: MotionEvent): Boolean = true
+        })
+
+        val child = holder.pager.getChildAt(0)
+        child.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            false
+        }
+
+        val saveRef = db.collection("saved").document(userId).collection("services").document(service.serviceId)
+        saveRef.addSnapshotListener { doc, _ ->
+            if (doc != null && doc.exists()) holder.btnSave.setImageResource(R.drawable.ic_saved)
+            else holder.btnSave.setImageResource(R.drawable.ic_save_outline)
         }
 
         holder.btnSave.setOnClickListener {
             saveRef.get().addOnSuccessListener { doc ->
-                if (doc.exists()) {
-                    saveRef.delete()
-                } else {
-                    val data = hashMapOf(
-                        "serviceId" to service.serviceId,
-                        "serviceName" to service.serviceName,
-                        "ownerId" to service.ownerId,
-                        "photos" to service.photos,
-                        "savedAt" to System.currentTimeMillis()
-                    )
-                    saveRef.set(data)
-                }
+                if (doc.exists()) saveRef.delete()
+                else saveRef.set(hashMapOf("serviceId" to service.serviceId, "serviceName" to service.serviceName, "ownerId" to service.ownerId, "photos" to service.photos, "savedAt" to System.currentTimeMillis()))
             }
         }
 
-        // ---------------- UI ----------------
-
-        Glide.with(holder.itemView)
-            .load(R.drawable.ic_profile)
-            .circleCrop()
-            .into(holder.profile)
-
         holder.serviceName.text = service.serviceName
-        holder.name.text = "Owner"
-
-        // Owner name
-        if (service.ownerId.isNotBlank()) {
-            db.collection("owner_verifications")
-                .document(service.ownerId)
-                .get()
-                .addOnSuccessListener { doc ->
-                    if (holder.adapterPosition == position) {
-                        holder.name.text = doc.getString("fullName") ?: "Owner"
-                    }
-                }
-        }
-
-        // Owner image
-        if (service.ownerId.isNotBlank()) {
-            db.collection("posts")
-                .whereEqualTo("ownerId", service.ownerId)
-                .limit(1)
-                .get()
-                .addOnSuccessListener { docs ->
-
-                    if (!docs.isEmpty) {
-
-                        var url = docs.documents[0].getString("business_pic")
-
-                        if (url.isNullOrEmpty()) {
-                            url = docs.documents[0].getString("img")
-                        }
-
-                        if (!url.isNullOrEmpty()) {
-                            Glide.with(holder.itemView.context)
-                                .load(url)
-                                .placeholder(R.drawable.ic_profile)
-                                .circleCrop()
-                                .into(holder.profile)
-                        }
-                    }
-                }
-        }
-
-        // ---------------- NAVIGATION TO PROFILE ----------------
 
         val navigateToProfile = View.OnClickListener {
             if (service.ownerId.isNotBlank()) {
                 val activity = context as? AppCompatActivity
                 val fragment = StudentBusinessProfileFragment.newInstance(service.ownerId)
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(android.R.id.content, fragment)
-                    ?.addToBackStack(null)
-                    ?.commit()
+                activity?.supportFragmentManager?.beginTransaction()?.replace(android.R.id.content, fragment)?.addToBackStack(null)?.commit()
             }
         }
-
         holder.profile.setOnClickListener(navigateToProfile)
         holder.name.setOnClickListener(navigateToProfile)
 
-        // ---------------- PHOTOS ----------------
-
         val photos = service.photos.filterIsInstance<String>()
         holder.pager.adapter = PhotosAdapter(photos)
-
         setupDots(holder, photos.size)
-
-        holder.pager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                updateDots(holder, position)
-            }
+        holder.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) { updateDots(holder, position) }
         })
 
-        holder.pager.isUserInputEnabled = true
-        holder.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-        var startX = 0f
-        var startY = 0f
-
-        holder.pager.getChildAt(0).setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    startX = event.x
-                    startY = event.y
-                    v.parent.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val dx = Math.abs(event.x - startX)
-                    val dy = Math.abs(event.y - startY)
-                    if (dy > dx) {
-                        v.parent.requestDisallowInterceptTouchEvent(false)
-                    } else {
-                        v.parent.requestDisallowInterceptTouchEvent(true)
-                    }
-                }
-                MotionEvent.ACTION_UP,
-                MotionEvent.ACTION_CANCEL -> {
-                    v.parent.requestDisallowInterceptTouchEvent(false)
+        if (service.ownerId.isNotBlank()) {
+            db.collection("followers").document(service.ownerId).collection("userFollowers").document(userId).addSnapshotListener { snapshot, _ ->
+                if (holder.adapterPosition == position) {
+                    if (snapshot != null && snapshot.exists()) { holder.followBtn.text = "Following"; holder.followBtn.alpha = 0.5f }
+                    else { holder.followBtn.text = "Follow"; holder.followBtn.alpha = 1.0f }
                 }
             }
-            false
-        }
-
-        // ---------------- FOLLOW SYNC ----------------
-
-        if (service.ownerId.isNotBlank()) {
-            db.collection("followers").document(service.ownerId)
-                .collection("userFollowers").document(userId)
-                .addSnapshotListener { snapshot, _ ->
-                    if (holder.adapterPosition == position) {
-                        if (snapshot != null && snapshot.exists()) {
-                            holder.followBtn.text = "Following"
-                            holder.followBtn.isEnabled = true // Allow unfollow or just keep as Following
-                            holder.followBtn.alpha = 0.5f
-                        } else {
-                            holder.followBtn.text = "Follow"
-                            holder.followBtn.isEnabled = true
-                            holder.followBtn.alpha = 1.0f
-                        }
-                    }
-                }
         }
 
         holder.followBtn.setOnClickListener {
             if (service.ownerId.isNotBlank()) {
-                val followRef = db.collection("followers").document(service.ownerId)
-                    .collection("userFollowers").document(userId)
-                
-                followRef.get().addOnSuccessListener { doc ->
-                    if (doc.exists()) {
-                        followRef.delete()
-                    } else {
-                        followRef.set(hashMapOf("followedAt" to System.currentTimeMillis()))
-                    }
-                }
+                val followRef = db.collection("followers").document(service.ownerId).collection("userFollowers").document(userId)
+                followRef.get().addOnSuccessListener { doc -> if (doc.exists()) followRef.delete() else followRef.set(hashMapOf("followedAt" to System.currentTimeMillis())) }
             }
         }
-
-        // ---------------- COMMENT ----------------
 
         holder.commentIcon.setOnClickListener {
             val activity = holder.itemView.context as androidx.fragment.app.FragmentActivity
-            val sheet = CommentBottomSheet(service.serviceId)
-            sheet.show(activity.supportFragmentManager, "comments")
+            CommentBottomSheet(service.serviceId).show(activity.supportFragmentManager, "comments")
         }
-
-        // ---------------- DETAILS ----------------
 
         holder.btnViewDetails.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-            intent.putStringArrayListExtra("PHOTOS", ArrayList(service.photos))
-            intent.putExtra("OWNER_ID", service.ownerId)
-            intent.putExtra("SERVICE_NAME", service.serviceName)
-            intent.putExtra("LAT", service.latitude)
-            intent.putExtra("LNG", service.longitude)
-            intent.putExtra("PHONE", service.phone)
-            intent.putExtra("DESCRIPTION", service.description)
-            intent.putExtra("SERVICE_ID", service.serviceId)
+            val intent = Intent(holder.itemView.context, DetailsActivity::class.java).apply {
+                putStringArrayListExtra("PHOTOS", ArrayList(service.photos))
+                putExtra("OWNER_ID", service.ownerId)
+                putExtra("SERVICE_NAME", service.serviceName)
+                putExtra("LAT", service.latitude)
+                putExtra("LNG", service.longitude)
+                putExtra("PHONE", service.phone)
+                putExtra("DESCRIPTION", service.description)
+                putExtra("SERVICE_ID", service.serviceId)
+            }
+            context.startActivity(intent)
+        }
 
-            val ctx = holder.itemView.context
-            ctx.startActivity(intent)
-
-            if (ctx is android.app.Activity) {
-                ctx.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        db.collection("ratings").whereEqualTo("serviceId", service.serviceId).addSnapshotListener { docs, _ ->
+            if (docs != null) {
+                var total = 0f
+                var count = 0
+                for (doc in docs) { doc.getDouble("rating")?.let { total += it.toFloat(); count++ } }
+                holder.ratingText.text = String.format("%.1f", if (count > 0) total / count else 0f)
             }
         }
 
-        // ---------------- ⭐ RATING ----------------
+        db.collection("comments").whereEqualTo("serviceId", service.serviceId).addSnapshotListener { value, _ ->
+            if (value != null) holder.commentText.text = value.size().toString()
+        }
+    }
 
-        db.collection("ratings")
-            .whereEqualTo("serviceId", service.serviceId)
-            .addSnapshotListener { docs, _ ->
-                if (docs != null) {
-                    var total = 0f
-                    var count = 0
-                    for (doc in docs) {
-                        val rating = doc.getDouble("rating")
-                        if (rating != null) {
-                            total += rating.toFloat()
-                            count++
-                        }
-                    }
-                    val avg = if (count > 0) total / count else 0f
-                    holder.ratingText.text = String.format("%.1f", avg)
-                }
-            }
-
-        // ---------------- COMMENTS COUNT ----------------
-
-        db.collection("comments")
-            .whereEqualTo("serviceId", service.serviceId)
-            .addSnapshotListener { value, _ ->
-                if (value != null) {
-                    holder.commentText.text = value.size().toString()
-                }
-            }
+    private fun showHeartAnimation(holder: ServiceViewHolder) {
+        holder.imgHeartAnim.visibility = View.VISIBLE
+        holder.imgHeartAnim.alpha = 1f
+        holder.imgHeartAnim.scaleX = 0f
+        holder.imgHeartAnim.scaleY = 0f
+        holder.imgHeartAnim.animate().scaleX(1.2f).scaleY(1.2f).setDuration(300).withEndAction {
+            holder.imgHeartAnim.animate().scaleX(1f).scaleY(1f).alpha(0f).setDuration(300).withEndAction {
+                holder.imgHeartAnim.visibility = View.GONE
+            }.start()
+        }.start()
     }
 
     private fun setupDots(holder: ServiceViewHolder, count: Int) {
         holder.dotsLayout.removeAllViews()
         for (i in 0 until count) {
             val dot = View(holder.itemView.context)
-            val params = LinearLayout.LayoutParams(16, 16)
-            params.setMargins(6, 0, 6, 0)
-            dot.layoutParams = params
-            dot.setBackgroundResource(
-                if (i == 0) R.drawable.dot_active
-                else R.drawable.dot_inactive
-            )
+            dot.layoutParams = LinearLayout.LayoutParams(16, 16).apply { setMargins(6, 0, 6, 0) }
+            dot.setBackgroundResource(if (i == 0) R.drawable.dot_active else R.drawable.dot_inactive)
             holder.dotsLayout.addView(dot)
         }
     }
 
     private fun updateDots(holder: ServiceViewHolder, position: Int) {
         for (i in 0 until holder.dotsLayout.childCount) {
-            val dot = holder.dotsLayout.getChildAt(i)
-            dot.setBackgroundResource(
-                if (i == position) R.drawable.dot_active
-                else R.drawable.dot_inactive
-            )
+            holder.dotsLayout.getChildAt(i).setBackgroundResource(if (i == position) R.drawable.dot_active else R.drawable.dot_inactive)
         }
     }
 

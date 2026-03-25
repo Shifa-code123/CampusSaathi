@@ -809,7 +809,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/ic_profile"
+                                android:src="@drawable/ic_personz"
                                 app:civ_border_width="2dp"
                                 app:civ_border_color="#1565C0"
                                 android:layout_marginBottom="10dp"/>
@@ -818,7 +818,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Aryan Sharma"
+                                android:text="Shifa Ali"
                                 android:textColor="#0D1B2A"
                                 android:textSize="13sp"
                                 android:fontFamily="sans-serif-black"
@@ -874,7 +874,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    android:text="⌥ Git"
+                                    android:text="Git"
                                     android:textSize="10sp"
                                     android:fontFamily="sans-serif-medium"
                                     android:textColor="#FFFFFF"
@@ -905,7 +905,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/ic_profile"
+                                android:src="@drawable/ic_personz"
                                 app:civ_border_width="2dp"
                                 app:civ_border_color="#7B1FA2"
                                 android:layout_marginBottom="10dp"/>
@@ -913,7 +913,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Priya Patel"
+                                android:text="Gauri Dhisle"
                                 android:textColor="#0D1B2A"
                                 android:textSize="13sp"
                                 android:fontFamily="sans-serif-black"
@@ -966,7 +966,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    android:text="⌥ Git"
+                                    android:text="Git"
                                     android:textSize="10sp"
                                     android:fontFamily="sans-serif-medium"
                                     android:textColor="#FFFFFF"
@@ -1006,7 +1006,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/ic_profile"
+                                android:src="@drawable/ic_personz"
                                 app:civ_border_width="2dp"
                                 app:civ_border_color="#2E7D32"
                                 android:layout_marginBottom="10dp"/>
@@ -1014,7 +1014,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rahul Verma"
+                                android:text="Sakshi Vansutre"
                                 android:textColor="#0D1B2A"
                                 android:textSize="13sp"
                                 android:fontFamily="sans-serif-black"
@@ -1067,7 +1067,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    android:text="⌥ Git"
+                                    android:text="Git"
                                     android:textSize="10sp"
                                     android:fontFamily="sans-serif-medium"
                                     android:textColor="#FFFFFF"
@@ -1097,7 +1097,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/ic_profile"
+                                android:src="@drawable/ic_personz"
                                 app:civ_border_width="2dp"
                                 app:civ_border_color="#E65100"
                                 android:layout_marginBottom="10dp"/>
@@ -1105,7 +1105,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Sneha Joshi"
+                                android:text="Prerna Mahokar"
                                 android:textColor="#0D1B2A"
                                 android:textSize="13sp"
                                 android:fontFamily="sans-serif-black"
@@ -1158,7 +1158,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    android:text="⌥ Git"
+                                    android:text="Git"
                                     android:textSize="10sp"
                                     android:fontFamily="sans-serif-medium"
                                     android:textColor="#FFFFFF"
@@ -1196,7 +1196,7 @@
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/ic_profile"
+                                android:src="@drawable/ic_personz"
                                 app:civ_border_width="2dp"
                                 app:civ_border_color="#006064"
                                 android:layout_marginBottom="10dp"/>
@@ -1204,7 +1204,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Karan Mehta"
+                                android:text="Yash Bhalerao"
                                 android:textColor="#0D1B2A"
                                 android:textSize="13sp"
                                 android:fontFamily="sans-serif-black"
@@ -1257,7 +1257,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    android:text="⌥ Git"
+                                    android:text="Git"
                                     android:textSize="10sp"
                                     android:fontFamily="sans-serif-medium"
                                     android:textColor="#FFFFFF"
@@ -1302,7 +1302,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="© 2024 CampusSaathi · All rights reserved"
+                android:text="© 2026 CampusSaathi · All rights reserved"
                 android:textColor="#B0BEC5"
                 android:textSize="11sp"
                 android:fontFamily="sans-serif"/>

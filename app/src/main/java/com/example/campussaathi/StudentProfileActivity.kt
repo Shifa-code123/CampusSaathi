@@ -1,203 +1,110 @@
 package com.example.campussaathi
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.campussaathi.databinding.ActivityStudentProfileBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.campussaathi.utils.DrawerManager
+import com.example.campussaathi.utils.ProfileImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.example.campussaathi.utils.DrawerManager
-import java.io.File
-import com.google.firebase.firestore.SetOptions
-import android.widget.Toast
-import android.graphics.BitmapFactory
-import android.util.Base64
-import android.widget.ImageView
 import java.io.ByteArrayOutputStream
-import com.example.campussaathi.utils.ProfileImageLoader
 
 class StudentProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStudentProfileBinding
-
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
-    private lateinit var cameraImageUri: Uri
-
-    // ===============================
-    // GALLERY
-    // ===============================
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
+                Log.d("StudentProfile", "Image selected: $it")
                 convertAndSaveProfileImage(it)
-            }
-        }
-
-    // ===============================
-    // CAMERA
-    // ===============================
-    private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-                convertAndSaveProfileImage(cameraImageUri)
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityStudentProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+        setupUI()
+        loadStudentData()
+    }
 
-        DrawerManager.setupDrawer(
-            this,
-            binding.drawerLayout,
-            binding.studentDrawer.root
-        )
-
-        val drawerImage = binding.studentDrawer.root
-            .findViewById<ImageView>(R.id.profileImage)
-
-        ProfileImageLoader.loadProfile(drawerImage)
-
+    private fun setupUI() {
         binding.header.tvHeaderTitle.text = "Profile"
-
         binding.header.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
+        // Setup Drawer
+        DrawerManager.setupDrawer(this, binding.drawerLayout, binding.studentDrawer.root)
+
+        // Load images in all 3 required places using ProfileImageLoader (Base64 + Real-time)
+        ProfileImageLoader.loadProfile(binding.profileImage)
+        ProfileImageLoader.loadProfile(binding.header.ivProfile)
+        val drawerImage = binding.studentDrawer.root.findViewById<ImageView>(R.id.profileImage)
+        if (drawerImage != null) {
+            ProfileImageLoader.loadProfile(drawerImage)
+        }
+
+        // Image pick trigger
         binding.ivAddPhoto.setOnClickListener {
-            showImagePickerDialog()
+            galleryLauncher.launch("image/*")
         }
 
         binding.profileImage.setOnClickListener {
-            showImagePickerDialog()
+            galleryLauncher.launch("image/*")
         }
 
         binding.btnEditProfile.setOnClickListener {
-            enableEditMode()
+            toggleEditMode(true)
         }
 
         binding.btnSaveProfile.setOnClickListener {
             saveProfileChanges()
         }
-
-        loadStudentData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadStudentData()
-    }
-
-    // ===============================
-    // IMAGE PICKER
-    // ===============================
-    private fun showImagePickerDialog() {
-        val options = arrayOf("Take Photo", "Choose from Gallery")
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Select Profile Photo")
-            .setItems(options) { _, which ->
-                when (which) {
-                    0 -> openCamera()
-                    1 -> galleryLauncher.launch("image/*")
-                }
-            }
-            .show()
-    }
-
-    private fun openCamera() {
-        val file = File.createTempFile("profile_", ".jpg", cacheDir)
-
-        cameraImageUri = FileProvider.getUriForFile(
-            this,
-            "$packageName.provider",
-            file
-        )
-
-        cameraLauncher.launch(cameraImageUri)
-    }
-
-    // ===============================
-    // LOAD DATA
-    // ===============================
     private fun loadStudentData() {
-
         val uid = auth.currentUser?.uid ?: return
+        db.collection("users").document(uid).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.e("StudentProfile", "Error fetching user data", error)
+                return@addSnapshotListener
+            }
 
-        db.collection("users")
-            .document(uid)
-            .get()
-            .addOnSuccessListener { document ->
+            if (snapshot != null && snapshot.exists()) {
+                val name = snapshot.getString("fullName") ?: ""
+                val email = snapshot.getString("email") ?: ""
+                val phone = snapshot.getString("phone") ?: ""
 
-                if (document.exists()) {
-
-                    val name = document.getString("fullName") ?: ""
-                    val email = document.getString("email") ?: ""
-                    val phone = document.getString("phone") ?: ""
-
-                    binding.tvStudentName.text = name
+                binding.tvStudentName.text = name
+                
+                if (binding.btnEditProfile.visibility == View.VISIBLE) {
                     binding.edtName.setText(name)
                     binding.edtEmail.setText(email)
                     binding.edtPhone.setText(phone)
-
-                    val base64 = document.getString("profileImageBase64")
-
-                    if (!base64.isNullOrEmpty()) {
-
-                        val bytes = Base64.decode(base64, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-
-                        binding.profileImage.setImageBitmap(bitmap)
-                        binding.header.ivProfile.setImageBitmap(bitmap)
-
-                        val drawerImage = binding.studentDrawer.root
-                            .findViewById<ImageView>(R.id.profileImage)
-
-                        drawerImage.setImageBitmap(bitmap)
-                    }
                 }
             }
+        }
     }
 
-    // ===============================
-    // SAVE PROFILE
-    // ===============================
-    private fun saveProfileChanges() {
-
-        val uid = auth.currentUser?.uid ?: return
-
-        val updates = mapOf(
-            "fullName" to binding.edtName.text.toString(),
-            "email" to binding.edtEmail.text.toString(),
-            "phone" to binding.edtPhone.text.toString()
-        )
-
-        db.collection("users")
-            .document(uid)
-            .update(updates)
-            .addOnSuccessListener {
-                binding.tvStudentName.text = binding.edtName.text.toString()
-                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    // ===============================
-    // IMAGE SAVE (BASE64)
-    // ===============================
+    /**
+     * CONVERT IMAGE TO BASE64 AND SAVE (Same as Owner Profile logic)
+     */
     private fun convertAndSaveProfileImage(uri: Uri) {
-
         val uid = auth.currentUser?.uid ?: return
 
         try {
@@ -205,36 +112,61 @@ class StudentProfileActivity : AppCompatActivity() {
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
             val outputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
+            // Compress bitmap (JPEG, ~35 quality as in Owner logic)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 35, outputStream)
 
-            val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+            val byteArray = outputStream.toByteArray()
+            val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
-            db.collection("users")
-                .document(uid)
-                .set(mapOf("profileImageBase64" to base64Image), SetOptions.merge())
+            // Save in Firestore under "profileImageBase64" (as analyzed from ActivityOwnerProfile)
+            // Note: The prompt asked for "profileImage" but said "same as owner logic".
+            // ActivityOwnerProfile uses "profileImageBase64". I will use that for consistency with owner logic.
+            db.collection("users").document(uid)
+                .update("profileImageBase64", base64Image)
                 .addOnSuccessListener {
-
-                    val bytes = Base64.decode(base64Image, Base64.DEFAULT)
-                    val bitmapDecoded = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-
-                    binding.profileImage.setImageBitmap(bitmapDecoded)
-                    binding.header.ivProfile.setImageBitmap(bitmapDecoded)
-
-                    Toast.makeText(this, "Image Saved 🔥", Toast.LENGTH_SHORT).show()
+                    Log.d("StudentProfile", "Profile image Base64 saved to Firestore")
+                    Toast.makeText(this, "Profile image updated", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("StudentProfile", "Failed to save Base64", e)
+                    Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
                 }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Image error", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun enableEditMode() {
-        binding.edtName.isEnabled = true
-        binding.edtEmail.isEnabled = true
-        binding.edtPhone.isEnabled = true
+    private fun saveProfileChanges() {
+        val uid = auth.currentUser?.uid ?: return
+        val updates = mapOf(
+            "fullName" to binding.edtName.text.toString(),
+            "email" to binding.edtEmail.text.toString(),
+            "phone" to binding.edtPhone.text.toString()
+        )
 
-        binding.btnEditProfile.visibility = View.GONE
-        binding.btnSaveProfile.visibility = View.VISIBLE
+        db.collection("users").document(uid).update(updates)
+            .addOnSuccessListener {
+                toggleEditMode(false)
+                Toast.makeText(this, "Profile saved successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Log.e("StudentProfile", "Failed to update profile", it)
+            }
+    }
+
+    private fun toggleEditMode(isEditing: Boolean) {
+        binding.edtName.isEnabled = isEditing
+        binding.edtEmail.isEnabled = isEditing
+        binding.edtPhone.isEnabled = isEditing
+
+        if (isEditing) {
+            binding.btnEditProfile.visibility = View.GONE
+            binding.btnSaveProfile.visibility = View.VISIBLE
+        } else {
+            binding.btnEditProfile.visibility = View.VISIBLE
+            binding.btnSaveProfile.visibility = View.GONE
+        }
     }
 }

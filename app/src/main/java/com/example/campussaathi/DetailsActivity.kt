@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.net.Uri
 import android.view.View
 import com.example.campussaathi.utils.ProfileImageLoader
+import android.graphics.Color
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -27,6 +28,9 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var ownerId: String
     private lateinit var serviceName: String
     private lateinit var serviceId: String
+
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +70,6 @@ class DetailsActivity : AppCompatActivity() {
 
         binding.txtServiceName.text = serviceName
         binding.txtDescription.text = description
-
-        val db = FirebaseFirestore.getInstance()
 
         // Owner name
         db.collection("owner_verifications")
@@ -125,32 +127,75 @@ class DetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // ⭐ Rating Button
-        binding.btnRate.setOnClickListener {
+        setupActionButtons()
+    }
 
+    private fun setupActionButtons() {
+        val userId = auth.currentUser?.uid ?: return
+
+        // --- LIKE ---
+        val userLikeRef = db.collection("likes").document(serviceId)
+            .collection("userLikes").document(userId)
+
+        userLikeRef.addSnapshotListener { doc, _ ->
+            if (doc != null && doc.exists()) {
+                binding.imgDetailLike.setColorFilter(Color.RED)
+            } else {
+                binding.imgDetailLike.setColorFilter(Color.DKGRAY)
+            }
+        }
+
+        binding.btnDetailLike.setOnClickListener {
+            userLikeRef.get().addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    userLikeRef.delete()
+                } else {
+                    userLikeRef.set(hashMapOf("timestamp" to System.currentTimeMillis()))
+                }
+            }
+        }
+
+        // --- COMMENT ---
+        binding.btnDetailComment.setOnClickListener {
+            val sheet = CommentBottomSheet(serviceId)
+            sheet.show(supportFragmentManager, "comments")
+        }
+
+        // --- SAVE ---
+        val saveRef = db.collection("saved").document(userId)
+            .collection("services").document(serviceId)
+
+        saveRef.addSnapshotListener { doc, _ ->
+            if (doc != null && doc.exists()) {
+                binding.imgDetailSave.setImageResource(R.drawable.ic_saved)
+            } else {
+                binding.imgDetailSave.setImageResource(R.drawable.ic_cs_save)
+            }
+        }
+
+        binding.btnDetailSave.setOnClickListener {
+            saveRef.get().addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    saveRef.delete()
+                } else {
+                    val data = hashMapOf(
+                        "serviceId" to serviceId,
+                        "serviceName" to serviceName,
+                        "ownerId" to ownerId,
+                        "photos" to photos,
+                        "savedAt" to System.currentTimeMillis()
+                    )
+                    saveRef.set(data)
+                }
+            }
+        }
+
+        // --- RATE ---
+        binding.btnDetailRate.setOnClickListener {
             val intent = Intent(this, RatingActivity::class.java)
             intent.putExtra("SERVICE_ID", serviceId)
             startActivity(intent)
         }
-
-        // ⭐ Rating selection (NO POPUP)
-        binding.ratingBar.setOnRatingBarChangeListener { _, rating, fromUser ->
-
-            if (fromUser) {
-
-                saveRating(rating)
-
-                Toast.makeText(this, "Rating submitted ⭐", Toast.LENGTH_SHORT).show()
-
-                // Disable further changes
-                binding.ratingBar.setIsIndicator(true)
-
-                // Optional: hide button
-                binding.btnRate.visibility = View.GONE
-            }
-        }
-
-        loadAverageRating()
     }
 
     // ---------------- DOTS ----------------
@@ -180,77 +225,5 @@ class DetailsActivity : AppCompatActivity() {
                 else R.drawable.inactive_dot
             )
         }
-    }
-
-    // ---------------- RATING SYSTEM ----------------
-
-    private fun checkIfAlreadyRated() {
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
-        FirebaseFirestore.getInstance()
-            .collection("ratings")
-            .document(serviceId + "_" + userId)
-            .get()
-            .addOnSuccessListener { doc ->
-
-                if (doc.exists()) {
-
-                    Toast.makeText(
-                        this,
-                        "You already rated ⭐",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else {
-
-                    // ⭐ Show stars
-                    binding.ratingBar.visibility = View.VISIBLE
-                }
-            }
-    }
-
-    private fun saveRating(rating: Float) {
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
-        val data = hashMapOf(
-            "serviceId" to serviceId,
-            "studentId" to userId,
-            "rating" to rating
-        )
-
-        FirebaseFirestore.getInstance()
-            .collection("ratings")
-            .document(serviceId + "_" + userId)
-            .set(data)
-            .addOnSuccessListener {
-                loadAverageRating()
-            }
-    }
-
-    private fun loadAverageRating() {
-
-        FirebaseFirestore.getInstance()
-            .collection("ratings")
-            .whereEqualTo("serviceId", serviceId)
-            .get()
-            .addOnSuccessListener { docs ->
-
-                var total = 0f
-                var count = 0
-
-                for (doc in docs) {
-                    total += doc.getDouble("rating")?.toFloat() ?: 0f
-                    count++
-                }
-
-                if (count > 0) {
-                    val avg = total / count
-
-                    // ⭐ Show average as stars (optional)
-                    binding.ratingBar.rating = avg
-                }
-            }
     }
 }

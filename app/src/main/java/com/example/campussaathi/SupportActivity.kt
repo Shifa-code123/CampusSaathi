@@ -45,7 +45,7 @@ class SupportActivity : AppCompatActivity() {
                 .setPositiveButton("Email Report") { _, _ ->
 
                     val intent = Intent(Intent.ACTION_SENDTO)
-                    intent.data = Uri.parse("mailto:support@campussaathi.com")
+                    intent.data = Uri.parse("mailto:yashbhalerao093@gmail.com")
                     startActivity(intent)
 
                 }
@@ -57,11 +57,11 @@ class SupportActivity : AppCompatActivity() {
 
             AlertDialog.Builder(this)
                 .setTitle("Email Support")
-                .setMessage("support@campussaathi.com")
+                .setMessage("yashbhalerao093@gmail.com")
                 .setPositiveButton("Send Email") { _, _ ->
 
                     val intent = Intent(Intent.ACTION_SENDTO)
-                    intent.data = Uri.parse("mailto:support@campussaathi.com")
+                    intent.data = Uri.parse("mailto:yashbhalerao093@gmail.com")
                     startActivity(intent)
 
                 }
