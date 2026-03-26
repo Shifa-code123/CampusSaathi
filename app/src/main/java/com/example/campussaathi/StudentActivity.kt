@@ -66,7 +66,7 @@ class StudentActivity : AppCompatActivity() {
 
         val adapter = MainPagerAdapter(this)
         viewPager.adapter = adapter
-        viewPager.isUserInputEnabled = false 
+        viewPager.isUserInputEnabled = true // 🔥 ENABLED: Allows swiping between tabs normally
 
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {

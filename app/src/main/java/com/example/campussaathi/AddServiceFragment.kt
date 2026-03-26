@@ -1,6 +1,7 @@
 package com.example.campussaathi
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -8,10 +9,10 @@ import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -38,6 +38,7 @@ class AddServiceFragment : Fragment() {
     private lateinit var spinnerType: Spinner
     private lateinit var btnAddPhoto: Button
     private lateinit var imgPreviewContainer: LinearLayout
+    private lateinit var progressBar: ProgressBar
 
     private val imageBitmapList = mutableListOf<Bitmap>()
     private val imageUrlList = mutableListOf<String>()
@@ -56,7 +57,6 @@ class AddServiceFragment : Fragment() {
 
     private val locationPermission = 101
 
-    // 🔥 Gallery
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             uris.forEach { uri ->
@@ -71,7 +71,6 @@ class AddServiceFragment : Fragment() {
             }
         }
 
-    // 🔥 Camera
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             bitmap?.let {
@@ -93,7 +92,6 @@ class AddServiceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // 🔥 INIT
         etServiceName = view.findViewById(R.id.etServiceName)
         etContact = view.findViewById(R.id.etContact)
         etDescription = view.findViewById(R.id.etDescription)
@@ -103,17 +101,49 @@ class AddServiceFragment : Fragment() {
         spinnerType = view.findViewById(R.id.spinnerService)
         btnAddPhoto = view.findViewById(R.id.btnAddPhoto)
         imgPreviewContainer = view.findViewById(R.id.imgPreviewContainer)
-
-        // 🔥 BUTTONS
+        
+        // Add a progress bar to the layout if possible, or use a simple Toast/Dialog.
+        // For now, I'll just use the submit button state or a simple dialog.
+        
         btnAddPhoto.setOnClickListener { showImageSourceDialog() }
         btnGps.setOnClickListener { getCurrentLocation() }
-        btnSubmit.setOnClickListener { submitService() }
+        btnSubmit.setOnClickListener { 
+            if (validateFields()) {
+                showConfirmationDialog()
+            }
+        }
     }
 
-    // 🔥 IMAGE SOURCE
+    private fun validateFields(): Boolean {
+        val name = etServiceName.text.toString()
+        val contact = etContact.text.toString()
+
+        if (name.isEmpty() || contact.isEmpty()) {
+            Toast.makeText(requireContext(), "Fill required fields", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (imageBitmapList.isEmpty()) {
+            Toast.makeText(requireContext(), "Add photos", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun showConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirm Add Service")
+            .setMessage("Are you sure you want to add this service?")
+            .setPositiveButton("YES") { _, _ ->
+                submitService()
+            }
+            .setNegativeButton("NO", null)
+            .show()
+    }
+
     private fun showImageSourceDialog() {
         val options = arrayOf("Upload from Gallery", "Open Camera")
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle("Select Option")
             .setItems(options) { _, which ->
                 if (which == 0) galleryLauncher.launch("image/*")
@@ -130,7 +160,6 @@ class AddServiceFragment : Fragment() {
         imgPreviewContainer.addView(img)
     }
 
-    // 🔥 LOCATION
     private fun getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -171,9 +200,7 @@ class AddServiceFragment : Fragment() {
         txtDistance.text = "Distance from campus: %.2f km".format(distanceKm)
     }
 
-    // 🔥 CLOUDINARY UPLOAD
     private fun uploadImage(bitmap: Bitmap, onSuccess: (String) -> Unit) {
-
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         val byteArray = stream.toByteArray()
@@ -201,16 +228,14 @@ class AddServiceFragment : Fragment() {
                 val body = response.body?.string()
                 if (body != null) {
                     val url = JSONObject(body).getString("secure_url")
-
                     activity?.runOnUiThread {
-                        onSuccess(url) // 🔥 return URL
+                        onSuccess(url)
                     }
                 }
             }
         })
     }
 
-    // 🔥 SUBMIT
     private fun submitService() {
         val name = etServiceName.text.toString()
         val contact = etContact.text.toString()
@@ -219,28 +244,18 @@ class AddServiceFragment : Fragment() {
 
         val uid = auth.currentUser?.uid ?: return
 
-        if (name.isEmpty() || contact.isEmpty()) {
-            Toast.makeText(requireContext(), "Fill required fields", Toast.LENGTH_SHORT).show()
-            return
-        }
+        btnSubmit.isEnabled = false
+        Toast.makeText(requireContext(), "Uploading images, please wait...", Toast.LENGTH_LONG).show()
 
-        if (imageBitmapList.isEmpty()) {
-            Toast.makeText(requireContext(), "Add photos", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        imageUrlList.clear() // 🔥 important
-
+        imageUrlList.clear()
         var uploadedCount = 0
 
         imageBitmapList.forEach { bitmap ->
-            uploadImage(bitmap) {
-
+            uploadImage(bitmap) { url ->
+                imageUrlList.add(url)
                 uploadedCount++
 
-                // 🔥 jab sab images upload ho jaye tabhi Firestore call
                 if (uploadedCount == imageBitmapList.size) {
-
                     val data = hashMapOf(
                         "ownerId" to uid,
                         "serviceName" to name,
@@ -258,13 +273,21 @@ class AddServiceFragment : Fragment() {
                     db.collection("services")
                         .add(data)
                         .addOnSuccessListener {
-
                             Toast.makeText(requireContext(), "Service submitted for approval", Toast.LENGTH_SHORT).show()
 
-                            // 🔥 FORCE NAVIGATION
-                            val intent = Intent(requireContext(), ActivityOwnerSubmissionList1::class.java)
-                            startActivity(intent)
-                            requireActivity().finish() // 🔥 back se wapas na aaye
+                            // Set state in SharedPreferences
+                            val sharedPref = requireContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                            sharedPref.edit().putBoolean("isServicePending", true).apply()
+
+                            // Navigate to Success Fragment by recreating pager
+                            (activity as? OwnerMainActivity)?.let { mainActivity ->
+                                mainActivity.recreatePager()
+                                mainActivity.navigateTo(R.id.nav_add)
+                            }
+                        }
+                        .addOnFailureListener {
+                            btnSubmit.isEnabled = true
+                            Toast.makeText(requireContext(), "Failed to add service", Toast.LENGTH_SHORT).show()
                         }
                 }
             }

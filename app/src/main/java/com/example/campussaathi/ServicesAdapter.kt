@@ -121,7 +121,17 @@ class ServicesAdapter(
         })
 
         val child = holder.pager.getChildAt(0)
-        child.setOnTouchListener { _, event ->
+        child.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // 🔥 Prevent parent ViewPager2 from intercepting horizontal swipes
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // 🔥 Allow parent to intercept again after touch ends
+                    v.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
             gestureDetector.onTouchEvent(event)
             false
         }

@@ -16,13 +16,13 @@ class Student_ServiceListFragment : Fragment() {
     private lateinit var adapter: Student_ServiceAdapter
 
     private val categoryMap = mapOf(
-        "Stationery" to "Stationary Stores",
-        "Medical" to "Medical Stores",
+        "Stationery" to "Stationary Store",
+        "Medical" to "Medical Store",
         "Fitness" to "Gym",
         "Street Food" to "Street Food",
-        "Others" to "College Services",
+        "Others" to "Others",
         "Mess" to "Mess",
-        "Room" to "Room",
+        "Room" to "Room/Pg",
         "Tuition" to "Tuition"
     )
 
@@ -64,6 +64,10 @@ class Student_ServiceListFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val list = documents.toObjects(Student_ServiceModel::class.java)
                 adapter.updateList(list)
+                
+                if (list.isEmpty()) {
+                    // Optional: show a message if no approved services found for this category
+                }
             }
     }
 

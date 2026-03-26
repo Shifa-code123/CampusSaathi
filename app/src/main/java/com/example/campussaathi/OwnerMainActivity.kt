@@ -41,9 +41,9 @@ class OwnerMainActivity : AppCompatActivity(), NavigationHandler {
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        findViewById<View>(R.id.ownernotificationContainer).setOnClickListener {
-            startActivity(Intent(this, ActivityOwnerNotification::class.java))
-        }
+//        findViewById<View>(R.id.ownernotificationContainer).setOnClickListener {
+//            startActivity(Intent(this, ActivityOwnerNotification::class.java))
+//        }
 
         findViewById<View>(R.id.ownerprofileContainer).setOnClickListener {
             startActivity(Intent(this, ActivityOwnerProfile::class.java))
@@ -88,6 +88,11 @@ class OwnerMainActivity : AppCompatActivity(), NavigationHandler {
                 viewPager.setCurrentItem(pageIndex, false)
             }
         }
+    }
+
+    fun recreatePager() {
+        val adapter = OwnerPagerAdapter(this)
+        viewPager.adapter = adapter
     }
 
     private fun updateHeaderTitle(position: Int) {
